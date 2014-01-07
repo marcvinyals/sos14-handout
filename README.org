@@ -10,7 +10,7 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
-* Sum of squares and integer programming relaxations - Winter 2014 (handouts)
+*Sum of squares and integer programming relaxations - Winter 2014 (handouts)*
 
 
 #+begin_html
