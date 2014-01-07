@@ -12,6 +12,18 @@
 
 *Sum of squares and integer programming relaxations - Winter 2014 (handouts)*
 
+This repository contains the lecture notes for the course. /Please use
+github  facilities/ in  order  to  signal and  correct  typos, and  to
+integrate the lecture notes.
+
+*LaTeX info*
+
+The  handouts are  produced using  the =tufte-handout=  document class
+from [[http://www.ctan.org/tex-archive/macros/latex/contrib/tufte-latex][=tufte-latex=]],  which is a  Latex document class inspired  by the
+typograpy  of books  by [[http://www.edwardtufte.com/tufte/][Edward  Tufte]].  The copyright  for this  LaTeX
+packages belongs to Bil Kleb, Bill Wood and Kevin Godby.
+
+*License*
 
 #+begin_html
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
@@ -28,12 +40,10 @@ Massimo Lauria
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 Creative Commons Attribution-ShareAlike 4.0 International License
 </a>.
-
-<br />
-
-Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/MassimoLauria/sos14-handout" rel="dct:source">
-https://github.com/MassimoLauria/sos14-handout</a>.
-
-
 #+end_html
+
+# <br />
+# 
+# Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/MassimoLauria/sos14-handout" rel="dct:source">
+# https://github.com/MassimoLauria/sos14-handout</a>.
 
