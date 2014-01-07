@@ -1,4 +1,4 @@
-#+TITLE:     Sum of squares and integer programming relaxations - Winter 2014 (handouts)
+#+TITLE:     
 #+AUTHOR:    Massimo Lauria
 #+EMAIL:     lauria@kth.se
 #+DESCRIPTION: Handouts for the Winter 2014 course “Sum of squares and integer programming relaxations” at KTH ROyal Institute of Technology.
@@ -10,8 +10,8 @@
 #+EXPORT_SELECT_TAGS: export
 #+EXPORT_EXCLUDE_TAGS: noexport
 
-#+MACRO: COURSENAME Sum of squares and integer programming relaxations
-#+MACRO: COURSECODE DDXXXX
+* Sum of squares and integer programming relaxations - Winter 2014 (handouts)
+
 
 #+begin_html
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
