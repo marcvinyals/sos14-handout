@@ -19,9 +19,9 @@ integrate the lecture notes.
 *LaTeX info*
 
 The  handouts are  produced using  the =tufte-handout=  document class
-from [[http://www.ctan.org/tex-archive/macros/latex/contrib/tufte-latex][=tufte-latex=]],  which is a  Latex document class inspired  by the
-typograpy  of books  by [[http://www.edwardtufte.com/tufte/][Edward  Tufte]].  The copyright  for this  LaTeX
-packages belongs to Bil Kleb, Bill Wood and Kevin Godby.
+from [[http://www.ctan.org/tex-archive/macros/latex/contrib/tufte-latex][tufte-latex]], which is a Latex document class inspired by the work
+[[http://www.edwardtufte.com/tufte/][Edward Tufte]].   The copyright for  this LaTeX packages belongs  to Bil
+Kleb, Bill Wood and Kevin Godby.
 
 *License*
 
