@@ -1,0 +1,15 @@
+.svn*
+auto/
+*.aux
+*.log
+*.bbl
+*.blg
+*.dvi
+*.brf
+*.out
+*.idx
+*.toc
+*.pdf
+*.pdfsync
+*.synctex.gz
+.#*

@@ -1,0 +1,235 @@
+%%
+%% theoryofcomputing.sty -- useful macros for complexity paper
+%%
+%% Copyright (C) 2011, 2012, 2013 by Massimo Lauria (lauria.massimo@gmail.com)
+%% Time-stamp: "2013-10-24, 18:31 (CEST) Massimo Lauria"
+%%
+
+% utility packages
+\RequirePackage{xspace}   % avoid space eating
+
+%% math packages
+%%
+\RequirePackage{amsmath}  % math
+\RequirePackage{amssymb}
+\@ifclassloaded{llncs}{}{\usepackage{amsthm}}  % AMS Theorem is incompatible with LLNCS
+                                               % which defines it's own theorem environments.
+
+% Fix to: parskip package would remove space above environments.
+\begingroup
+    \makeatletter
+    \@for\theoremstyle:=definition,remark,plain\do{%
+        \expandafter\g@addto@macro\csname th@\theoremstyle\endcsname{%
+            \addtolength\thm@preskip\parskip
+            }%
+        }
+\endgroup
+
+%% latin abbreviations
+%%
+\providecommand{\ie}{i.e.\xspace}
+\providecommand{\eg}{e.g.\xspace}
+\providecommand{\cf}{cf.\xspace}
+
+%% jargon abbreviations
+%%
+\providecommand{\wlog}{w.l.o.g.\xspace}
+\providecommand{\whp}{w.h.p.\xspace}
+
+%% mathematical objects
+%%
+\newcommand{\numeric}[1]{\ensuremath{\mathbb{#1}}\xspace}
+\newcommand{\turingclass}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\circuitclass}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\proofsystem}[1]{\ensuremath{\textsc{#1}}\xspace}
+\newcommand{\computationalproblem}[1]{\ensuremath{\textsc{#1}}\xspace}
+\newcommand{\logicaltheory}[1]{\ensuremath{\mathit{#1}}\xspace}
+\newcommand{\formula}[1]{\ensuremath{\mathit{#1}}\xspace}
+\renewcommand{\cal}[1]{\ensuremath{\mathcal{#1}}\xspace}
+
+%% number sets: Natural, Real, Rationals, Integer, Complex
+%%
+\providecommand{\NN}{\numeric{N}}
+\providecommand{\RR}{\numeric{R}}
+\providecommand{\QQ}{\numeric{Q}}
+\providecommand{\ZZ}{\numeric{Z}}
+\providecommand{\CC}{\numeric{C}}
+
+
+%% people and names
+%%
+\newcommand{\Krajicek}{Kraj\'{\i}\v{c}ek\xspace}
+\newcommand{\Pudlak}{Pudl\'{a}k\xspace}
+\newcommand{\Vojtech}{Vojt\v{e}ch\xspace}
+\newcommand{\Rodl}{R\"{o}dl\xspace}
+\newcommand{\Chvatal}{Chv\'{a}tal\xspace}
+\newcommand{\Lovasz}{Lov\'{a}sz\xspace}
+\newcommand{\Schrijver}{Schrijver\xspace}
+
+%% Turing classes
+%%
+\newcommand{\DTIME}[1]{\turingclass{DTIME}(#1)}    % deterministic time
+\newcommand{\NTIME}[1]{\turingclass{NTIME}(#1)}    % non-deterministic time
+\newcommand{\DSPACE}[1]{\turingclass{DSPACE}(#1)}  % deterministic space
+\newcommand{\NSPACE}[1]{\turingclass{NSPACE}(#1)}  % non-deterministic space
+%%
+\newcommand{\PTIME}{\turingclass{P}} % P, but \P can't be used
+\newcommand{\PSPACE}{\turingclass{PSPACE}} % PSPACE
+\newcommand{\NP}{\turingclass{NP}}      % NP
+\newcommand{\coNP}{\turingclass{coNP}}  % coNP
+%%
+\newcommand{\PH}{\turingclass{PH}}                      % polynomial hierarchy
+\newcommand{\SigmaOne}{\turingclass{\Sigma^{p}_{1}}}    %
+\newcommand{\SigmaTwo}{\turingclass{\Sigma^{p}_{2}}}    %
+\newcommand{\SigmaThree}{\turingclass{\Sigma^{p}_{3}}}  %
+\newcommand{\PiOne}{\turingclass{\Pi^{p}_{1}}}          %
+\newcommand{\PiTwo}{\turingclass{\Pi^{p}_{2}}}          %
+\newcommand{\PiThree}{\turingclass{\Pi^{p}_{3}}}        %
+%%
+\newcommand{\BPP}{\turingclass{BPP}}     % probabilistic classes
+\newcommand{\RP}{\turingclass{RP}}
+\newcommand{\coRP}{\turingclass{coRP}}
+\newcommand{\ZPP}{\turingclass{ZPP}}
+%%
+\newcommand{\ETIME}{\turingclass{E}} % exponential classes
+\newcommand{\EE}{\turingclass{EE}}
+\newcommand{\EEE}{\turingclass{EEE}}
+\newcommand{\NE}{\turingclass{NE}}
+\newcommand{\NEE}{\turingclass{NEE}}
+\newcommand{\NEEE}{\turingclass{NEEE}}
+\newcommand{\EXP}{\turingclass{EXP}}
+\newcommand{\NEXP}{\turingclass{NEXP}}
+
+%% proof systems
+%%
+\newcommand{\Res}{\proofsystem{Res}} % resolution
+\newcommand{\Resk}[1]{\proofsystem{Res}(#1)\xspace} % res(k)
+%
+\newcommand{\Frege}{\proofsystem{F}} % frege
+\newcommand{\EFrege}{\proofsystem{EF}} % extended frege
+%
+\newcommand{\PC}{\proofsystem{Pc}} % polynomial calculus
+\newcommand{\PCR}{\proofsystem{Pcr}} % polynomial calculus with resolution
+
+%% logical theories
+%%
+\newcommand{\PV}{\logicaltheory{PV}}
+\newcommand{\VP}{\logicaltheory{VP}}
+\newcommand{\Vzero}{\logicaltheory{V^0}}
+
+
+% ----------------------- COMPUTATIONAL PROBLEM -----------------------
+\newcommand{\weightedCNFSAT}{\computationalproblem{Weighted CNF Sat}}
+\newcommand{\weighteddCNFSAT}{\computationalproblem{Weighted $d$-CNF Sat}}
+
+\newcommand{\QBF}{\computationalproblem{QBF}}
+\newcommand{\SAT}{\computationalproblem{Sat}}
+\newcommand{\UNSAT}{\computationalproblem{Unsat}}
+\newcommand{\TAUT}{\computationalproblem{Taut}}
+
+\newcommand{\PIT}{\computationalproblem{Pit}}
+\newcommand{\PRIMES}{\computationalproblem{PRIMES}}
+
+\newcommand{\GI}{\computationalproblem{GI}}
+\newcommand{\GA}{\computationalproblem{GA}}
+\newcommand{\GraphIso}{\computationalproblem{Graph Isomorphism}}
+\newcommand{\GraphAut}{\computationalproblem{Graph Automorphism}}
+
+\newcommand{\PCon}{\computationalproblem{PCon}}
+
+
+% --------------------------- ALGORITHMS ------------------------------
+
+\newcommand{\Clique}{\formula{Clique}}
+\newcommand{\Int}{\formula{Int}}
+
+\newcommand{\RFN}{\formula{RFN}}
+\newcommand{\Prf}{\formula{Prf}}
+\newcommand{\Taut}{\formula{Taut}}
+\newcommand{\Correct}{\formula{Correct}}
+\newcommand{\correct}{\formula{corr}}
+\newcommand{\ps}{\formula{PS}}
+\newcommand{\rng}{\formula{rng}}
+\newcommand{\opt}{\formula{opt}}
+\newcommand{\fand}{\formula{AND}}
+\newcommand{\num}{\formula{Num}}
+\newcommand{\easy}{\formula{easy}}
+\newcommand{\CompG}{\formula{w_G}}
+\newcommand{\fpt}{\ensuremath{\leq_{\formula{fpt}}}}
+\newcommand{\PHP}{\formula{PHP}}
+\newcommand{\Pred}{\formula{Pred}}
+\newcommand{\LOP}{\formula{LOP}}
+\newcommand{\OP}{\formula{OP}}
+\newcommand{\PPred}{\formula{PPred}}
+\newcommand{\score}{\formula{sc}}
+\newcommand{\dom}{\formula{dom}}
+
+\newcommand{\old}{\formula{old}}
+\newcommand{\CNF}{\formula{CNF}}
+
+%\DeclareMathOperator*{\dom}{dom}
+%\DeclareMathOperator*{\rng}{rng}
+
+\newcommand{\ndom}[1]{\overline{\dom}#1}
+\newcommand{\nrng}[1]{\overline{\rng}#1}
+
+
+%% utility commands
+%%
+\providecommand{\TODO}[1]{{\color{red}\scriptsize+++#1---------}}
+
+
+
+%% theorem environments
+%%
+%% -- in 'llncs.cls' most environments are already defined. We use \spnewtheorem for the others.
+\@ifclassloaded{llncs}{%
+  \spnewtheorem{fact}{Fact}{\bfseries}{\itshape}%
+  \spnewtheorem{open.problem}{Open Problem}{\bfseries}{\itshape}%
+  \spnewtheorem*{fact*}{Fact}{\bfseries}{\itshape}%
+  \spnewtheorem*{open.problem*}{Open Problem}{\bfseries}{\itshape}%
+  \spnewtheorem*{definition*}{Definition}{\bfseries}{\rmfamily}%
+  \spnewtheorem{claimfix}{Claim}{\bfseries}{\rmfamily}%
+  % fix the QED issue
+  \let\doendproof\endproof
+  \renewcommand\endproof{~\hfill\qed\doendproof}
+}{}
+%% -- we use package amsthm and the command \newtheorem
+\@ifpackageloaded{amsthm}{%
+  \newtheorem{theorem}{Theorem}%
+  \newtheorem{claim}[theorem]{Claim}%
+  \newtheorem{corollary}[theorem]{Corollary}%
+  \newtheorem{definition}[theorem]{Definition}%
+  \newtheorem{example}[theorem]{Example}%
+  \newtheorem{exercise}[theorem]{Exercise}%
+  \newtheorem{fact}[theorem]{Fact}%
+  \newtheorem{lemma}[theorem]{Lemma}%
+  \newtheorem{note}[theorem]{Note}%
+  \newtheorem{open.problem}[theorem]{Open Problem}%
+  \newtheorem{problem}[theorem]{Problem}%
+  \newtheorem{proposition}[theorem]{Proposition}%
+  \newtheorem{question}[theorem]{Question}%
+  \newtheorem{remark}[theorem]{Remark}%
+  \newtheorem{solution}[theorem]{Solution}%
+  % -------------------------------
+  \newtheorem*{claim*}{Claim}%
+  \newtheorem*{corollary*}{Corollary}%
+  \newtheorem*{definition*}{Definition}%
+  \newtheorem*{example*}{Example}%
+  \newtheorem*{exercise*}{Exercise}%
+  \newtheorem*{fact*}{Fact}%
+  \newtheorem*{lemma*}{Lemma}%
+  \newtheorem*{note*}{Note}%
+  \newtheorem*{open.problem*}{Open Problem}%
+  \newtheorem*{problem*}{Problem}%
+  \newtheorem*{proposition*}{Proposition}%
+  \newtheorem*{question*}{Question}%
+  \newtheorem*{remark*}{Remark}%
+  \newtheorem*{solution*}{Solution}%
+  \newtheorem*{theorem*}{Theorem}%
+}{}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% End:

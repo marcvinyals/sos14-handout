@@ -1,0 +1,114 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-07, 17:53 (CET) Massimo Lauria"
+% Encoding  : UTF-8
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,symmetric,justified,10pt]{tufte-handout}
+
+% ---------------------------- PACKAGES -------------------------------
+% GENERAL
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{tgtermes}
+\usepackage{parskip}
+\usepackage{xspace}
+\usepackage{pdfsync}
+\usepackage{lipsum}   % filler text
+
+% MATH
+\usepackage{soscourse} % this is a non standard package
+% ALGORITHM
+% \usepackage{algorithm}
+% \usepackage[noend]{algpseudocode}
+% \usepackage{listings}
+% GRAPHICS
+% \usepackage{graphicx,graphics,epsfig,subfigure}
+% \usepackage{pgf}
+% \usepackage{tikz}
+% \usetikzlibrary{arrows,shapes,backgrounds,snakes}
+% ---------------------------------------------------------------------
+
+% ---------------------------- USER DATA ------------------------------
+
+\title{Lecture note 1}
+\author{Lecturer: Massimo Lauria\hspace{3em}Scribe: Massimo Lauria}
+\date{\today}
+
+\hypersetup{%
+  pdfauthor={Massimo Lauria},
+  pdftitle ={Lecture note 1},
+  bookmarks=true,
+  bookmarksnumbered=true,
+  pagebackref=true,
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=red,
+  hyperfootnotes=true,
+  pdftex,
+  pdfsubject={integer programming relaxation, sum of squares},
+  pdfkeywords={}
+}
+
+% ---------------------------------------------------------------------
+
+
+
+% ---------------------------- MACROS ---------------------------------
+% Define your macro here.
+% ---------------------------------------------------------------------
+
+
+
+\begin{document} % ----------- BEGIN DOCUMENT -------------------------
+
+% ---------------------------- TITLE/ABSTRACT PAGE --------------------
+
+
+\maketitle
+%
+\sidenote{aaaaaaaaaa}
+
+\begin{abstract}
+  \textbf{Summary:} this is a three four lines (top!) description of
+  the content of the lecture.
+\end{abstract}
+
+
+\lipsum[1]
+
+
+% \begin{fullwidth}
+% \lipsum[2]
+% \end{fullwidth}
+
+\lipsum[3]\footnote{\lipsum[4]}
+
+\newpage
+
+\lipsum[4]
+
+\newpage
+
+\lipsum[5]
+
+
+% Uncomment this if you want the paper to start in the next page.
+% \thispagestyle{empty}
+% \clearpage
+% ---------------------------------------------------------------------
+
+
+% --------------------------- CONTENT --------------------------------
+
+\bibliography{theoryofcomputing}
+\bibliographystyle{alpha}
+
+\end{document} % ------------- END DOCUMENT --------------------------
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
