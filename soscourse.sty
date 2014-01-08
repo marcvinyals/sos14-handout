@@ -1,21 +1,31 @@
 %%
-%% theoryofcomputing.sty -- useful macros for complexity paper
+%% soscourse.sty -- package setting up the lecture notes environment 
 %%
-%% Copyright (C) 2011, 2012, 2013 by Massimo Lauria (lauria.massimo@gmail.com)
-%% Time-stamp: "2013-10-24, 18:31 (CEST) Massimo Lauria"
+%% Copyright (C) 2011, 2012, 2013, 2014 by Massimo Lauria (lauria@kth.se)
+%% Time-stamp: "2014-01-08, 20:01 (CET) Massimo Lauria"
 %%
 
-% utility packages
+\def\DataCourseName{Sum of squares and integer programming relaxations}
+
+% ----------------------------- PACKAGES --------------------------------------
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[english]{babel}
+\RequirePackage{tgtermes}
+\RequirePackage{parskip}
 \RequirePackage{xspace}   % avoid space eating
+\RequirePackage{pdfsync}
+\RequirePackage{fancyhdr}
+\RequirePackage{hyperref}
+\RequirePackage{geometry}
+
+\RequirePackage{xparse}
 
 %% math packages
-%%
-\RequirePackage{amsmath}  % math
+\RequirePackage{amsmath}
 \RequirePackage{amssymb}
-\@ifclassloaded{llncs}{}{\usepackage{amsthm}}  % AMS Theorem is incompatible with LLNCS
-                                               % which defines it's own theorem environments.
+\RequirePackage{amsthm} 
 
-% Fix to: parskip package would remove space above environments.
+%% Fix to: parskip package would remove space above environments.
 \begingroup
     \makeatletter
     \@for\theoremstyle:=definition,remark,plain\do{%
@@ -24,6 +34,20 @@
             }%
         }
 \endgroup
+
+%% PDF and linking setup
+\hypersetup{%
+  bookmarks=true,
+  bookmarksnumbered=true,
+  pagebackref=true,
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=red,
+  hyperfootnotes=true,
+  pdftex,
+}
+
+% ------------------------- MACROS --------------------------------------
 
 %% latin abbreviations
 %%
@@ -35,6 +59,22 @@
 %%
 \providecommand{\wlog}{w.l.o.g.\xspace}
 \providecommand{\whp}{w.h.p.\xspace}
+
+
+%% style
+%%
+\newcommand{\introduceterm}[1]{\emph{#1}}
+\newcommand{\stressterm}[1]{\textbf{#1}}
+
+%% Optimization
+%%
+\newcommand{\minimize}{\text{minimize}\hspace{1em}&}
+\newcommand{\maximize}{\text{maximize}\hspace{1em}&}
+\newcommand{\subjectto}{\text{subject to}\hspace{1em}&}
+\newcommand{\vardomain}[2]{\ensuremath{#1\in#2}}
+\newcommand{\varboolean}[1]{\vardomain{#1}{\{0,1\}}}
+\newcommand{\varpositive}[1]{\ensuremath{#1\geq 0}}
+\DeclareDocumentCommand{\varbounded}{O{0} O{1} m}{\ensuremath{#1\leq #3 \leq #2}}
 
 %% mathematical objects
 %%
@@ -54,6 +94,8 @@
 \providecommand{\QQ}{\numeric{Q}}
 \providecommand{\ZZ}{\numeric{Z}}
 \providecommand{\CC}{\numeric{C}}
+\providecommand{\CC}{\numeric{C}}
+\providecommand{\Rp}{\numeric{R}^{+}}
 
 
 %% people and names
@@ -181,53 +223,64 @@
 
 
 %% theorem environments
-%%
-%% -- in 'llncs.cls' most environments are already defined. We use \spnewtheorem for the others.
-\@ifclassloaded{llncs}{%
-  \spnewtheorem{fact}{Fact}{\bfseries}{\itshape}%
-  \spnewtheorem{open.problem}{Open Problem}{\bfseries}{\itshape}%
-  \spnewtheorem*{fact*}{Fact}{\bfseries}{\itshape}%
-  \spnewtheorem*{open.problem*}{Open Problem}{\bfseries}{\itshape}%
-  \spnewtheorem*{definition*}{Definition}{\bfseries}{\rmfamily}%
-  \spnewtheorem{claimfix}{Claim}{\bfseries}{\rmfamily}%
-  % fix the QED issue
-  \let\doendproof\endproof
-  \renewcommand\endproof{~\hfill\qed\doendproof}
-}{}
-%% -- we use package amsthm and the command \newtheorem
-\@ifpackageloaded{amsthm}{%
-  \newtheorem{theorem}{Theorem}%
-  \newtheorem{claim}[theorem]{Claim}%
-  \newtheorem{corollary}[theorem]{Corollary}%
-  \newtheorem{definition}[theorem]{Definition}%
-  \newtheorem{example}[theorem]{Example}%
-  \newtheorem{exercise}[theorem]{Exercise}%
-  \newtheorem{fact}[theorem]{Fact}%
-  \newtheorem{lemma}[theorem]{Lemma}%
-  \newtheorem{note}[theorem]{Note}%
-  \newtheorem{open.problem}[theorem]{Open Problem}%
-  \newtheorem{problem}[theorem]{Problem}%
-  \newtheorem{proposition}[theorem]{Proposition}%
-  \newtheorem{question}[theorem]{Question}%
-  \newtheorem{remark}[theorem]{Remark}%
-  \newtheorem{solution}[theorem]{Solution}%
-  % -------------------------------
-  \newtheorem*{claim*}{Claim}%
-  \newtheorem*{corollary*}{Corollary}%
-  \newtheorem*{definition*}{Definition}%
-  \newtheorem*{example*}{Example}%
-  \newtheorem*{exercise*}{Exercise}%
-  \newtheorem*{fact*}{Fact}%
-  \newtheorem*{lemma*}{Lemma}%
-  \newtheorem*{note*}{Note}%
-  \newtheorem*{open.problem*}{Open Problem}%
-  \newtheorem*{problem*}{Problem}%
-  \newtheorem*{proposition*}{Proposition}%
-  \newtheorem*{question*}{Question}%
-  \newtheorem*{remark*}{Remark}%
-  \newtheorem*{solution*}{Solution}%
-  \newtheorem*{theorem*}{Theorem}%
-}{}
+\newtheorem{theorem}{Theorem}%
+\newtheorem{claim}[theorem]{Claim}%
+\newtheorem{corollary}[theorem]{Corollary}%
+\newtheorem{definition}[theorem]{Definition}%
+\newtheorem{example}[theorem]{Example}%
+\newtheorem{exercise}[theorem]{Exercise}%
+\newtheorem{fact}[theorem]{Fact}%
+\newtheorem{lemma}[theorem]{Lemma}%
+\newtheorem{note}[theorem]{Note}%
+\newtheorem{open.problem}[theorem]{Open Problem}%
+\newtheorem{problem}[theorem]{Problem}%
+\newtheorem{proposition}[theorem]{Proposition}%
+\newtheorem{question}[theorem]{Question}%
+\newtheorem{remark}[theorem]{Remark}%
+\newtheorem{solution}[theorem]{Solution}%
+\newtheorem*{claim*}{Claim}%
+\newtheorem*{corollary*}{Corollary}%
+\newtheorem*{definition*}{Definition}%
+\newtheorem*{example*}{Example}%
+\newtheorem*{exercise*}{Exercise}%
+\newtheorem*{fact*}{Fact}%
+\newtheorem*{lemma*}{Lemma}%
+\newtheorem*{note*}{Note}%
+\newtheorem*{open.problem*}{Open Problem}%
+\newtheorem*{problem*}{Problem}%
+\newtheorem*{proposition*}{Proposition}%
+\newtheorem*{question*}{Question}%
+\newtheorem*{remark*}{Remark}%
+\newtheorem*{solution*}{Solution}%
+\newtheorem*{theorem*}{Theorem}%
+
+
+
+% --------------------- Document Setup ----------------------------------------
+% it is loaded here so that the \Data* macros can use the commands
+% defined above.
+
+\title{\DataTitle}
+\author{\small Lecturer: \DataLecturer}
+\date{}
+
+\hypersetup{%
+  pdfauthor={\DataScribe},
+  pdftitle ={\DataDocname: ``\DataTitle''},
+  pdfkeywords={\DataKeywords}
+}
+
+
+\fancyhead[LE,RO]{\slshape \DataDocname}
+\fancyhead[LO,RE]{\slshape \DataCourseName}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,RE]{Scribe: \DataScribe}
+\fancyfoot[C]{}
+
+\renewcommand{\headrulewidth}{0.1pt}
+\renewcommand{\footrulewidth}{0.1pt}
+
+
 
 
 %%% Local Variables:

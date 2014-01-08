@@ -1,111 +1,117 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-07, 17:53 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-08, 20:04 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
-% ---------------------------- PREAMBLE -------------------------------
-\documentclass[a4paper,symmetric,justified,10pt]{tufte-handout}
-
-% ---------------------------- PACKAGES -------------------------------
-% GENERAL
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{tgtermes}
-\usepackage{parskip}
-\usepackage{xspace}
-\usepackage{pdfsync}
-\usepackage{lipsum}   % filler text
-
-% MATH
-\usepackage{soscourse} % this is a non standard package
-% ALGORITHM
-% \usepackage{algorithm}
-% \usepackage[noend]{algpseudocode}
-% \usepackage{listings}
-% GRAPHICS
-% \usepackage{graphicx,graphics,epsfig,subfigure}
-% \usepackage{pgf}
-% \usepackage{tikz}
-% \usetikzlibrary{arrows,shapes,backgrounds,snakes}
-% ---------------------------------------------------------------------
-
 % ---------------------------- USER DATA ------------------------------
+\def\DataTitle{Linear relaxations of integer programs.}
+\def\DataTitleShort{Linear programming}
+\def\DataDate{27 January, 2014}
+\def\DataDocname{Lecture 1 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Massimo Lauria}
+\def\DataKeywords{integer programming, linear programming,
+  \Lovasz-\Schrijver, Sherali-Adams, }
 
-\title{Lecture note 1}
-\author{Lecturer: Massimo Lauria\hspace{3em}Scribe: Massimo Lauria}
-\date{\today}
-
-\hypersetup{%
-  pdfauthor={Massimo Lauria},
-  pdftitle ={Lecture note 1},
-  bookmarks=true,
-  bookmarksnumbered=true,
-  pagebackref=true,
-  colorlinks=true,
-  linkcolor=blue,
-  citecolor=red,
-  hyperfootnotes=true,
-  pdftex,
-  pdfsubject={integer programming relaxation, sum of squares},
-  pdfkeywords={}
-}
-
-% ---------------------------------------------------------------------
+\def\DataAbstract{%
+  We can express combinatorial problems using integer programs, but
+  since we can't solve them, we consider relaxed linear programs and
+  we round fractional solutions to integer. We consider hierarchies of
+  linear programs and discuss the quality of the corresponding
+  solutions.}
 
 
-
-% ---------------------------- MACROS ---------------------------------
-% Define your macro here.
-% ---------------------------------------------------------------------
-
-
-
-\begin{document} % ----------- BEGIN DOCUMENT -------------------------
-
-% ---------------------------- TITLE/ABSTRACT PAGE --------------------
-
-
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+\begin{document} 
 \maketitle
-%
-\sidenote{aaaaaaaaaa}
-
+\thispagestyle{fancy}
 \begin{abstract}
-  \textbf{Summary:} this is a three four lines (top!) description of
-  the content of the lecture.
+  \textbf{Summary:} \DataAbstract
 \end{abstract}
+% --------------------------- DOCUMENT --------------------------------
 
+% Start to write here.
 
-\lipsum[1]
+This lecture is a sort of scaled down demo of the rest of the
+course. Here we are see that we can express decisions and optimization
+problems by the means of \introduceterm{integer programs}. This translation in
+even possible for $ \NP $-hard problems, thus there is not efficient
+algorithm to solve integer programs unless $\PTIME=\NP$, which is
+considered by many to be very unlikely\footnote{Every hardness result
+  we will see during the course won't rely on any unproved assumption.}.
 
+In any case there are no \stressterm{known} efficient algorithm to
+solve integer programs, and a viable strategy is to
+\introduceterm{relax} the integer program to something more
+manageable: for example a liner program.
 
-% \begin{fullwidth}
-% \lipsum[2]
-% \end{fullwidth}
+The most naive way to do that is to transform the integrality
+constraints into fractional linear constraints, \eg $ x \in\{0,1\} $
+into $ 0 \leq x \leq 1 $, and leave the other constraints as they
+are\footnote{We can assume that all such constraints are affine,
+  namely of the three forms
+  \begin{alignat*}{1}
+  \sum_{i}a_{i}x_{i} & \leq b\\
+  \sum_{i}a_{i}x_{i} & = b \\
+  \sum_{i}a_{i}x_{i} & \geq b
+  \end{alignat*}
+for $a_i$ and $ b $ in \RR}.
 
-\lipsum[3]\footnote{\lipsum[4]}
+Once we relax the integer program we have a lot of new fractional
+solution that are not allowed in the integer one. For example consider
+the program that characterizes the maximum independent sets of graph $
+K_{3} $, \ie, the triangle.
+
+\begin{alignat}{2}
+  \maximize x_{1} + x_{2} + x_{3} \notag\\
+  \subjectto   x_{1} + x_{2} \leq 1 \notag\\
+             & x_{2} + x_{3} \leq 1 \label{eq:triangle-ind-set}\\
+             & x_{1} + x_{3} \leq 1 \notag\\
+             & \varboolean{x_{1}},\ \varboolean{x_{2}},\ \varboolean{x_{3}}.\notag
+\end{alignat}
+
+Its \introduceterm{integer optimum} is 1 since no two variables can be
+both 1, but if we relax the constraints and allow $ \varbounded{x_{i}}
+$, then the linear program has a \introduceterm{fractional optimum}
+of $ \frac{3}{2} $, by setting all variables to $\frac{1}{2}$.
+
+Most of the course will study systematic techniques to improve the
+relaxation, adding variables and inequalities in order to
+\stressterm{cut away} feasible fractional solutions without changing
+the set of integer solutions.
+
+\begin{enumerate}
+  \item Linear relaxations of integer programs
+  \item Integrality gaps
+  \item Improving the linear relaxations
+  \item \Lovasz-\Schrijver hierarchy
+  \item Sherali-Adams hierarchy
+\end{enumerate}
 
 \newpage
 
-\lipsum[4]
+\begin{alignat*}{2}
+    \minimize  \sum_{i=1}^m c_i x_i + \sum_{j=1}^n d_j t_j\  \\
+    \subjectto \sum_{i=1}^m a_{ij} + e_j t_j \geq g_j &,\ & 1\leq j\leq n\\
+                       & f_i x_i + \sum_{j=1}^n b_{ij}t_j \geq h_i\ &,\ & 1\leq i\leq m\\
+                       & \varboolean{x},\ x\geq 0,\ t_j\geq 0\ &,\ &
+                       1\leq j\leq n,\ 1\leq i\leq m \\
+     \varbounded{x}\\
+\varpositive{x}\\
+\varboolean{x}\\
+\vardomain{x}{\Rp}
+\end{alignat*}
 
-\newpage
-
-\lipsum[5]
 
 
-% Uncomment this if you want the paper to start in the next page.
-% \thispagestyle{empty}
-% \clearpage
-% ---------------------------------------------------------------------
-
-
-% --------------------------- CONTENT --------------------------------
-
-\bibliography{theoryofcomputing}
+% ------------------------- EPILOGUE ------------------------------
+\bibliography{theoryofcomputing,soscourse}
 \bibliographystyle{alpha}
 
-\end{document} % ------------- END DOCUMENT --------------------------
+\end{document} 
 
 
 %%% Local Variables:
