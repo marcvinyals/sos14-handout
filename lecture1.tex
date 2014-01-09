@@ -1,11 +1,11 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-08, 20:04 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-09, 03:04 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
-\def\DataTitle{Linear relaxations of integer programs.}
+\def\DataTitle{1. Linear relaxations of integer programs.}
 \def\DataTitleShort{Linear programming}
 \def\DataDate{27 January, 2014}
 \def\DataDocname{Lecture 1 --- \DataDate}
@@ -28,8 +28,12 @@
 \begin{document} 
 \maketitle
 \thispagestyle{fancy}
+\begin{marginfigure}
+  \itshape Lecturer: \DataLecturer
+\end{marginfigure}
+
 \begin{abstract}
-  \textbf{Summary:} \DataAbstract
+  \itshape \DataAbstract
 \end{abstract}
 % --------------------------- DOCUMENT --------------------------------
 
@@ -53,12 +57,10 @@ constraints into fractional linear constraints, \eg $ x \in\{0,1\} $
 into $ 0 \leq x \leq 1 $, and leave the other constraints as they
 are\footnote{We can assume that all such constraints are affine,
   namely of the three forms
-  \begin{alignat*}{1}
-  \sum_{i}a_{i}x_{i} & \leq b\\
-  \sum_{i}a_{i}x_{i} & = b \\
-  \sum_{i}a_{i}x_{i} & \geq b
-  \end{alignat*}
-for $a_i$ and $ b $ in \RR}.
+  \begin{equation*}
+    \sum_{i}a_{i}x_{i} \leq b \quad   \sum_{i}a_{i}x_{i} \geq b \quad \sum_{i}a_{i}x_{i} = b
+  \end{equation*}
+  for $a_i$ and $ b $ in \RR}.
 
 Once we relax the integer program we have a lot of new fractional
 solution that are not allowed in the integer one. For example consider
@@ -81,30 +83,28 @@ of $ \frac{3}{2} $, by setting all variables to $\frac{1}{2}$.
 Most of the course will study systematic techniques to improve the
 relaxation, adding variables and inequalities in order to
 \stressterm{cut away} feasible fractional solutions without changing
-the set of integer solutions.
+the set of integer solutions. The quality and the complexity of such
+techniques is controlled by a parameter called \introduceterm{rank}:
+larger the rank, less fractional solution remain.
 
-\begin{enumerate}
-  \item Linear relaxations of integer programs
-  \item Integrality gaps
-  \item Improving the linear relaxations
-  \item \Lovasz-\Schrijver hierarchy
-  \item Sherali-Adams hierarchy
-\end{enumerate}
+\section{Linear programming}
 
-\newpage
+\section{Integer programs and Linear relaxations}
 
-\begin{alignat*}{2}
-    \minimize  \sum_{i=1}^m c_i x_i + \sum_{j=1}^n d_j t_j\  \\
-    \subjectto \sum_{i=1}^m a_{ij} + e_j t_j \geq g_j &,\ & 1\leq j\leq n\\
-                       & f_i x_i + \sum_{j=1}^n b_{ij}t_j \geq h_i\ &,\ & 1\leq i\leq m\\
-                       & \varboolean{x},\ x\geq 0,\ t_j\geq 0\ &,\ &
-                       1\leq j\leq n,\ 1\leq i\leq m \\
-     \varbounded{x}\\
-\varpositive{x}\\
-\varboolean{x}\\
-\vardomain{x}{\Rp}
-\end{alignat*}
 
+\section{Integrality gaps}
+
+
+\section{Improving the linear relaxations}
+
+
+\section{\Lovasz-\Schrijver hierarchy}
+
+\subsection{Rank lower bounds}
+
+\section{Sherali-Adams hierarchy}
+
+\subsection{Rank lower bounds}
 
 
 % ------------------------- EPILOGUE ------------------------------
