@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-10, 03:33 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-10, 14:24 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -26,22 +26,7 @@
 \documentclass[a4paper,twoside,justified]{tufte-handout}
 \usepackage{soscourse} % this is a non standard package
 \begin{document} 
-\maketitle
-\thispagestyle{fancy}
-\begin{marginfigure}
-\begin{center}
-\includegraphics[width=2cm]{kth.pdf}
-\hspace*{1em}
-\includegraphics[width=2cm]{qrcode.pdf}
-\end{center}
-\end{marginfigure}
-
-\begin{abstract}
-  \emph{\DataAbstract}
-\end{abstract}
 % --------------------------- DOCUMENT --------------------------------
-
-% Start to write here.
 
 This lecture is a sort of scaled down demo of the rest of the
 course. Here we are see that we can express decisions and optimization
@@ -96,7 +81,7 @@ larger the rank, less fractional solution remain.
 \begin{minipage}{0.45\textwidth}
 \begin{alignat*}{2}
   \minimize c^{T}x \\
-  \subjectto Ax \leq b\\
+  \subjectto Ax \geq b\\
   & x \geq 0
 \end{alignat*}
 \end{minipage}
@@ -113,6 +98,18 @@ larger the rank, less fractional solution remain.
 \end{figure}
 
 \section{Linear programming}
+
+The most classic and studied optimization formalism is
+\introduceterm{linear programming}, which is illustrated by books as
+\cite{matousek2007understanding}: we want to optimize (either minimize
+of maximize) a linear function $ \sum_{i} c_{i}x_{i} $ over the set of
+variables $ \{x_{i}\}^{n}_{i=1} $. The variables are constrained to
+satisfy a set of either linear inequalities or linear equations which
+we denote in matrix form either as $ Ax \geq b $ or $ Ax = b$,
+respectively.
+
+The objective is to determine the
+optimal value of a linear 
 
 \section{Integer programs and Linear relaxations}
 
