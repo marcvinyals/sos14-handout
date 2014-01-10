@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-09, 11:16 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-10, 03:33 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -29,7 +29,11 @@
 \maketitle
 \thispagestyle{fancy}
 \begin{marginfigure}
-  \emph{Lecturer: \DataLecturer}
+\begin{center}
+\includegraphics[width=2cm]{kth.pdf}
+\hspace*{1em}
+\includegraphics[width=2cm]{qrcode.pdf}
+\end{center}
 \end{marginfigure}
 
 \begin{abstract}
@@ -86,6 +90,27 @@ relaxation, adding variables and inequalities in order to
 the set of integer solutions. The quality and the complexity of such
 techniques is controlled by a parameter called \introduceterm{rank}:
 larger the rank, less fractional solution remain.
+
+\begin{figure}
+
+\begin{minipage}{0.45\textwidth}
+\begin{alignat*}{2}
+  \minimize c^{T}x \\
+  \subjectto Ax \leq b\\
+  & x \geq 0
+\end{alignat*}
+\end{minipage}
+\vrule
+\begin{minipage}{0.45\textwidth}
+\begin{alignat*}{2}
+  \minimize c^{T}x \\
+  \subjectto Ax = b\\
+  & x \geq 0
+\end{alignat*}
+\end{minipage}
+\caption{On the left we have a linear program, on the right we have
+  one in standard form.}
+\end{figure}
 
 \section{Linear programming}
 
