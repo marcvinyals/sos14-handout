@@ -22,9 +22,83 @@
 % --------------------------- DOCUMENT --------------------------------
 
 
+\section{Vector and Matrices}
 
+A sequence of variables $ x_{i} $ for $i$ going from $ 1$ to $n$ can
+be interpreted as a column vector $ x $ or a row vector $ x^{T} $ in
+the corresponding standard basis. The inner product $ \sum_{i} x_{i}
+y_{i} $ is denoted as $ x^{T}y $.  A double indexed set of variables $
+a_{ij} $ is intepreted as a matrix $ A $. We usually denote vectors in
+small caps and matrices in big caps, but this convention may change to
+adapt to the context.
 
+\begin{figure*}\label{fig:arrayconvention}
+\begin{minipage}[c]{0.20\textwidth}
+\[
+x=\begin{bmatrix}
+  x_{1}\\
+  x_{2}\\
+  \vdots\\
+  x_{n}
+\end{bmatrix}
+\]
+\end{minipage}
+\begin{minipage}[c]{0.40\textwidth}
+\[
+x^{T}=\begin{bmatrix}
+  x_{1} & x_{2} & \cdots & x_{n} 
+\end{bmatrix}
+\]
+\end{minipage}
+\begin{minipage}[c]{0.40\textwidth}
+\[
+A=\begin{bmatrix}
+  a_{1,1} & a_{1,2} & \cdots & a_{1,n} \\
+  a_{2,1} & a_{2,2} & \cdots & a_{2,n} \\
+  & & \vdots & \\
+  a_{m,1} & a_{m,2} & \cdots & a_{m,n}
+\end{bmatrix}
+\]
+\end{minipage}
+\end{figure*}
 
+The product between a column vector $ x $ with $ m $ values and a row
+vector $ y^{T} $ with $ n $, is denoted by $ xy^{T} $ and is a matrix
+of rank at most 1 with $ m $ rows and $ n $ columns. The product
+between two matrices $ A $ and $ B $ with $ m $ rows and $ n $ columns
+is denoted as $\pointwiseprod{A}{B}$.
+
+\begin{figure*}
+\begin{minipage}[b]{0.45\textwidth}
+\begin{equation*}
+  xy^{T}=\begin{bmatrix}
+  x_{1}y_{1} & x_{1}y_{2} & \cdots & x_{1}y_{n} \\
+  x_{2}y_{1} & x_{2}y_{2} & \cdots & x_{2}y_{n} \\
+  & & \vdots & \\
+  x_{m}y_{1} & x_{m}y_{2} & \cdots & x_{m}y_{n}
+\end{bmatrix}
+\end{equation*}
+\end{minipage}
+\begin{minipage}[b]{0.45\textwidth}
+  \begin{equation*}
+    \pointwiseprod{A}{B}=\begin{bmatrix}
+      a_{1,1}b_{1,1} & a_{1,2}b_{1,2} & \cdots & a_{1,n}b_{1,n} \\
+      a_{2,1}b_{2,1} & a_{2,2}b_{2,2} & \cdots & a_{2,n}b_{2,n} \\
+      & & \vdots & \\
+      a_{m,1}b_{m,1} & a_{m,2}b_{m,2} & \cdots & a_{m,n}b_{m,n}
+    \end{bmatrix}
+  \end{equation*} 
+\end{minipage}
+\end{figure*}
+
+The notations $ x \geq y, x \leq y, x < y, x > y$ for vectors mean
+that the corresponding inequalities hold pointwise (\ie, if $ x \leq y
+$ then $ x_{i} \leq y_{i} $ for every $ i $). We assign a similar
+meaning to notations $ A \geq B, A \leq B, A < B, A > B$.
+%
+The notation $ A \succeq 0 $ means that $ A $ is
+\introduceterm{positive semidefinite}, the notation $ A \succ 0 $ that
+$ A $ is \introduceterm{positive definite}.
 
 
 

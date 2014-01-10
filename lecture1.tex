@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-10, 15:17 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-10, 19:03 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -83,29 +83,95 @@ The most classic and studied optimization formalism is
 \cite{matousek2007understanding}: we want to optimize (either minimize
 of maximize) a linear function $ \sum_{i} c_{i}x_{i} $ over the set of
 variables $ \{x_{i}\}^{n}_{i=1} $, which are constrained to satisfy a
-set of linear inequalities and linear equations. Linear program can be
-assumed to have the following forms forms without loss of generality.
+set of linear inequalities and linear equations. Without loss of
+generality we can assume a linear program to have one of the following
+forms\footnote{While we will discuss the left form more often, the
+  right one is also very common and is called the
+  \introduceterm{standard form}. The standard form is particularly
+  useful in the simplex implementation.}.
 
 \begin{figure}
-\begin{minipage}{0.45\textwidth}
+\begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \minimize c^{T}x \\
-  \subjectto Ax \geq b\\
-  & x \geq 0
+  \subjectto Ax \leq b
 \end{alignat*}
 \end{minipage}
-\vrule
-\begin{minipage}{0.45\textwidth}
+\begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \minimize c^{T}x \\
   \subjectto Ax = b\\
   & x \geq 0
 \end{alignat*}
 \end{minipage}
-\caption{On the left we have a linear program, on the right we have
-  one in standard form.}
 \end{figure}
 
+
+In order to optimize a linear program it is of course necessary to
+understand is the program is \stressterm{feasible}, \ie if the is a
+value of $ x $ that satisfies, for example the linear inequalities $Ax
+\leq b$. Thus linear programs describe both \stressterm{decision} and
+\stressterm{optimization} problems.
+
+The striking feature of linear program is the possibility to
+\stressterm{witness} the unsatisfiability of a set of linear
+inequalities. This feature is formalized by \introduceterm{Farkas
+  Lemma}: as it happens often with fundamental results, there are
+several ways to state Farkas Lemma.
+
+\begin{lemma}[Farkas Lemma]
+  A set of linear inequalities $ Ax \leq b $ is unsatisfiable if and
+  only if there exists a positive vector $ y \geq 0$ such that $
+  y^{T}A = 0$ and $y^{T}b = -1$.
+\end{lemma}
+
+\begin{marginfigure}
+  % \introduceterm{Proof complexity} interpretation. Later we will
+  % discuss a little the proof complexity of unsatisfiability:  namely
+  % how large and how hard to find is a proof that a set of constraints
+  % is unsatisfiable of that a function cannot be optimized pass a
+  % certain threshold.
+  Given two inequalities $ a^{T}x \leq b $ and $c^{T}x \leq d$
+  then any positive combination is a semantic consequence. Thus we can
+  design a proof system for sets of linear inequalities with the
+  following inference rule,
+  \begin{equation*}
+    \frac{a^{T}x \leq b \quad c^{T}x \leq d}{(\alpha a + \gamma c)x
+      \leq (\alpha b + \gamma d)x  }
+  \end{equation*}
+  with $\alpha \geq 0, \gamma \geq 0$. Farkas Lemma states that such
+  proof system can always deduce a contradiction $ 0 \leq -1 $ from a
+  set of unsatisfiable linear inequalities.
+\end{marginfigure}
+
+Deciding the satisfiability of a set of linear inequalities is clearly
+in \NP\@.  Farkas Lemma shows that also deciding its unsatisfiability
+is in \NP, thus the problem is in $ \NP \cap \coNP $. But it is
+actually well known that there are efficient algorithms for this problem.
+\begin{itemize}
+  \item The \introduceterm{simplex method} is the first algorithm
+  invented for linear programming and has been invented by (Dantzig,
+  1947). It does not run in polynomial time, but it is quite fast in
+  practice.
+  \item The first polynomial time algorithm for linear programming is
+  based on the \introduceterm{ellipsoid method}. Despite being
+  polynomial time, the simplex is much faster in practice.
+
+\end{itemize}
+
+
+
+
+\begin{marginfigure}
+\begin{example}
+  Consider the problem of finding a perfect matching in the graph,
+  which is expressed by the following program.
+  \begin{alignat*}{2}
+    e_{11} + e_{12} & \leq 1\\
+    e_{22} + e_{}
+  \end{alignat*}
+\end{example}
+\end{marginfigure}
 
 \section{Integer programs and Linear relaxations}
 
