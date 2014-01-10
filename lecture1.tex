@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-10, 14:24 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-10, 15:17 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -76,8 +76,17 @@ the set of integer solutions. The quality and the complexity of such
 techniques is controlled by a parameter called \introduceterm{rank}:
 larger the rank, less fractional solution remain.
 
-\begin{figure}
+\section{Linear programming}
 
+The most classic and studied optimization formalism is
+\introduceterm{linear programming}, which is illustrated by books as
+\cite{matousek2007understanding}: we want to optimize (either minimize
+of maximize) a linear function $ \sum_{i} c_{i}x_{i} $ over the set of
+variables $ \{x_{i}\}^{n}_{i=1} $, which are constrained to satisfy a
+set of linear inequalities and linear equations. Linear program can be
+assumed to have the following forms forms without loss of generality.
+
+\begin{figure}
 \begin{minipage}{0.45\textwidth}
 \begin{alignat*}{2}
   \minimize c^{T}x \\
@@ -97,19 +106,6 @@ larger the rank, less fractional solution remain.
   one in standard form.}
 \end{figure}
 
-\section{Linear programming}
-
-The most classic and studied optimization formalism is
-\introduceterm{linear programming}, which is illustrated by books as
-\cite{matousek2007understanding}: we want to optimize (either minimize
-of maximize) a linear function $ \sum_{i} c_{i}x_{i} $ over the set of
-variables $ \{x_{i}\}^{n}_{i=1} $. The variables are constrained to
-satisfy a set of either linear inequalities or linear equations which
-we denote in matrix form either as $ Ax \geq b $ or $ Ax = b$,
-respectively.
-
-The objective is to determine the
-optimal value of a linear 
 
 \section{Integer programs and Linear relaxations}
 
