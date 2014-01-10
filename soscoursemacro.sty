@@ -1,0 +1,187 @@
+%%
+%% soscourse.sty -- package setting up the lecture notes environment 
+%%
+%% Copyright (C) 2011, 2012, 2013, 2014 by Massimo Lauria (lauria@kth.se)
+%% Time-stamp: "2014-01-10, 15:11 (CET) Massimo Lauria"
+%%
+
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{soscoursemacro}[2014/01/10 Math macros for Sum of squares lecture notes]
+
+% ----------------------------- PACKAGES --------------------------------------
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{xspace} 
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm} 
+
+% ------------------------- MACROS --------------------------------------
+
+%% latin abbreviations
+%%
+\providecommand{\ie}{i.e.\xspace}
+\providecommand{\eg}{e.g.\xspace}
+\providecommand{\cf}{cf.\xspace}
+
+%% jargon abbreviations
+%%
+\providecommand{\wlog}{w.l.o.g.\xspace}
+\providecommand{\whp}{w.h.p.\xspace}
+
+%% style
+%%
+\newcommand{\introduceterm}[1]{\emph{#1}}
+\newcommand{\stressterm}[1]{\textbf{#1}}
+
+%% Optimization
+%%
+\newcommand{\minimize}{\text{minimize}\hspace{1em}&}
+\newcommand{\maximize}{\text{maximize}\hspace{1em}&}
+\newcommand{\subjectto}{\text{subject to}\hspace{1em}&}
+\newcommand{\vardomain}[2]{\ensuremath{#1\in#2}}
+\newcommand{\varboolean}[1]{\vardomain{#1}{\{0,1\}}}
+\newcommand{\varpositive}[1]{\ensuremath{#1\geq 0}}
+\DeclareDocumentCommand{\varbounded}{O{0} O{1} m}{\ensuremath{#1\leq #3 \leq #2}}
+
+%% mathematical objects
+%%
+\newcommand{\numeric}[1]{\ensuremath{\mathbb{#1}}\xspace}
+\newcommand{\turingclass}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\circuitclass}[1]{\ensuremath{\mathsf{#1}}\xspace}
+\newcommand{\proofsystem}[1]{\ensuremath{\textsc{#1}}\xspace}
+\newcommand{\computationalproblem}[1]{\ensuremath{\textsc{#1}}\xspace}
+\newcommand{\logicaltheory}[1]{\ensuremath{\mathit{#1}}\xspace}
+\newcommand{\formula}[1]{\ensuremath{\mathit{#1}}\xspace}
+\renewcommand{\cal}[1]{\ensuremath{\mathcal{#1}}\xspace}
+
+%% number sets: Natural, Real, Rationals, Integer, Complex
+%%
+\providecommand{\NN}{\numeric{N}}
+\providecommand{\RR}{\numeric{R}}
+\providecommand{\QQ}{\numeric{Q}}
+\providecommand{\ZZ}{\numeric{Z}}
+\providecommand{\CC}{\numeric{C}}
+\providecommand{\CC}{\numeric{C}}
+\providecommand{\Rp}{\numeric{R}^{+}}
+
+
+%% people and names
+%%
+\newcommand{\Krajicek}{Kraj\'{\i}\v{c}ek\xspace}
+\newcommand{\Pudlak}{Pudl\'{a}k\xspace}
+\newcommand{\Vojtech}{Vojt\v{e}ch\xspace}
+\newcommand{\Rodl}{R\"{o}dl\xspace}
+\newcommand{\Chvatal}{Chv\'{a}tal\xspace}
+\newcommand{\Lovasz}{Lov\'{a}sz\xspace}
+\newcommand{\Schrijver}{Schrijver\xspace}
+
+%% Turing classes
+%%
+\newcommand{\DTIME}[1]{\turingclass{DTIME}(#1)}    % deterministic time
+\newcommand{\NTIME}[1]{\turingclass{NTIME}(#1)}    % non-deterministic time
+\newcommand{\DSPACE}[1]{\turingclass{DSPACE}(#1)}  % deterministic space
+\newcommand{\NSPACE}[1]{\turingclass{NSPACE}(#1)}  % non-deterministic space
+%%
+\newcommand{\PTIME}{\turingclass{P}} % P, but \P can't be used
+\newcommand{\PSPACE}{\turingclass{PSPACE}} % PSPACE
+\newcommand{\NP}{\turingclass{NP}}      % NP
+\newcommand{\coNP}{\turingclass{coNP}}  % coNP
+%%
+\newcommand{\PH}{\turingclass{PH}}                      % polynomial hierarchy
+\newcommand{\SigmaOne}{\turingclass{\Sigma^{p}_{1}}}    %
+\newcommand{\SigmaTwo}{\turingclass{\Sigma^{p}_{2}}}    %
+\newcommand{\SigmaThree}{\turingclass{\Sigma^{p}_{3}}}  %
+\newcommand{\PiOne}{\turingclass{\Pi^{p}_{1}}}          %
+\newcommand{\PiTwo}{\turingclass{\Pi^{p}_{2}}}          %
+\newcommand{\PiThree}{\turingclass{\Pi^{p}_{3}}}        %
+%%
+\newcommand{\BPP}{\turingclass{BPP}}     % probabilistic classes
+\newcommand{\RP}{\turingclass{RP}}
+\newcommand{\coRP}{\turingclass{coRP}}
+\newcommand{\ZPP}{\turingclass{ZPP}}
+%%
+\newcommand{\ETIME}{\turingclass{E}} % exponential classes
+\newcommand{\EE}{\turingclass{EE}}
+\newcommand{\EEE}{\turingclass{EEE}}
+\newcommand{\NE}{\turingclass{NE}}
+\newcommand{\NEE}{\turingclass{NEE}}
+\newcommand{\NEEE}{\turingclass{NEEE}}
+\newcommand{\EXP}{\turingclass{EXP}}
+\newcommand{\NEXP}{\turingclass{NEXP}}
+
+%% proof systems
+%%
+\newcommand{\Res}{\proofsystem{Res}} % resolution
+\newcommand{\Resk}[1]{\proofsystem{Res}(#1)\xspace} % res(k)
+%
+\newcommand{\Frege}{\proofsystem{F}} % frege
+\newcommand{\EFrege}{\proofsystem{EF}} % extended frege
+%
+\newcommand{\PC}{\proofsystem{Pc}} % polynomial calculus
+\newcommand{\PCR}{\proofsystem{Pcr}} % polynomial calculus with resolution
+
+%% logical theories
+%%
+\newcommand{\PV}{\logicaltheory{PV}}
+\newcommand{\VP}{\logicaltheory{VP}}
+\newcommand{\Vzero}{\logicaltheory{V^0}}
+
+
+% ----------------------- COMPUTATIONAL PROBLEM -----------------------
+\newcommand{\weightedCNFSAT}{\computationalproblem{Weighted CNF Sat}}
+\newcommand{\weighteddCNFSAT}{\computationalproblem{Weighted $d$-CNF Sat}}
+
+\newcommand{\QBF}{\computationalproblem{QBF}}
+\newcommand{\SAT}{\computationalproblem{Sat}}
+\newcommand{\UNSAT}{\computationalproblem{Unsat}}
+\newcommand{\TAUT}{\computationalproblem{Taut}}
+
+\newcommand{\PIT}{\computationalproblem{Pit}}
+\newcommand{\PRIMES}{\computationalproblem{PRIMES}}
+
+\newcommand{\GI}{\computationalproblem{GI}}
+\newcommand{\GA}{\computationalproblem{GA}}
+\newcommand{\GraphIso}{\computationalproblem{Graph Isomorphism}}
+\newcommand{\GraphAut}{\computationalproblem{Graph Automorphism}}
+
+\newcommand{\PCon}{\computationalproblem{PCon}}
+
+
+% --------------------------- ALGORITHMS ------------------------------
+
+\newcommand{\Clique}{\formula{Clique}}
+\newcommand{\Int}{\formula{Int}}
+
+\newcommand{\RFN}{\formula{RFN}}
+\newcommand{\Prf}{\formula{Prf}}
+\newcommand{\Taut}{\formula{Taut}}
+\newcommand{\Correct}{\formula{Correct}}
+\newcommand{\correct}{\formula{corr}}
+\newcommand{\ps}{\formula{PS}}
+\newcommand{\rng}{\formula{rng}}
+\newcommand{\opt}{\formula{opt}}
+\newcommand{\fand}{\formula{AND}}
+\newcommand{\num}{\formula{Num}}
+\newcommand{\easy}{\formula{easy}}
+\newcommand{\CompG}{\formula{w_G}}
+\newcommand{\fpt}{\ensuremath{\leq_{\formula{fpt}}}}
+\newcommand{\PHP}{\formula{PHP}}
+\newcommand{\Pred}{\formula{Pred}}
+\newcommand{\LOP}{\formula{LOP}}
+\newcommand{\OP}{\formula{OP}}
+\newcommand{\PPred}{\formula{PPred}}
+\newcommand{\score}{\formula{sc}}
+\newcommand{\dom}{\formula{dom}}
+
+\newcommand{\old}{\formula{old}}
+\newcommand{\CNF}{\formula{CNF}}
+
+%\DeclareMathOperator*{\dom}{dom}
+%\DeclareMathOperator*{\rng}{rng}
+
+\newcommand{\ndom}[1]{\overline{\dom}#1}
+\newcommand{\nrng}[1]{\overline{\rng}#1}
+
+%%% Local Variables:
+%%% mode: latex
+%%% End:
