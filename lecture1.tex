@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-14, 21:14 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-14, 23:35 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -287,6 +287,14 @@ following form.
 It is pretty clear that integer programs are in $ \NP $, and that they
 are expressive enough to encode $\NP$-complete problems, thus Integer
 programming is $\NP$-complete.
+%
+With a \introduceterm{linear relaxation} we trade the expressibility
+of the program with and efficient solver. We drop all non-linear
+constraints and we substitute them with fractional ones (\eg, $
+x_{i}\in \ZZ $ becomes $ x_{i}\in\RR $ and $ x_{i} \in\{0,1\} $
+becomes $ 0\leq x_{i}\leq 1 $).
+
+
 
 \section{Integrality gaps}
 
