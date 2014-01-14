@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-10, 19:03 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-14, 21:14 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -93,16 +93,16 @@ forms\footnote{While we will discuss the left form more often, the
 \begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
-  \minimize c^{T}x \\
+  \maximize c^{T}x\\
   \subjectto Ax \leq b
 \end{alignat*}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-\begin{alignat*}{2}
-  \minimize c^{T}x \\
+\begin{alignat}{2}\label{eq:lpforms}
+  \maximize c^{T}x \notag\\
   \subjectto Ax = b\\
-  & x \geq 0
-\end{alignat*}
+  & x \geq 0\notag
+\end{alignat}
 \end{minipage}
 \end{figure}
 
@@ -110,7 +110,7 @@ forms\footnote{While we will discuss the left form more often, the
 In order to optimize a linear program it is of course necessary to
 understand is the program is \stressterm{feasible}, \ie if the is a
 value of $ x $ that satisfies, for example the linear inequalities $Ax
-\leq b$. Thus linear programs describe both \stressterm{decision} and
+\leq b$. Thus linear programs can describe both \stressterm{decision} and
 \stressterm{optimization} problems.
 
 The striking feature of linear program is the possibility to
@@ -131,10 +131,10 @@ several ways to state Farkas Lemma.
   % how large and how hard to find is a proof that a set of constraints
   % is unsatisfiable of that a function cannot be optimized pass a
   % certain threshold.
-  Given two inequalities $ a^{T}x \leq b $ and $c^{T}x \leq d$
-  then any positive combination is a semantic consequence. Thus we can
-  design a proof system for sets of linear inequalities with the
-  following inference rule,
+  Given two inequalities $ a^{T}x \leq b $ and $c^{T}x \leq d$ then
+  any positive combination is a semantic consequence. Thus we can
+  design a proof system $\proofsystem{LP}$ for sets of linear
+  inequalities with the following inference rule,
   \begin{equation*}
     \frac{a^{T}x \leq b \quad c^{T}x \leq d}{(\alpha a + \gamma c)x
       \leq (\alpha b + \gamma d)x  }
@@ -144,23 +144,120 @@ several ways to state Farkas Lemma.
   set of unsatisfiable linear inequalities.
 \end{marginfigure}
 
+If the linear program is used for optimization, it is interesting that
+we can take positive combinations to prove bounds on the function to
+be optimized. Start with the \introduceterm{primal} program that asks to minimize $c^{T}x$
+under constraints $ Ax \leq b, x\geq 0$ (notice that we highlighted
+the non-negativity constraints). Now consider a non negative vector $
+y^{T}$ such that $ y^{T}A \geq c^{T}$ and such that $ y^{T}b = v$. For
+every feasible solution $ x $ of the primal program it holds that 
+\begin{equation}
+  c^{T} x \leq y^{T}Ax \leq y^{T} b\tag{weak duality}\label{eq:weak_duality}
+\end{equation}
+Thus the solution $ y\geq 0 $ witnesses the \stressterm{upper bound} $
+b^{T}y $ to the maximum achievable in the primal
+program. \stressterm{How tight is such upper bound?} We can answer
+that by looking at \introduceterm{dual}
+program~\eqref{eq:dualprogram}. Notice also that the dual
+of~\eqref{eq:dualprogram} is~\eqref{eq:primalprogram}.
+
+
+\begin{figure}
+\begin{minipage}[t]{0.5\textwidth}%
+\begin{alignat}{2}
+  \maximize c^{T}x\notag\\
+\label{eq:primalprogram}\subjectto Ax \leq b \tag{P}\\
+  x\geq 0 \notag
+\end{alignat}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}%
+\begin{alignat}{2}
+  \minimize b^{T}y \notag\\
+  \label{eq:dualprogram}  \subjectto A^{T}y \leq c \tag{D}\\
+  & y \geq 0\notag
+\end{alignat}
+\end{minipage}
+\end{figure}
+
+We saw that Farkas Lemma gives a complete solution of the decision
+case. From the same Farkas Lemma it is possible to prove the
+\introduceterm{duality theorem}, which basically claims that there are
+solutions of the dual program that witness tight bounds on the primal
+program (and viceversa).
+
+\begin{marginfigure}
+  As in the case of Farkas Lemma,
+  Theorem claims that proof system $\proofsystem{LP}$ is complete in
+  the sense that can prove all valid linear inequalities.
+\end{marginfigure}
+
+\begin{theorem}[Duality theorem]
+  Consider the linear programs~\eqref{eq:primalprogram}
+  and~\eqref{eq:dualprogram}, exactly one of the following happens
+  \begin{itemize}
+    \item Neither~\eqref{eq:primalprogram} nor~\eqref{eq:dualprogram} have a
+    feasible solution.
+    \item Program~\eqref{eq:primalprogram} has solutions with
+    arbitrarily large value, and program~\eqref{eq:dualprogram} is
+    unfeasible.
+    \item Program~\eqref{eq:dualprogram} has solutions with
+    arbitrarily small value, and program~\eqref{eq:primalprogram} is
+    unfeasible.
+    \item Both~\eqref{eq:primalprogram} and~\eqref{eq:dualprogram}
+    have optimal solutions. Let $ x^{*}$ and $ y^{*}$ such solutions, then
+    \begin{equation*}
+      c^{T} x^{*}=b^{T}y^{*}.
+    \end{equation*}
+  \end{itemize}
+\end{theorem}
+
+\section{Complexity of Linear programming}
+
 Deciding the satisfiability of a set of linear inequalities is clearly
-in \NP\@.  Farkas Lemma shows that also deciding its unsatisfiability
-is in \NP, thus the problem is in $ \NP \cap \coNP $. But it is
-actually well known that there are efficient algorithms for this problem.
+in \NP\@.  Farkas Lemma and Duality Theorem shows that also deciding
+its unsatisfiability is in \NP, thus the problem is in $ \NP \cap
+\coNP $. But actually there are well known efficient algorithms for
+this problem. All of them are based the geometric interpretation of
+the system of linear inequalities as a convex polyhedron. 
 \begin{itemize}
   \item The \introduceterm{simplex method} is the first algorithm
   invented for linear programming and has been invented by (Dantzig,
   1947). It does not run in polynomial time, but it is quite fast in
-  practice.
+  practice. The idea is to walk on the edges of the polyhedron induced
+  by the linear program, in order to reach the vertex with optimal
+  value.
   \item The first polynomial time algorithm for linear programming is
-  based on the \introduceterm{ellipsoid method}. Despite being
-  polynomial time, the simplex is much faster in practice.
-
+  based on the \introduceterm{ellipsoid method} (Khachyian, 1979). The
+  simplex is much faster in practice, but of course the ellipsoid has
+  great theoretical value, and runs under more general conditions. For
+  example super polynomial size linear programs, assuming the program
+  has an efficient \introduceterm{separator}\footnote{A separator is
+    an oracle that, given a point $x$ outside of the set of feasible
+    solutions $F$, outputs an hyperplan separating $ p$ from $ F$.}.
+  The algorithms assumes that the set of feasible solutions is in a
+  0-centered ball of large enough radius, and completely
+  contains some ball of range $ \epsilon $.
+  %
+  The algorithm check whether the center of the ball is feasible. If
+  it is not then the separator oracle suggest which half of the ball
+  to save and which to forget. A new ellipsoid of smaller volume
+  ``encircles'' the useful half.  The idea is to encircle the set of
+  feasible solutions with smaller and smaller ellipsoids, until either
+  the center of the one ellipsoid is feasible or the ellipsoid is so
+  small that cannot contain a ball of range $ \epsilon $.
+  
+  \item Since the ellipsoid method is so inefficient in practice, the
+  simplex is usually preferred. The advent of \introduceterm{interior
+    point methods} changed the scenario, providing a family of
+  polynomial time algorithms which are fast in practice. The first
+  member of such family is due to Karmakar (1984): his algorithm is
+  based on the idea of exploring the space of solution walking through
+  the interior of the polytope. The original algorithm was not faster
+  than the simplex method but nowadays there are competitive
+  improvements and variants. We must observe that interior point
+  methods were already used in the context of non-linear programming
+  way before than Karmakar algorithm.
 \end{itemize}
-
-
-
 
 \begin{marginfigure}
 \begin{example}
@@ -175,6 +272,21 @@ actually well known that there are efficient algorithms for this problem.
 
 \section{Integer programs and Linear relaxations}
 
+Most problems in computer science require solutions that are discrete,
+integer or $ \{0,1\} $. It is not possible express such constraints as
+linear inequalities, so we need a new formalism called
+\introduceterm{integer program}. An integer program may have the
+following form.
+
+\begin{alignat*}{2}
+  \maximize  c^{T}x\\
+  \subjectto Ax \leq b\\
+  & x_{i} \in\{0,1\} \text{\ or\ } x_{i} \in \ZZ
+\end{alignat*}
+
+It is pretty clear that integer programs are in $ \NP $, and that they
+are expressive enough to encode $\NP$-complete problems, thus Integer
+programming is $\NP$-complete.
 
 \section{Integrality gaps}
 
