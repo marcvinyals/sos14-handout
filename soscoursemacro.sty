@@ -2,7 +2,7 @@
 %% soscourse.sty -- package setting up the lecture notes environment 
 %%
 %% Copyright (C) 2011, 2012, 2013, 2014 by Massimo Lauria (lauria@kth.se)
-%% Time-stamp: "2014-01-10, 15:53 (CET) Massimo Lauria"
+%% Time-stamp: "2014-01-15, 18:40 (CET) Massimo Lauria"
 %%
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
@@ -42,6 +42,11 @@
 \newcommand{\varboolean}[1]{\vardomain{#1}{\{0,1\}}}
 \newcommand{\varpositive}[1]{\ensuremath{#1\geq 0}}
 \DeclareDocumentCommand{\varbounded}{O{0} O{1} m}{\ensuremath{#1\leq #3 \leq #2}}
+
+\newcommand{\sOPT}{\mathsf{OPT}}
+\newcommand{\sFRAC}{\mathsf{FRAC}}
+\newcommand{\sROUND}{\mathsf{ROUND}}
+\newcommand{\sRELAX}{\mathsf{RELAX}}
 
 %% mathematical objects
 %%
@@ -185,6 +190,8 @@
 
 \newcommand{\ndom}[1]{\overline{\dom}#1}
 \newcommand{\nrng}[1]{\overline{\rng}#1}
+
+\newcommand{\functionsignature}[3]{#1:#2\:\longrightarrow #3}
 
 %%% Local Variables:
 %%% mode: latex

@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-14, 23:35 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-15, 19:06 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -167,14 +167,14 @@ of~\eqref{eq:dualprogram} is~\eqref{eq:primalprogram}.
 \begin{alignat}{2}
   \maximize c^{T}x\notag\\
 \label{eq:primalprogram}\subjectto Ax \leq b \tag{P}\\
-  x\geq 0 \notag
+  \varpositive{x} \notag
 \end{alignat}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}%
 \begin{alignat}{2}
   \minimize b^{T}y \notag\\
   \label{eq:dualprogram}  \subjectto A^{T}y \leq c \tag{D}\\
-  & y \geq 0\notag
+  & \varpositive{y}\notag
 \end{alignat}
 \end{minipage}
 \end{figure}
@@ -259,17 +259,6 @@ the system of linear inequalities as a convex polyhedron.
   way before than Karmakar algorithm.
 \end{itemize}
 
-\begin{marginfigure}
-\begin{example}
-  Consider the problem of finding a perfect matching in the graph,
-  which is expressed by the following program.
-  \begin{alignat*}{2}
-    e_{11} + e_{12} & \leq 1\\
-    e_{22} + e_{}
-  \end{alignat*}
-\end{example}
-\end{marginfigure}
-
 \section{Integer programs and Linear relaxations}
 
 Most problems in computer science require solutions that are discrete,
@@ -281,7 +270,7 @@ following form.
 \begin{alignat*}{2}
   \maximize  c^{T}x\\
   \subjectto Ax \leq b\\
-  & x_{i} \in\{0,1\} \text{\ or\ } x_{i} \in \ZZ
+  & \varboolean{x_{i}}\text{\ or\ }\vardomain{x_{i}}{\ZZ} 
 \end{alignat*}
 
 It is pretty clear that integer programs are in $ \NP $, and that they
@@ -294,10 +283,90 @@ constraints and we substitute them with fractional ones (\eg, $
 x_{i}\in \ZZ $ becomes $ x_{i}\in\RR $ and $ x_{i} \in\{0,1\} $
 becomes $ 0\leq x_{i}\leq 1 $).
 
+\begin{example}[\introduceterm{Maximum weighted bipartite matching}]%
+  \label{eg:bipartitematching}
+  Consider the bipartite graph $G=(L,R,E)$, where $L$ and $R$ are two
+  disjoint sets of vertices and $ E\subseteq L\times R $, and consider
+  a weight function $\functionsignature{w}{E}{\RR} $.  The Maximum
+  weighted bipartite matching problem looks for the largest matching
+  in the bipartite graph, and we can encoding as follows.
+  \begin{alignat*}{3}
+    \maximize \sum_{e\in E} w(e) x_{e}\\
+    \subjectto \sum_{e \ni v} x_{e} =1 \quad \text{for each $v\in L\cup R$}\\
+    & x_{e} \in\{0,1\}
+  \end{alignat*}
+  This is one of the few cases for which the integer program and its linear
+  relaxation have the \stressterm{same optimum value}.
+\end{example}
+
+The reason for the tightness of the linear relaxation of
+Example~\ref{eg:bipartitematching} is in the following property of the
+matrix of constraints.
+
+\begin{marginfigure}
+  The criteria of total unimodularity given in Definition~\ref{def:tum} is
+  not efficiently verifiable. Instead there are other sufficient (but
+  maybe not necessary) criteria which can be verified in polynomial time.
+\end{marginfigure}
+
+\begin{definition}\label{def:tum}
+  A matrix $ M $ is called \introduceterm{totally unimodular} if every
+  square submatrix of $ M $ has determinant in $\{-1,0,1\}$.
+\end{definition}
+
+\begin{theorem}
+  Consider the polyhedron $ P=\{x | Ax=b, x\geq 0\}$.  If $ A $ is
+  totally unimodular and $ b $ is integer then the vertices of $ P$
+  are all integers.
+\end{theorem}
+
+The previous theorem implies that an integer program with total
+unimodular matrix of constrains can be solved efficiently by solving
+its linear relaxation.
 
 
-\section{Integrality gaps}
+\section{Integrality gaps and Rounding}
 
+In the case of Example~\ref{eg:bipartitematching}, we saw that the
+integer program and its linear relaxation have the same optimum, but
+this is not necessarily the same. Actually the gap between the integer
+and the fractional optimum can be as large as possible.\footnote{%
+  Consider the problem of computing the maximum independent set of a
+  graph $ G=(V,E) $. In this case we want to maximize the objective
+  function $ \sum_{v\in V} x_{v} $ under the assumption that $
+  x_{u}+x_{v}\leq 1 $ for every pair $ \{u,v\}\in E$ for variables $
+  \varboolean{x_{v}}$. If we consider the \stressterm{complete graph}
+  then the maximum independent set has size at most 1, but the linear
+  relaxation has a solution of value $ |V|/2 $, which is the vector $
+  (\frac{1}{2},\frac{1}{2},\ldots,\frac{1}{2})$.}
+
+For an optimization problem we may consider $\sOPT$, the integer
+optimum, and $ \sFRAC$, which is the optimum of the relaxation. A
+strategy to solve integer program is to relax it in some way, and to
+\introduceterm{round its fractional solution} in order to get an
+integer feasible solution. The rounding techniques is strongly
+dependent on the particular optimization problem and it is out of the
+scope of this lecture.
+%
+Let $ \sROUND $ denotes such solution, then for (say) a minimization problem
+we have
+\begin{equation}
+  \label{eq:round_opt_frac}
+  \sFRAC \leq \sOPT \leq \sROUND
+\end{equation}
+
+\begin{definition}
+  Given an integer program and its relaxation, the ratio 
+\begin{equation}
+  \frac{\sOPT}{\sFRAC}
+\end{equation}
+is the \introduceterm{integrality gap} of the relaxation.
+\end{definition}
+
+Very often the analysis of an approximation algorithm is achieved by
+determining the ratio between the fractional optimum and its rounded
+value, $ \frac{\sROUND}{\sFRAC} $. The latter is bounded from below by
+the integrality gap, 
 
 \section{Improving the linear relaxations}
 

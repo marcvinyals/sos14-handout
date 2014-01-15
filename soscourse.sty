@@ -2,7 +2,7 @@
 %% soscourse.sty -- package setting up the lecture notes environment 
 %%
 %% Copyright (C) 2011, 2012, 2013, 2014 by Massimo Lauria (lauria@kth.se)
-%% Time-stamp: "2014-01-10, 15:46 (CET) Massimo Lauria"
+%% Time-stamp: "2014-01-15, 16:59 (CET) Massimo Lauria"
 %%
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
@@ -40,7 +40,6 @@
 \newtheorem{claim}[theorem]{Claim}%
 \newtheorem{corollary}[theorem]{Corollary}%
 \newtheorem{definition}[theorem]{Definition}%
-\newtheorem{example}[theorem]{Example}%
 \newtheorem{exercise}[theorem]{Exercise}%
 \newtheorem{fact}[theorem]{Fact}%
 \newtheorem{lemma}[theorem]{Lemma}%
@@ -54,7 +53,6 @@
 \newtheorem*{claim*}{Claim}%
 \newtheorem*{corollary*}{Corollary}%
 \newtheorem*{definition*}{Definition}%
-\newtheorem*{example*}{Example}%
 \newtheorem*{exercise*}{Exercise}%
 \newtheorem*{fact*}{Fact}%
 \newtheorem*{lemma*}{Lemma}%
@@ -67,7 +65,18 @@
 \newtheorem*{solution*}{Solution}%
 \newtheorem*{theorem*}{Theorem}%
 
-
+\newtheoremstyle{examplestyle}% name of the style to be used
+  {\topsep}% measure of space to leave above the theorem. E.g.: 3pt
+  {\topsep}% measure of space to leave below the theorem. E.g.: 3pt
+  {\normalfont}% name of font to use in the body of the theorem
+  {0pt}% measure of space to indent
+  {\bfseries}% name of head font
+  {. }% punctuation between head and body
+  {5pt plus 1pt minus 1pt}% space after theorem head
+  {}% Manually specify head
+\theoremstyle{examplestyle}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{example*}{Example}
 
 %% My own macros
 \usepackage{soscoursemacro}
