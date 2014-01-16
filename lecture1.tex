@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-16, 18:04 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-16, 22:33 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -414,15 +414,111 @@ et.al.\cite{fiorini2007linear} proved that there is no polynomial size
 extended formulation for the canonical encoding of
 \introduceterm{traveller salesman problem}.
 
-
-
-In this course we deal with standard systematic way to improve the
-relaxation of the linear program. The We now deal with two ways of
-improving the linear relaxation systematically.
+In this course we deal with systematic ways to improve the relaxation
+of the integer programs. In this lecture we are going to see some
+techniques.
 
 \section{\Lovasz-\Schrijver\ hierarchy}
 
-\subsection{Rank lower bounds}
+Let us just focus on feasibility problems (no function to be
+optimized). Then the point is to get close to a representation of $
+\sol{P}_{I} $ in order to determine whether it is empty or not. We now
+that if we could efficiently decide feasibility under
+\introduceterm{quadratic inequalities} we could easily solve integer
+program over boolean variables, since $ x_{i}\in\{0,1\} $ is equivalent
+to $ x^{2}_{i} - x_{i} =0 $. 
+
+The \Lovasz-\Schrijver\cite{lovasz1991cones} linear relaxation is
+based on the idea of using quadratic inequalities to determine new
+\stressterm{linear inequalities} which are valid for the integer
+solutions but not for the fractional ones. Once the new linear
+inequalities are in place, the quadratic inequalities are forgotten.
+The resulting linear program is tighter than the initial one and we
+can optimized against it.
+
+The simplest way to describe \Lovasz-\Schrijver integer programming
+relaxation is to interpret it as a proof system. Start with its linear
+relaxation $ Ax \geq b, 0 \leq x \leq 1$, and call $ \sol{P} $ the set
+of solutions of such inequalities\footnote{We focus on integer
+  programs with boolean solutions here, thus the presence of
+  inequalities $ 0 \leq x \leq 1 $ in the relaxation by
+  default. Thus we can always assume we deal with polytopes here.}.
+
+Every inequality $ \sum_{j}a_{i,j}x_{j} - b_{i} \leq 0$ is an axiom of
+the proof system, together with axioms $ - x_{i} \leq 0$, $ x_{i} - 1
+\leq 0$ and $ x_{i} - x^{2}_{i} \leq 0$.  The system allows to multiply a
+linear inequality by a variable or by the complement of a variable
+\begin{equation}\label{eq:lsmultiplication}
+\AxiomC{$\sum_{j}c_{j} x_{j} - d \leq 0$}
+\UnaryInfC{$ \sum_{j}c_{j}(x_{j}x_{i}) - d x_{i} \leq 0$}
+\DisplayProof
+\qquad
+\AxiomC{$ \sum_{j}c_{j} x_{j} - d \leq 0$}
+\UnaryInfC{$ \sum_{j}c_{j}x_{j}(1-x_{i}) - d (1-x_{i}) \leq 0$}
+\DisplayProof,
+\end{equation}
+
+and to infer positive combinations of known inequalities
+
+\begin{figure*}
+\begin{equation}
+\RightLabel{\ assuming $\alpha, \beta \geq 0$.}
+\AxiomC{$c+\sum_{j}c_{j} x_{j} + \sum_{\{i,j\}} c_{\{i,j\}}x_{i}x_{j}\leq 0$}
+\AxiomC{$d+\sum_{j}d_{j} x_{j} + \sum_{\{i,j\}} d_{\{i,j\}}x_{i}x_{j}\leq 0$}
+\BinaryInfC{%
+$\alpha (c+\sum_{j}c_{j} x_{j} + \sum_{\{i,j\}} c_{\{i,j\}}x_{i}x_{j})+
+\beta (d+\sum_{j}d_{j} x_{j} + \sum_{\{i,j\}} d_{\{i,j\}}x_{i}x_{j}) \leq 0$}
+\DisplayProof
+\end{equation}
+\end{figure*}
+
+Quadratic inequalities can be used to derive new linear inequalities,
+which in turn can be multiplied again. We will keep track on how many
+multiplication steps are needed to derive a particular
+inequality. This is the \introduceterm{rank of an inequality} in
+\Lovasz-\Schrijver.
+
+\begin{definition}[Rank of \Lovasz-\Schrijver]
+  Consider a derivation of an inequality in \Lovasz-\Schrijver. The
+  \introduceterm{rank of derivation} of an axiom is $ 0 $; the rank of
+  a multiplication step is one plus the rank of the premise; the rank
+  of a positive sum is the maximum among the rank of the premises.
+  The \introduceterm{rank of an inequality} is the smallest among the
+  rank all possible derivations of that inequality. The
+  \introduceterm{rank of a point} is the smallest among the rank of
+  all linear inequalities that are falsified by that point.   
+\end{definition}
+
+The set of solution of all linear inequalities of rank $ 0 $ is
+denoted as $ \sol{P}_{0} $, and is exactly equal to $ \sol{P} $. The
+polytope characterized by the points compatible with all linear
+inequalities of rank $ t $ is denoted as $ \sol{P}_{t} $. It is
+important to stress that while derivations are allowed to use
+quadratic inequalities, the polytopes are just defined by the linear
+ones. It holds that
+
+\begin{equation}
+  \sol{P}=\sol{P_{0}} \supseteq \sol{P}_{1} \subseteq \cdots
+  \supseteq \sol{P}_{n-1} \subseteq \sol{P}_{n}=\sol{P}_{I}.
+\end{equation}
+
+where the last equation is proved in\cite{lovasz1991cones}.
+
+\begin{theorem}[\Lovasz-\Schrijver, 1991]
+  The polyhedron $ \sol{P}_{n} $ is equal to the convex hull of
+  the integer points  $ \sol{P}_{I} $
+\end{theorem}
+
+There is a geometric interpretation of the \Lovasz-\Schrijver proof system
+(indeed that would be the original definition). Given the a polytope $
+\sol{P} $ defined on points in $ \RR^{n} $. We consider matrices over
+$ \RR^{(n+1)\times(n+1)} $ with row and column indices going from $ 0
+$ to $ n $, which must satisfy the following inequalities: $ x_{i0} =
+x_{0i} = x_{ii} $ for all $ i \in [n] $; $ x_{ij}=x_{ji} $ for
+every $ i,j \in [n]$; if $ a_{i} $
+
+
+
 
 \section{Sherali-Adams hierarchy}
 
@@ -430,7 +526,7 @@ improving the linear relaxation systematically.
 
 
 % ------------------------- EPILOGUE ------------------------------
-\bibliography{theoryofcomputing,soscourse}
+%\bibliography{theoryofcomputing,soscourse}
 \bibliographystyle{alpha}
 
 \end{document} 
