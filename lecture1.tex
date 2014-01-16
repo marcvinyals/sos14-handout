@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-15, 19:06 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-16, 18:04 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -370,6 +370,55 @@ the integrality gap,
 
 \section{Improving the linear relaxations}
 
+We discussed that the gap between the relaxed program and the integer
+one is a key concept correlated with approximation algorithms and in
+particular with their analysis. In order to get better relaxation we
+can add \stressterm{additional inequalities} to the initial
+program. Such inequalities are valid for integer solutions but still
+shave off some of the fractional solutions.
+
+Given an arbitrary linear program let $ \sol{P}$ be the convex hull of
+its feasible solutions, and $ \sol{P}_{I} $ the convex hull of the
+integer solutions. Of course $ \sol{P}_{I}\subseteq\sol{P} $. The
+idea is to find a way to efficiently identify a convex set $ E $ such
+that $ \sol{P_{I}}\subseteq \sol{E} \subseteq\sol{P}_{I} $. 
+If the gap between the optimal solution in $ \sol{E} $
+and the $ \sol{P}_{I} $ is strictly smaller than the integrality gap of the
+original linear program, that would give a better handle to solve the
+combinatorial problem. Even better if $ \sol{E}=\sol{P}_{I} $: then
+the problem is solved exactly.
+
+If $ \PTIME\neq\NP $ there is not general way to obtain $\sol{P}_{I} $
+by adding only a polynomial number of linear inequalities.
+
+\introduceterm{Cutting planes:} was introduced by
+Gomory\cite{gomory1958outline}. His original way to cut fractional
+solution is to notice that for an inequality $ a^{T}x \leq v $
+where $ a $ is an integer vector, then 
+\begin{equation}
+  a^{T}x \leq \lfloor b \rfloor
+\end{equation}
+is valid over integer solutions (but may cut some fractional
+ones). This method has been employed effectively in integer
+programming packages.
+
+\introduceterm{Extended formulation}: the idea is to add new variables
+and write a linear program on them in such a way that the projection
+of the extended polytope $\sol{P}_{E}$ on the original variables is
+closer or even equal to $ \sol{P}_{I} $.
+
+Such extended formulation is ``problem dependent'' and there are very
+nice connections between the number of inequalities needed to capture
+$ \sol{P}_{I} $ and communication complexity. Fiorini
+et.al.\cite{fiorini2007linear} proved that there is no polynomial size
+extended formulation for the canonical encoding of
+\introduceterm{traveller salesman problem}.
+
+
+
+In this course we deal with standard systematic way to improve the
+relaxation of the linear program. The We now deal with two ways of
+improving the linear relaxation systematically.
 
 \section{\Lovasz-\Schrijver\ hierarchy}
 

@@ -100,7 +100,30 @@ The notation $ A \succeq 0 $ means that $ A $ is
 \introduceterm{positive semidefinite}, the notation $ A \succ 0 $ that
 $ A $ is \introduceterm{positive definite}.
 
+\section{Linear programs}
 
+We denote linear programs in one of this fashion.
+
+\begin{figure}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize c^{T}x\\
+  \subjectto Ax \leq b
+\end{alignat*}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize c^{T}x \\
+  \subjectto Ax = b\\
+  & x \geq 0
+\end{alignat*}
+\end{minipage}
+\end{figure}
+
+For a linear program such that we denote as $ \sol{P} $ the set of
+feasible solution for that program, and as $ \sol{P}_{I} $ the convex
+hull of set of integer feasible solutions of the same program, \ie, $
+\sol{P}_{I} = \mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
 
 % ------------------------- EPILOGUE ------------------------------
 % \bibliography{theoryofcomputing,soscourse}
