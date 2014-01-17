@@ -125,6 +125,20 @@ feasible solution for that program, and as $ \sol{P}_{I} $ the convex
 hull of set of integer feasible solutions of the same program, \ie, $
 \sol{P}_{I} = \mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
 
+\section{Other notation}
+
+For $ n\leq 0 $ and $ k\leq n $,
+\begin{equation*}
+  \binom{n}{\leq k} = \sum^{k}_{i=0}\binom{n}{i} 
+\end{equation*}
+
+For a set $ S $ and integer $k$,
+\begin{equation*}
+  \binom{S}{k}= \{ T \subseteq S, |T|=k  \} \qquad \binom{S}{\leq k} =
+  \bigcup^{k}_{i=0} \binom{S}{i}.
+\end{equation*}
+
+
 % ------------------------- EPILOGUE ------------------------------
 % \bibliography{theoryofcomputing,soscourse}
 % \bibliographystyle{alpha}

@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-16, 22:33 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-17, 05:17 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -486,7 +486,8 @@ inequality. This is the \introduceterm{rank of an inequality} in
   The \introduceterm{rank of an inequality} is the smallest among the
   rank all possible derivations of that inequality. The
   \introduceterm{rank of a point} is the smallest among the rank of
-  all linear inequalities that are falsified by that point.   
+  all linear inequalities that are falsified by that point. The rank
+  of the empty polytope is the rank of the inequality $ 1 \leq 0 $.
 \end{definition}
 
 The set of solution of all linear inequalities of rank $ 0 $ is
@@ -509,20 +510,153 @@ where the last equation is proved in\cite{lovasz1991cones}.
   the integer points  $ \sol{P}_{I} $
 \end{theorem}
 
-There is a geometric interpretation of the \Lovasz-\Schrijver proof system
-(indeed that would be the original definition). Given the a polytope $
-\sol{P} $ defined on points in $ \RR^{n} $. We consider matrices over
-$ \RR^{(n+1)\times(n+1)} $ with row and column indices going from $ 0
-$ to $ n $, which must satisfy the following inequalities: $ x_{i0} =
-x_{0i} = x_{ii} $ for all $ i \in [n] $; $ x_{ij}=x_{ji} $ for
-every $ i,j \in [n]$; if $ a_{i} $
+The original and most popular definition of \Lovasz-\Schrijver
+relaxation is by a geometric interpretation, and it is also the original definition. Given the a
+polytope $ \sol{P} $ defined on points in $ \RR^{n} $. We consider a
+matrix variable $X$ over $ \RR^{(n+1)\times(n+1)} $ with row and
+column indices going from $ 0 $ to $ n $, which must satisfy the
+following inequalities: $ x_{i0} = x_{0i} = x_{ii} $ for all $ i \in
+[n] $; $ x_{ij}=x_{ji} $ for every $ i,j \in [n]$; if $
+\sum_{j}a_{j}x_{j} - b \leq 0 $ then $ X $ must satisfy 
+\begin{equation*}
+  \sum_{j}a_{j}x_{ij} - b_{x_{i0}} \leq 0
+\end{equation*}
+for every $ i \in \{0\}\cup[n]$. Let's call $ \sol{M} $ the set of
+points satisfying these inequalities.
 
+This matrix satisfies every inequality of rank 1 derived in
+\Lovasz-\Schrijver from $\sol{P}$, if the quadratic terms $ x_{i}x_{j}
+$ are mapped to $ x_{ij} $, if $ x_{i} $ are mapped to $ x_{0i} $ and
+each degree zero term is multiplied by $ x_{00} $. We
+define\footnote{this is often called the
+  \introduceterm{\Lovasz-\Schrijver operator}.}  $ N(\sol{P}) $ as the
+projection over the variable $ x_{00},x_{01},\ldots, x_{0n} $, with $
+x_{00}=1 $. So it is clear that $ N(\sol{P})=\sol{P}_{1} $ and that $
+N(\sol{P}_{t})=\sol{P}_{t+1} $. Notation $ N^{t}(\sol{P}) $ is the $ t
+$th iteration of the operaton $ N $ over $ \sol{P} $.
 
+\Lovasz-\Schrijver is a so called \introduceterm{Lift and project}
+method to improve on the linear relaxation. The reason for this name
+is clear: first the linear program is augmented to $ \approx n^{2} $
+variables, and then is projected again to the original
+variables. Moving to the larger space allows to get tighter
+inequalities in the original space.
 
+\begin{theorem}\cite{lovasz1991cones}
+  Let be $\sol{P}$ a polytope described by $ n^{O(1)} $
+  inequalities. It is possible to optimize any linear function over $
+  \sol{P}_{t} $ in time $ n^{O(t)} $.
+\end{theorem}
+\begin{proof}[Proof Sketch]
+  In order to optimize over a linear program using the ellipsoid
+  algorithm it is sufficient to have a weak separator
+  oracle. In\cite{lovasz1991cones} they show that a weak separator
+  oracle for any polytope $ \sol{Q} $ gives a weak separator oracle
+  for $ N(\sol{P}) $ which works in polynomial time.
+\end{proof}
 
 \section{Sherali-Adams hierarchy}
 
-\subsection{Rank lower bounds}
+Here we start with a set of polynomial inequalities in variables $
+x_{1}\ldots x_{n} $ over $ \{0,1\} $.
+\begin{equation}
+  p_{1}\geq 0 , p_{2}\geq 0, \ldots , p_{m} \geq 0. 
+\end{equation}
+
+A Sherali-Adams proof of a polynomial inequality $p\leq 0$ over variables is an
+equation of the form
+\begin{equation}
+ \label{eq:sa_inference}
+ \sum_{1\leq l\leq m} p_{l} g_{l} + \sum_{i} (x^{2}_{i} -x_{i}) h_{i}
+ + g_{0}= p
+\end{equation}
+
+where each $ g_{l} = \alpha_{l} \prod_{i\in I_{l}} x_{i} \prod_{j \in
+  J_{l}}(1-x_{j}) $ with $ \alpha_{l}\geq 0 $ and $ I_{l} \cap
+J_{l}=\emptyset $; and each $ h_{i} $ is an arbitrary polynomial.
+
+The \introduceterm{rank of the Sherali-Adams}%
+\footnote{there are other definitions of rank in literature. For
+  example\cite{laurent01} define the Sherali-Adams rank as the degree
+  of the polynomials $ g_{l} $. In this way you get than Sherali-Adams
+rank matches \Lovasz-\Schrijver rank.} 
+%
+proof is equal the the
+maximum degree among the polynomials $ g_{0} $, $ g_{l}p_{l} $, $
+h_{i}(x^{2}_{i}- x_{i}) $. A refutation of a set of polynomials is a
+Sherali-Adams proof of $ -1 \geq 0 $.
+
+While Sherali-Adams is a natural proof system for non-linear
+inequalities, the linear case is the one we are interested to.
+
+If $ p_{l}\geq 0 $ are linear inequalities, then they define a
+polytope since we are always under the assumption that $0\leq
+x_{i}\leq 1 $. Let's call this polytope $ \sol{P} $. Then we can
+define $ S_{t}(\sol{P}) $ as the polytope obtained by all linear
+inequalities obtained through a proof of rank at most $ t $. It is
+clear from the definition that $ N^{t}(\sol{P}) \supseteq
+S_{t+1}(\sol{P}) \supseteq \sol{P}_{I} $, and that 
+\begin{equation}
+  \sol{P}=S_{0}(\sol{P}) \supseteq S_{2}(\sol{P}) \supseteq
+  S_{n+1}(\sol{P}) = \sol{P}_{I}.
+\end{equation}
+
+
+Sherali-Adams can be seen as a Lift-and-Project relaxation as
+well. Consider $ Y\in \RR^{s} $ where $ s=\binom{n}{\leq t} $,
+where every coordinate of $ Y $ is naturally indexed by a subset
+of $ [n] $ of size at most $ t $.
+
+Map every monomial $m$ over variables $ x_{i} $ into the variable $
+Y_{I(m)}$ where $ I(m) $ is the set of indices of the variables in $ m
+$.  For example
+\begin{equation*}
+x^{2}_{2} x_{3}x_{5} \mapsto Y_{\{2,3,5\}} 
+\end{equation*}
+
+This map translate any polynomial inequality of degree at most $ t
+$ into a linear inequality of over $ \RR^{s} $. Take $ \sol{E} $ to be
+the set of all vectors $ Y $ that satisfy all inequalities obtained by
+applying this translation to every $ g p_{l} \geq 0$ of degree at most
+$t$ and $ g \geq 0 $ for every $ g $ of degree $ g $. The polytope $
+\sol{E} $ satisfies all linear inequalities derivable in Sherali-Adams
+proofs of rank at most $ t $, after projecting over $
+(y_{\emptyset},y_{1},\ldots,y_{n})$.
+
+
+\stressterm{Efficiency of SA}: if the linear system has length $
+n^{O(1)} $ then the polytope $ S_{t}(\sol{P}) $ can be described by $
+n^{O(t)} $ linear inequalities over the $ Y_{S} $ variables. Since
+this is a linear system, both optimization and feasibility can be
+computed in time $ n^{O(t)} $.
+
+\section{An example of Sherali-Adams relaxation}
+
+Consider the maximum independent set integer program for a graph $
+G=(V,E)$.
+\begin{alignat}{2}
+  \maximize \sum_{v\in V} x_{v}\notag \\
+  \subjectto x_{u} + x_{v} - 1\leq 0 \qquad \text{for $ \{u,v\}\in E $ }\\
+  & 0 \leq x_{u}\leq 1.\notag
+\end{alignat}
+
+The Sherali-Adams relaxation of rank $t$ is
+
+\begin{alignat*}{2}
+  \maximize \sum_{v\in V} Y_{\{v\}}\notag \\
+  \subjectto \sum_{T'\subseteq T} (-1)^{T'} \cdot 
+  \left[ 
+    Y_{S\cup T'\cup \{u\} } + Y_{S\cup T'\cup \{v\} } - Y_{S\cup T'}
+  \right]
+  \leq 0 \\ 
+  &\qquad \text{for $ \{u,v\}\in E $,$ |S\cup T\cup \{u\}| \leq
+    t,|S\cup T\cup \{v\}|\leq t $}\\
+  \\
+  &0 \leq \sum_{T'\subseteq T} (-1)^{T'} Y_{S\cup T'\cup \{u\} } \leq
+  \sum_{T'\subseteq T} (-1)^{T'} Y_{S\cup T' }\\
+  &\qquad \text{for $ \{u,v\}\in E $, $|S\cup T\cup \{u\}| \leq
+    t,|S\cup T\cup \{v\}|\leq t $  }
+\end{alignat*}
 
 
 % ------------------------- EPILOGUE ------------------------------
