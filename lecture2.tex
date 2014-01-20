@@ -17,7 +17,7 @@
   Semidefinite programs have been proved to be valuable tools in
   approximation algorithms and in combinatorial optimization, since
   semidefinite relaxations are usually stronger than linear one. In
-  this lecture we describe what is a semidefinite program and we
+  lecture we describe what is a semidefinite program and we
   introduce hierarchies of sdp relaxations.}
 
 % ---------------------------- PREAMBLE -------------------------------
@@ -26,10 +26,31 @@
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
 
+\section{Positive semidefinite matrices}
 
+A fundamental concept in semidefinite programming is the one of
+\introduceterm{positive semidefinite matrices}. 
+\begin{definition}
+  A square matrix $A$ in $ \RR^{n\times n} $ is called positive
+  semidefinite if 
+  \begin{itemize}
+    \item $A$ is symmetric\footnote{the condition of symmetry is often
+      forgotten, but it is required.}, \ie, $ A=A^{T} $;
+    \item for every $ x\in R^{n} $ it holds that $ x^{T} A x \geq 0 $.
+  \end{itemize}
+  A matrix $ A $ is \introduceterm{positive definite} if it is
+  positive semidefinite and is also non-singular.
+\end{definition}
+We denote the set of positive semidefinite matrices in $\RR^{n\times
+  n}$ as $\positivesemidefinite$.
 
-
-
+\begin{fact}
+  $ \positivesemidefinite $ is closed under positive
+  combinations. \Ie, let $ \{M_{i}\}^{\ell}_{i=1} $ a set of positive
+  semidefinite matrices and $ \alpha \in \RR^{\ell} $ with $ \alpha
+  \geq 0 $ then $ \sum^{\el}_{i} \alpha_{i} M_{i}$ is positive
+  semidefinite.
+\end{fact}
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
