@@ -46,11 +46,95 @@ We denote the set of positive semidefinite matrices in $\RR^{n\times
 
 \begin{fact}
   $ \positivesemidefinite $ is closed under positive
-  combinations. \Ie, let $ \{M_{i}\}^{\ell}_{i=1} $ a set of positive
-  semidefinite matrices and $ \alpha \in \RR^{\ell} $ with $ \alpha
-  \geq 0 $ then $ \sum^{\el}_{i} \alpha_{i} M_{i}$ is positive
-  semidefinite.
+  combinations (\ie, is a cone): for a sequence $ M_{1}, M_{2}, \ldots, M_{\ell} $ of positive
+  semidefinite matrices, the matrix 
+\begin{equation}
+  \alpha_{1} M_{1} + \alpha_{2} M_{2} + \cdots + \alpha_{\ell} M_{\ell}
+\end{equation}
+is positive semidefinite for $ \alpha_{1}\geq 0, \alpha_{2}\geq 0,
+\ldots , \alpha_{\ell} \geq 0$.
 \end{fact}
+
+\section{Matrix decompositions}
+
+Positive semidefinite matrices have a lot of nice properties, and in
+particular they have a set of useful decomposition. If a matrix $ A
+\in \positivesemidefinite[n] $ then there are decompositions
+
+\begin{align}
+  A = U^{T}U & & \text{Cholesky decomposition}\\
+  A = L D L^{T} & & \text{LDL decomposition}\\
+  A = Q \Lambda Q^{T} & & \text{Spectral decomposition}
+\end{align}
+
+with $ U,L,D,Q,\Lambda $ are real matrices in $ \RR^{n\times n} $
+
+In \introduceterm{spectral decomposition}, matrix $ Q $ is an
+\introduceterm{orthogonal matrix} which columns are unitary
+eigenvectors of $ A $, \ie $ QQ^{T} = I$, and $ \Lambda $ is the
+diagonal matrix containing the corresponding eigenvectors.
+
+\begin{figure*}
+\begin{equation}
+A=
+% Q matrix
+\begin{bmatrix}
+    q_{11}  & q_{12} & \ldots & q_{1n}\\
+    q_{21}  & q_{22} & \ldots & q_{2n}\\
+    & \ddots & &  \\
+    q_{n1}  & q_{n2} & \ldots & q_{nn}
+\end{bmatrix}%
+\cdot
+% lambda matrix
+\begin{bmatrix}
+    \lambda_{1}  & 0 & \ldots & 0\\
+    0 & \lambda_{2} & \ldots & 0\\
+    & \ddots & &  \\
+    0  & 0 & \ldots & \lambda_{n}
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+    q_{11}  & q_{21} & \ldots & q_{n1}\\
+    q_{12}  & q_{22} & \ldots & q_{n2}\\
+    & \ddots & &  \\
+    q_{1n}  & q_{2n} & \ldots & q_{nn}
+\end{bmatrix}
+\end{equation}
+\end{figure*}
+
+\begin{equation}
+  \begin{bmatrix}
+    q_{i1}  & q_{i2} & \ldots & q_{in}\\
+   \end{bmatrix}
+  \cdot
+  \begin{bmatrix}
+    q_{j1}  \\
+    q_{j2}  \\
+    \vdots \\
+    q_{jn} 
+  \end{bmatrix} = \begin{cases}
+    0 & i\neq j\\
+    1 & i = j
+  \end{cases}
+\end{equation}
+
+
+\begin{equation}
+  A \cdot
+  \begin{bmatrix}
+    q_{i1}  \\
+    q_{i2}  \\
+    \vdots \\
+    q_{in} 
+  \end{bmatrix} =
+  \lambda_{i} \cdot
+  \begin{bmatrix}
+    q_{i1}  \\
+    q_{i2}  \\
+    \vdots \\
+    q_{in} 
+  \end{bmatrix}
+\end{equation}
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
