@@ -99,7 +99,7 @@ functions of the entries of $ A $. Indeed the LDL decomposition is a
 partial version of Cholesky decomposition which avoid computing square
 roots. The decomposition for positive definite matrix $A$ follows by
 induction from the equation (we have $\alpha>0$).
-\begin{equation}
+\begin{equation}\label{eq:matr-decomp}
   \begin{bmatrix}
     \alpha & v^{T} \\
     v & C
@@ -128,70 +128,13 @@ the Cholesky decomposition follows immediately.
 All the decomposition can be extended to \stressterm{positive
   semidefinite} matrices, but then the entries of the diagonal of $ U
 $ and $D$ can be zero; the matrices $ U $, $ L $, $ D $ are not uniquely
-defined; there are some zero eigenvectors in $ \Lambda $.
+defined; there are some zero eigenvectors in $ \Lambda $. In
+particular in equation~\eqref{sec:matr-decomp} we get that $ \alpha
+\geq 0 $ by positive semidefiniteness, but if $ \alpha $ is zero, then
+$ v $ must be the zero vector too, otherwise would be $ y $ such that
+$ y^{T}Ay \leq 0 $.
 
 
-% \begin{figure*}
-% \begin{equation}
-% A=
-% % Q matrix
-% \begin{bmatrix}
-%     q_{11}  & q_{12} & \ldots & q_{1n}\\
-%     q_{21}  & q_{22} & \ldots & q_{2n}\\
-%     & \ddots & &  \\
-%     q_{n1}  & q_{n2} & \ldots & q_{nn}
-% \end{bmatrix}%
-% \cdot
-% % lambda matrix
-% \begin{bmatrix}
-%     \lambda_{1}  & 0 & \ldots & 0\\
-%     0 & \lambda_{2} & \ldots & 0\\
-%     & \ddots & &  \\
-%     0  & 0 & \ldots & \lambda_{n}
-% \end{bmatrix}
-% \cdot
-% \begin{bmatrix}
-%     q_{11}  & q_{21} & \ldots & q_{n1}\\
-%     q_{12}  & q_{22} & \ldots & q_{n2}\\
-%     & \ddots & &  \\
-%     q_{1n}  & q_{2n} & \ldots & q_{nn}
-% \end{bmatrix}
-% \end{equation}
-% \end{figure*}
-
-% \begin{equation}
-%   \begin{bmatrix}
-%     q_{i1}  & q_{i2} & \ldots & q_{in}\\
-%    \end{bmatrix}
-%   \cdot
-%   \begin{bmatrix}
-%     q_{j1}  \\
-%     q_{j2}  \\
-%     \vdots \\
-%     q_{jn} 
-%   \end{bmatrix} = \begin{cases}
-%     0 & i\neq j\\
-%     1 & i = j
-%   \end{cases}
-% \end{equation}
-
-
-% \begin{equation}
-%   A \cdot
-%   \begin{bmatrix}
-%     q_{i1}  \\
-%     q_{i2}  \\
-%     \vdots \\
-%     q_{in} 
-%   \end{bmatrix} =
-%   \lambda_{i} \cdot
-%   \begin{bmatrix}
-%     q_{i1}  \\
-%     q_{i2}  \\
-%     \vdots \\
-%     q_{in} 
-%   \end{bmatrix}
-% \end{equation}
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
