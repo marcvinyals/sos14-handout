@@ -27,7 +27,11 @@
 A sequence of variables $ x_{i} $ for $i$ going from $ 1$ to $n$ can
 be interpreted as a column vector $ x $ or a row vector $ x^{T} $ in
 the corresponding standard basis. The inner product $ \sum_{i} x_{i}
-y_{i} $ is denoted as $ x^{T}y $.  A double indexed set of variables $
+y_{i} $ is denoted as $ x^{T}y $.  The length of a vector is
+$\sqrt{x^{T}x} $ and is denoted as $ |x| $.
+
+
+A double indexed set of variables $
 a_{ij} $ is intepreted as a matrix $ A $. We usually denote vectors in
 small caps and matrices in big caps, but this convention may change to
 adapt to the context.
@@ -124,6 +128,36 @@ For a linear program such that we denote as $ \sol{P} $ the set of
 feasible solution for that program, and as $ \sol{P}_{I} $ the convex
 hull of set of integer feasible solutions of the same program, \ie, $
 \sol{P}_{I} = \mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
+
+\section{Semidefinite programs}
+
+We denote semidefinite programs in one of this fashion.
+
+\begin{figure}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize c^{T}x\\
+  \subjectto \pointwiseprod{A_{1}}{X} \leq b_{1}\\
+  & \pointwiseprod{A_{2}}{X} \leq b_{2}\\
+  & \vdots \\
+  & \pointwiseprod{A_{\ell}}{X} \leq b_{\ell}\\
+  & X \succeq 0
+\end{alignat*}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize c^{T}x \\
+  \subjectto Ax = b\\
+  & x \geq 0
+\end{alignat*}
+\end{minipage}
+\end{figure}
+
+For a linear program such that we denote as $ \sol{P} $ the set of
+feasible solution for that program, and as $ \sol{P}_{I} $ the convex
+hull of set of integer feasible solutions of the same program, \ie, $
+\sol{P}_{I} = \mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
+
 
 \section{Other notation}
 

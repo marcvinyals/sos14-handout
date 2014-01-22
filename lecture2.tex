@@ -57,9 +57,9 @@ is positive semidefinite for $ \alpha_{1}\geq 0, \alpha_{2}\geq 0,
 
 \section{Matrix decompositions}
 
-Positive semidefinite matrices have a lot of nice properties, and in
+Positive definite matrices have a lot of nice properties, and in
 particular they have a set of useful decomposition. If a matrix $ A
-\in \positivesemidefinite[n] $ then there are decompositions
+\succ 0 $ then there are decompositions
 
 \begin{align}
   A = U^{T}U & & \text{Cholesky decomposition}\\
@@ -67,74 +67,131 @@ particular they have a set of useful decomposition. If a matrix $ A
   A = Q \Lambda Q^{T} & & \text{Spectral decomposition}
 \end{align}
 
-with $ U,L,D,Q,\Lambda $ are real matrices in $ \RR^{n\times n} $
+where $ U,L,D,Q,\Lambda $ are real matrices in $ \RR^{n\times n}
+$. Furthermore $ U,L,D $ are unique.
 
-In \introduceterm{spectral decomposition}, matrix $ Q $ is an
+In \introduceterm{spectral decomposition} (also called
+\introduceterm{eigendecomposition}), matrix $ Q $ is an
 \introduceterm{orthogonal matrix} which columns are unitary
 eigenvectors of $ A $, \ie $ QQ^{T} = I$, and $ \Lambda $ is the
-diagonal matrix containing the corresponding eigenvectors.
+diagonal matrix containing the corresponding positive
+eigenvectors\footnote{to prove this first you show that every
+  eigenvalue is real and positive, and then that eingenspaces with
+  different eigenvalues are orthogonal.}.
+%
+Consider the Euclidean geometry induced by the norm $ x^{T}x $ , then
+the geometry induced by the norm $ x^{T}A x$ is an Euclidean one,
+where the space is scaled along different axis.
 
-\begin{figure*}
-\begin{equation}
-A=
-% Q matrix
-\begin{bmatrix}
-    q_{11}  & q_{12} & \ldots & q_{1n}\\
-    q_{21}  & q_{22} & \ldots & q_{2n}\\
-    & \ddots & &  \\
-    q_{n1}  & q_{n2} & \ldots & q_{nn}
-\end{bmatrix}%
-\cdot
-% lambda matrix
-\begin{bmatrix}
-    \lambda_{1}  & 0 & \ldots & 0\\
-    0 & \lambda_{2} & \ldots & 0\\
-    & \ddots & &  \\
-    0  & 0 & \ldots & \lambda_{n}
-\end{bmatrix}
-\cdot
-\begin{bmatrix}
-    q_{11}  & q_{21} & \ldots & q_{n1}\\
-    q_{12}  & q_{22} & \ldots & q_{n2}\\
-    & \ddots & &  \\
-    q_{1n}  & q_{2n} & \ldots & q_{nn}
-\end{bmatrix}
-\end{equation}
-\end{figure*}
+In the \introduceterm{Cholesky decomposition} the matrix $ U $ is an
+upper triangular real matrix where diagonal entries are positive. This
+representation witnesses the fact that $ A $ is definite positive,
+since $ x^{T}A x = x^{T}U^{T}U x = |Ux| > 0 $.
 
+The \introduceterm{LDL decomposition} is a slight modification of
+Cholesky decomposition. The matrix $ L$ is \introduceterm{lower unit
+  triangular}, which is a lower triangular matrix with unit diagonal,
+and $ D $ is a diagonal matrix. The decomposition exists for any
+symmetric matrix, but for positive definite matrices the diagonal
+matrix $D$ has positive entries. The peculiarity of this
+decomposition is that the components of $ L $ and $ D $ are rational
+functions of the entries of $ A $. Indeed the LDL decomposition is a
+partial version of Cholesky decomposition which avoid computing square
+roots. The decomposition for positive definite matrix $A$ follows by
+induction from the equation (we have $\alpha>0$).
 \begin{equation}
   \begin{bmatrix}
-    q_{i1}  & q_{i2} & \ldots & q_{in}\\
-   \end{bmatrix}
-  \cdot
-  \begin{bmatrix}
-    q_{j1}  \\
-    q_{j2}  \\
-    \vdots \\
-    q_{jn} 
-  \end{bmatrix} = \begin{cases}
-    0 & i\neq j\\
-    1 & i = j
-  \end{cases}
-\end{equation}
-
-
-\begin{equation}
-  A \cdot
-  \begin{bmatrix}
-    q_{i1}  \\
-    q_{i2}  \\
-    \vdots \\
-    q_{in} 
+    \alpha & v^{T} \\
+    v & C
   \end{bmatrix} =
-  \lambda_{i} \cdot
   \begin{bmatrix}
-    q_{i1}  \\
-    q_{i2}  \\
-    \vdots \\
-    q_{in} 
-  \end{bmatrix}
+    1 & 0 \\
+    v/\alpha & I
+  \end{bmatrix} \cdot
+  \begin{bmatrix}
+    \alpha & 0 \\
+    0 & C -vv^{T}/\alpha
+  \end{bmatrix} \cdot
+  \begin{bmatrix}
+    1 & v^{T}/\alpha \\
+    0 & I
+  \end{bmatrix} 
 \end{equation}
+
+We need to show that $B = C - vv^{T}/\alpha $ is positive definite. Fix
+non zero $ u\in\RR^{n-1} $ then fix $ x^{T}=[-u^{T}v/\alpha, u^{T}]
+$. Then $ u^{T}Bu = x^{T}Ax > 0$.
+
+Once you have LDL decomposition for positive definite matrices,
+the Cholesky decomposition follows immediately.
+
+All the decomposition can be extended to \stressterm{positive
+  semidefinite} matrices, but then the entries of the diagonal of $ U
+$ and $D$ can be zero; the matrices $ U $, $ L $, $ D $ are not uniquely
+defined; there are some zero eigenvectors in $ \Lambda $.
+
+
+% \begin{figure*}
+% \begin{equation}
+% A=
+% % Q matrix
+% \begin{bmatrix}
+%     q_{11}  & q_{12} & \ldots & q_{1n}\\
+%     q_{21}  & q_{22} & \ldots & q_{2n}\\
+%     & \ddots & &  \\
+%     q_{n1}  & q_{n2} & \ldots & q_{nn}
+% \end{bmatrix}%
+% \cdot
+% % lambda matrix
+% \begin{bmatrix}
+%     \lambda_{1}  & 0 & \ldots & 0\\
+%     0 & \lambda_{2} & \ldots & 0\\
+%     & \ddots & &  \\
+%     0  & 0 & \ldots & \lambda_{n}
+% \end{bmatrix}
+% \cdot
+% \begin{bmatrix}
+%     q_{11}  & q_{21} & \ldots & q_{n1}\\
+%     q_{12}  & q_{22} & \ldots & q_{n2}\\
+%     & \ddots & &  \\
+%     q_{1n}  & q_{2n} & \ldots & q_{nn}
+% \end{bmatrix}
+% \end{equation}
+% \end{figure*}
+
+% \begin{equation}
+%   \begin{bmatrix}
+%     q_{i1}  & q_{i2} & \ldots & q_{in}\\
+%    \end{bmatrix}
+%   \cdot
+%   \begin{bmatrix}
+%     q_{j1}  \\
+%     q_{j2}  \\
+%     \vdots \\
+%     q_{jn} 
+%   \end{bmatrix} = \begin{cases}
+%     0 & i\neq j\\
+%     1 & i = j
+%   \end{cases}
+% \end{equation}
+
+
+% \begin{equation}
+%   A \cdot
+%   \begin{bmatrix}
+%     q_{i1}  \\
+%     q_{i2}  \\
+%     \vdots \\
+%     q_{in} 
+%   \end{bmatrix} =
+%   \lambda_{i} \cdot
+%   \begin{bmatrix}
+%     q_{i1}  \\
+%     q_{i2}  \\
+%     \vdots \\
+%     q_{in} 
+%   \end{bmatrix}
+% \end{equation}
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
