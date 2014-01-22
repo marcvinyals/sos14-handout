@@ -131,7 +131,7 @@ hull of set of integer feasible solutions of the same program, \ie, $
 
 \section{Semidefinite programs}
 
-We denote semidefinite programs in one of this fashion.
+We denote semidefinite programs (\sdp) in one of this way.
 
 \begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
@@ -146,17 +146,22 @@ We denote semidefinite programs in one of this fashion.
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
-  \maximize c^{T}x \\
-  \subjectto Ax = b\\
-  & x \geq 0
+  \maximize \sum_{i}c_{i} (v_{0}^{T}v_{i}) \\
+  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
+  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
+  & \vdots \\
+  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})= b_{\ell}\\
+  & |v_{0}| = 1
 \end{alignat*}
 \end{minipage}
 \end{figure}
 
-For a linear program such that we denote as $ \sol{P} $ the set of
-feasible solution for that program, and as $ \sol{P}_{I} $ the convex
-hull of set of integer feasible solutions of the same program, \ie, $
-\sol{P}_{I} = \mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
+There is no much difference if the constraints are given in form of
+equations of in form of inequalities.  For semidefinite programs such
+that we denote as $ \sol{P} $ the set of feasible solution for that
+program, and as $ \sol{P}_{I} $ the convex hull of set of integer
+feasible solutions of the same program, \ie, $ \sol{P}_{I} =
+\mathsf{convexhull}(\ZZ^{n} \cap \sol{P}) $.
 
 
 \section{Other notation}

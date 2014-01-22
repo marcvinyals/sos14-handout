@@ -134,6 +134,79 @@ particular in equation~\eqref{sec:matr-decomp} we get that $ \alpha
 $ v $ must be the zero vector too, otherwise would be $ y $ such that
 $ y^{T}Ay \leq 0 $.
 
+\section{Semidefinite programs}
+
+Semidefinite programs can be naturally intepreted are a relaxation of
+quadratic programs. Consider for example the $
+\computationalproblem{MaxIndSet} $ on a graph $ G=([n],E) $, which is
+expressed by the left quadratic program that follows.
+
+\begin{figure*}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}\label{eq:maxindset1}
+  \maximize \sum_{i}x_{i}\\
+  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$}\\
+  & x^{2}_{i} -x_{i}= 0
+\end{alignat*}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize \sum_{i}x^{2}_{i}\\
+  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$}\\
+  & x^{2}_{i} -x_{0}x_{i} =0\\
+  & x^{2}_{0} = 1
+\end{alignat*}
+\end{minipage}
+\end{figure*}
+
+
+For convenience will consider a new dummy ``$x$'' variable $ x_{0} $,
+and we homogenize the program, as shown before. 
+%
+The idea now is to relax the quadratic constraints by encoding the
+products $x_{i}x_{j} $ as new variables $ y_{ij} $. Some of the
+identities implied by the interpretation $ y_{ij} = x_{i}x_{j} $ are
+enforced by the program, but not all of them can ---it would not be a
+relaxation. We constrain $Y$ to be positive semidefinite.
+%
+
+\begin{alignat*}{2}
+  \maximize \sum_{i}y_{ii}\\
+  \subjectto y_{ij} =0 \qquad \text{\ if $\{i,j\}\in E$}\\
+  & y_{ii} = y_{0i} \\
+  & y_{00} = 1\\
+  & Y \succeq 0
+\end{alignat*}
+
+A semidefinite program is a refinement of a linear program in which
+the variables have a natural square matrix structure, and such
+structure is a positive semidefinite matrix. We denote semidefinite
+programs (\sdp) in one of this way (which are equivalent because of
+the Cholesky decomposition).
+
+\begin{figure}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize c^{T}x\\
+  \subjectto \pointwiseprod{A_{1}}{X} \leq b_{1}\\
+  & \pointwiseprod{A_{2}}{X} \leq b_{2}\\
+  & \vdots \\
+  & \pointwiseprod{A_{\ell}}{X} \leq b_{\ell}\\
+  & X \succeq 0
+\end{alignat*}
+\end{minipage}
+\begin{minipage}[t]{0.5\textwidth}
+\begin{alignat*}{2}
+  \maximize \sum_{i}c_{i} (v_{0}^{T}v_{i}) \\
+  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
+  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
+  & \vdots \\
+  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})= b_{\ell}\\
+  & |v_{0}| = 1
+\end{alignat*}
+\end{minipage}
+\end{figure}
+
 
 
 % ------------------------- EPILOGUE ------------------------------

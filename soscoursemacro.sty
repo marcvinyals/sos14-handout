@@ -2,7 +2,7 @@
 %% soscourse.sty -- package setting up the lecture notes environment 
 %%
 %% Copyright (C) 2011, 2012, 2013, 2014 by Massimo Lauria (lauria@kth.se)
-%% Time-stamp: "2014-01-21, 15:26 (MST) Massimo Lauria"
+%% Time-stamp: "2014-01-22, 08:45 (MST) Massimo Lauria"
 %%
 
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
@@ -45,6 +45,8 @@
 \newcommand{\varboolean}[1]{\vardomain{#1}{\{0,1\}}}
 \newcommand{\varpositive}[1]{\ensuremath{#1\geq 0}}
 \DeclareDocumentCommand{\varbounded}{O{0} O{1} m}{\ensuremath{#1\leq #3 \leq #2}}
+\newcommand{\sdp}{\ensuremath{\mathsf{SDP}}}
+
 
 \newcommand{\sOPT}{\mathsf{OPT}}
 \newcommand{\sFRAC}{\mathsf{FRAC}}
