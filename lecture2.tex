@@ -131,7 +131,7 @@ $ and $D$ can be zero; the matrices $ U $, $ L $, $ D $ are not uniquely
 defined; there are some zero eigenvectors in $ \Lambda $. In
 particular in equation~\eqref{sec:matr-decomp} we get that $ \alpha
 \geq 0 $ by positive semidefiniteness, but if $ \alpha $ is zero, then
-$ v $ must be the zero vector too, otherwise would be $ y $ such that
+$ v $ must be the zero vector too, otherwise there would be $ y $ such that
 $ y^{T}Ay \leq 0 $.
 
 \section{Semidefinite programs}
@@ -187,17 +187,17 @@ the Cholesky decomposition).
 \begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
-  \maximize c^{T}x\\
-  \subjectto \pointwiseprod{A_{1}}{X} \leq b_{1}\\
-  & \pointwiseprod{A_{2}}{X} \leq b_{2}\\
+  \maximize \pointwiseprod{C}{X}\\
+  \subjectto \pointwiseprod{A_{1}}{X} = b_{1}\\
+  & \pointwiseprod{A_{2}}{X} = b_{2}\\
   & \vdots \\
-  & \pointwiseprod{A_{\ell}}{X} \leq b_{\ell}\\
+  & \pointwiseprod{A_{\ell}}{X} = b_{\ell}\\
   & X \succeq 0
 \end{alignat*}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
-  \maximize \sum_{i}c_{i} (v_{0}^{T}v_{i}) \\
+  \maximize \sum_{i,j}c_{i,j} (v_{i}^{T}v_{j}) \\
   \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
   & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
   & \vdots \\
@@ -206,8 +206,36 @@ the Cholesky decomposition).
 \end{alignat*}
 \end{minipage}
 \end{figure}
+%
+Where $ A_i $ and $ C $ are symmetric matrices.  It is possible write
+$\sdp$ in a more general fashion: we can have constraints on many
+different positive semidefinite matrices, since if $ X_{1}\succeq 0 $
+and $ X_{2} \succeq 0$ then $ \begin{bmatrix}
+  X_{1} & 0 \\
+  0 & X_{2}
+\end{bmatrix} $ is positive semidefinite. Furthermore we can enforce
+positive variables since $ \begin{bmatrix}
+  x
+\end{bmatrix} \succeq 0$ is equivalent to $ x \geq 0$. Furthermore we
+can relax the condition of symmetry for matrices $ A_{i} $ and $ C $,
+since $ X $ itself is required to be symmetric.
+
+\section{Semidefinite programming duality (Cne programming duality)}
+
+The duality of semidefinite programming is a more general (and
+complex) version of duality of linear programs.
+\begin{enumerate}
+\item Define a cone, and convex cone.
+\item Separation theorem for convex cones.
+\item Farkas lemma for linear programming, and interpretation in cone
+programming.
+\item $ A(X) $ is not necessarily convex closed cone.
+\item Farkas lemma with limit feasibility.
+\item See lecture 12 of Gupta, O'Donnel.
+\end{enumerate}
 
 
+\section{Examples\ldots (probably not enough time)}
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
