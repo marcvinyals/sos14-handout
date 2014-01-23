@@ -134,6 +134,10 @@ particular in equation~\eqref{sec:matr-decomp} we get that $ \alpha
 $ v $ must be the zero vector too, otherwise there would be $ y $ such that
 $ y^{T}Ay \leq 0 $.
 
+\begin{fact}
+  Let $X$ and $A$ any symmetric matrices, then
+\end{fact}
+
 \section{Semidefinite programs}
 
 Semidefinite programs can be naturally intepreted are a relaxation of
@@ -233,6 +237,21 @@ programming.
 \item Farkas lemma with limit feasibility.
 \item See lecture 12 of Gupta, O'Donnel.
 \end{enumerate}
+
+
+Consider a semidefinite program (let's ignore optimization now, focus
+on decision). 
+\begin{alignat*}{2}
+  \pointwiseprod{A_{1}}{X} = b_{1}\\
+  \pointwiseprod{A_{2}}{X} = b_{2}\\
+  \vdots \\
+  \pointwiseprod{A_{\ell}}{X} = b_{\ell}\\
+  X \succeq 0
+\end{alignat*}
+
+We are going to witness unsatisfiability of a semidefinite program as
+follow:
+
 
 
 \section{Examples\ldots (probably not enough time)}
