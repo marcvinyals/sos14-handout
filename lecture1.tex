@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-27, 23:01 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-27, 23:16 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -388,55 +388,56 @@ inequalities must be valid for integer solutions but may still shave
 off some of the fractional solutions.
 
 Given an arbitrary linear program let $ \sol{P}$ be the convex hull of
-its feasible solutions, and $ \sol{P}_{I} $ the convex hull of the
-integer solutions. Of course $ \sol{P}_{I}\subseteq\sol{P} $. The
-idea is to find a way to efficiently identify a convex set $ E $ such
-that $ \sol{P_{I}}\subseteq \sol{E} \subseteq\sol{P}_{I} $. 
-If the gap between the optimal solution in $ \sol{E} $
-and the $ \sol{P}_{I} $ is strictly smaller than the integrality gap of the
-original linear program, that would give a better handle to solve the
-combinatorial problem. Even better if $ \sol{E}=\sol{P}_{I} $: then
-the problem is solved exactly.
-
+its feasible solutions, and $ \sol{P}_{I} $ the convex hull of its
+integer solutions. Of course $ \sol{P}_{I}\subseteq\sol{P} $. The idea
+is to find a way to efficiently identify a convex set $ \sol{E} $ such
+that $ \sol{P_{I}}\subseteq \sol{E} \subseteq\sol{P}_{I} $.  If the
+gap between the optimal solutions in $ \sol{E} $ and the ones in $
+\sol{P}_{I} $ is strictly smaller than the integrality gap of the
+original linear program, then we have a better handle to solve the
+combinatorial problem. Even better if $ \sol{E}=\sol{P}_{I} $: in this
+case there is an efficient way to find an optimal solution for the
+problem.
+%
 If $ \PTIME\neq\NP $ there is not general way to obtain $\sol{P}_{I} $
-by adding only a polynomial number of linear inequalities.
+by adding just a polynomial number of linear inequalities.
 
-\introduceterm{Cutting planes:} was introduced by
-Gomory\cite{gomory1958outline}. His original way to cut fractional
-solution is to notice that for an inequality $ a^{T}x \leq v $
-where $ a $ is an integer vector, then 
+\introduceterm{Cutting planes:} Gomory\cite{gomory1958outline}
+introduces a way to cut fractional solutions by noticing that if $
+a^{T}x \leq b $ is a valid inequality and $ a $ is an integer vector,
+then
 \begin{equation}
   a^{T}x \leq \lfloor b \rfloor
 \end{equation}
-is valid over integer solutions (but may cut some fractional
+is valid over integer solutions (but it is not over fractional
 ones). This method has been employed effectively in integer
-programming packages.
+programming software.
 
-\introduceterm{Extended formulation}: the idea is to add new variables
-and write a linear program on them in such a way that the projection
-of the extended polytope $\sol{P}_{E}$ on the original variables is
-closer or even equal to $ \sol{P}_{I} $.
+\introduceterm{Extended formulation}: here the idea is to add new
+variables and add linear constraints on them in such a way that the
+projection of the extended polytope $\sol{P}_{E}$ on the original
+variables is closer or even equal to $ \sol{P}_{I} $.
 
 Such extended formulation is ``problem dependent'' and there are very
 nice connections between the number of inequalities needed to capture
 $ \sol{P}_{I} $ and communication complexity. Fiorini
-et.al.\cite{fiorini2007linear} proved that there is no polynomial size
-extended formulation for the canonical encoding of
-\introduceterm{traveller salesman problem}.
+et.al.\cite{fiorini2012linear} proved that there is no polynomial size
+extended formulation for the canonical integer programming
+representation of the \introduceterm{traveller salesman problem}.
 
 In this course we deal with systematic ways to improve the relaxation
 of the integer programs. In this lecture we are going to see some
-techniques.
+techniques specific to linear programming.
 
 \section{\Lovasz-\Schrijver\ hierarchy}
 
-Let us just focus on feasibility problems (no function to be
+Let us just focus on feasibility problems (\ie, no function to be
 optimized). Then the point is to get close to a representation of $
 \sol{P}_{I} $ in order to determine whether it is empty or not. We now
 that if we could efficiently decide feasibility under
 \introduceterm{quadratic inequalities} we could easily solve integer
-program over boolean variables, since $ x_{i}\in\{0,1\} $ is equivalent
-to $ x^{2}_{i} - x_{i} =0 $. 
+program over boolean variables, since $ x_{i}\in\{0,1\} $ is
+equivalent to $ x^{2}_{i} - x_{i} =0 $.
 
 The \Lovasz-\Schrijver\cite{lovasz1991cones} linear relaxation is
 based on the idea of using quadratic inequalities to determine new
