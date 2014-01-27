@@ -102,7 +102,16 @@ meaning to notations $ A \geq B, A \leq B, A < B, A > B$.
 %
 The notation $ A \succeq 0 $ means that $ A $ is
 \introduceterm{positive semidefinite}, the notation $ A \succ 0 $ that
-$ A $ is \introduceterm{positive definite}.
+$ A $ is \introduceterm{positive definite}. The notation $ A \succ B $
+and $ A \succeq B$ are shortcuts for, respectively,  $ A - B \succ 0$
+and $  A - B \succeq 0$.
+
+The \introduceterm{trace operator} for finite square matrices is $
+\trace{A} = \sum_{i}a_{ii} $. Notice that for \stressterm{symmetric}
+matrices it holds that $ \trace{AB}=\pointwiseprod{A}{B} $.
+
+
+
 
 \section{Linear programs}
 
@@ -147,10 +156,10 @@ We denote semidefinite programs (\sdp) in one of this way.
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \sum_{i}c_{i} (v_{0}^{T}v_{i}) \\
-  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
-  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
+  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})\leq b_{1}\\
+  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})\leq b_{2}\\
   & \vdots \\
-  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})= b_{\ell}\\
+  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})\leq b_{\ell}\\
   & |v_{0}| = 1
 \end{alignat*}
 \end{minipage}

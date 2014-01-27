@@ -42,7 +42,8 @@ A fundamental concept in semidefinite programming is the one of
   positive semidefinite and is also non-singular.
 \end{definition}
 We denote the set of positive semidefinite matrices in $\RR^{n\times
-  n}$ as $\positivesemidefinite$.
+  n}$ as $\positivesemidefinite$ and we say that $ A\succeq $ when $ A
+\in \positivesemidefinite $.
 
 \begin{fact}
   $ \positivesemidefinite $ is closed under positive
@@ -86,7 +87,7 @@ where the space is scaled along different axis.
 In the \introduceterm{Cholesky decomposition} the matrix $ U $ is an
 upper triangular real matrix where diagonal entries are positive. This
 representation witnesses the fact that $ A $ is definite positive,
-since $ x^{T}A x = x^{T}U^{T}U x = |Ux| > 0 $.
+since $ x^{T}A x = x^{T}U^{T}U x = |Ux|^{2} > 0 $.
 
 The \introduceterm{LDL decomposition} is a slight modification of
 Cholesky decomposition. The matrix $ L$ is \introduceterm{lower unit
@@ -129,14 +130,59 @@ All the decomposition can be extended to \stressterm{positive
   semidefinite} matrices, but then the entries of the diagonal of $ U
 $ and $D$ can be zero; the matrices $ U $, $ L $, $ D $ are not uniquely
 defined; there are some zero eigenvectors in $ \Lambda $. In
-particular in equation~\eqref{sec:matr-decomp} we get that $ \alpha
+particular in equation~\eqref{eq:matr-decomp} we get that $ \alpha
 \geq 0 $ by positive semidefiniteness, but if $ \alpha $ is zero, then
 $ v $ must be the zero vector too, otherwise there would be $ y $ such that
 $ y^{T}Ay \leq 0 $.
 
+
+\section{Some useful facts about matrices}
+
 \begin{fact}
-  Let $X$ and $A$ any symmetric matrices, then
+  Let $ A=(a_{ij}) $, then $x^{T}A x = \pointwiseprod{(xx^{T})}{A}$
 \end{fact}
+
+\begin{fact}
+  Let $A$ and $B$ any symmetric matrices, then $
+  \trace{AB}=\pointwiseprod{A}{B} $.
+\end{fact}
+
+\begin{fact}
+  Let any two matrices $ A \in\RR^{n\times m}$ and $ B \in\RR^{m\times
+    n} $. Then $ \trace{AB}= \trace{BA}$.
+\end{fact}
+
+\begin{fact}
+  Let any two \stressterm{symmetric} $ A $ and $ B $. It holds that
+  $ \trace{AB}=\pointwiseprod{A}{B} $.
+\end{fact}
+
+\begin{fact}\label{fact:positive_pointwise}
+  For any symmetric $ n \times n $ matrix $ A $, $ A \in
+  \positivesemidefinite $ if and only if $ \pointwiseprod{A}{B}\geq 0
+  $ for all $ B \in \positivesemidefinite $.
+\end{fact}
+\begin{proof}
+  If $ A $ and $ B $ as positive semidefinite, then by using the
+  spectral decomposition we represent $ A $ as $Q^{T}\Lambda Q$.
+  \begin{equation}
+    \pointwiseprod{A}{B}=\trace{AB}=\trace{Q^{T}\Lambda Q B}
+    =\trace{\Lambda Q B Q^{T}}. 
+  \end{equation}
+  Fix $ B' = Q B Q^{T} $, that is positive semidefinite, so all its
+  diagonal entries are non negatives. Also $ \Lambda $ is a diagonal
+  non negative matrix. Thus $
+  \trace{AB}=\trace{\Lambda B'}=\sum_{i}\lambda_{i}b'_{ii} \geq 0$.
+\end{proof}
+
+\begin{fact}\label{fact:strict_positive_pointwise}
+  For $ A \succ 0 $ it holds that $ \pointwiseprod{A}{B}>0 $ for all $
+  B \in \positivesemidefinite $, unless $ B=0 $.
+\end{fact}
+The proof of the latter fact is identical to the proof of
+Fact~\ref{fact:positive_pointwise}, with the remark that all
+eigenvalues of a positive definite matrix are positive.
+
 
 \section{Semidefinite programs}
 
@@ -192,20 +238,20 @@ the Cholesky decomposition).
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \pointwiseprod{C}{X}\\
-  \subjectto \pointwiseprod{A_{1}}{X} = b_{1}\\
-  & \pointwiseprod{A_{2}}{X} = b_{2}\\
+  \subjectto \pointwiseprod{A_{1}}{X} \leq b_{1}\\
+  & \pointwiseprod{A_{2}}{X} \leq b_{2}\\
   & \vdots \\
-  & \pointwiseprod{A_{\ell}}{X} = b_{\ell}\\
+  & \pointwiseprod{A_{\ell}}{X} \leq b_{\ell}\\
   & X \succeq 0
 \end{alignat*}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \sum_{i,j}c_{i,j} (v_{i}^{T}v_{j}) \\
-  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
-  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
+  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})\leq b_{1}\\
+  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})\leq b_{2}\\
   & \vdots \\
-  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})= b_{\ell}\\
+  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})\leq b_{\ell}\\
   & |v_{0}| = 1
 \end{alignat*}
 \end{minipage}
@@ -220,34 +266,183 @@ and $ X_{2} \succeq 0$ then $ \begin{bmatrix}
 \end{bmatrix} $ is positive semidefinite. Furthermore we can enforce
 positive variables since $ \begin{bmatrix}
   x
-\end{bmatrix} \succeq 0$ is equivalent to $ x \geq 0$. Furthermore we
-can relax the condition of symmetry for matrices $ A_{i} $ and $ C $,
-since $ X $ itself is required to be symmetric.
+\end{bmatrix} \succeq 0$ is equivalent to $ x \geq 0$. We can
+translate inequality constraints into equality constraints using
+positive slack variables. Furthermore we can relax the condition of
+symmetry for matrices $ A_{i} $ and $ C $, since $ X $ itself is
+required to be symmetric. Some forms of the semidefinite program are
+more convenient than others, when it comes to prove theorem.
 
-\section{Semidefinite programming duality (Cne programming duality)}
+Another equivalent form of semidefinite program is the following:
+\begin{alignat*}{2}
+  \minimize b^{T}y\\
+  \subjectto y_{1}A_{1} + y_{2}A_{2} + \cdots + y_{m}A_{m} \succeq C
+\end{alignat*} 
+where $ A_{i} $ and $ C $ are symmetric square matrices and $ y_{i} $
+are scalar variables. This form is particularly handy when we come to
+study duality.
+
+\begin{exercise}
+  Show that this latter form of semidefinite program is as expressive
+  as the previous ones (\ie it is possible to express the same
+  problems).
+\end{exercise}
+
+\section{Semidefinite programming duality}
 
 The duality of semidefinite programming is a more general (and
-complex) version of duality of linear programs.
-\begin{enumerate}
-\item Define a cone, and convex cone.
-\item Separation theorem for convex cones.
-\item Farkas lemma for linear programming, and interpretation in cone
+complex) version of duality of linear programs. We will discuss its
+proof here. Most of the proofs in this part comes from \Lovasz
+lectures notes~\cite{lovasz2003semidefinite}.
+
+
+First we describe a form of ``unsatisfiability'' proof for $ \sdp $
+which is the key for semidefinite programming, as it was for linear
 programming.
-\item $ A(X) $ is not necessarily convex closed cone.
-\item Farkas lemma with limit feasibility.
-\item See lecture 12 of Gupta, O'Donnel.
-\end{enumerate}
 
-
-Consider a semidefinite program (let's ignore optimization now, focus
-on decision). 
+Consider a semidefinite program for an optimization problem. 
 \begin{alignat*}{2}
-  \pointwiseprod{A_{1}}{X} = b_{1}\\
-  \pointwiseprod{A_{2}}{X} = b_{2}\\
-  \vdots \\
-  \pointwiseprod{A_{\ell}}{X} = b_{\ell}\\
-  X \succeq 0
+  \maximize \pointwiseprod{C}{X}\\
+  \subjectto \pointwiseprod{A_{1}}{X} = b_{1}\\
+  & \pointwiseprod{A_{2}}{X} = b_{2}\\
+  & \vdots \\
+  & \pointwiseprod{A_{m}}{X} = b_{m}\\
+  & X \succeq 0
 \end{alignat*}
+
+Consider a combination of proof lines with coefficient $ y^{T}=
+[y_{1}\ldots y_{m}]$, such that $ Y= \sum_{i}y_{i}A_{i} - C \succeq
+0$. Then 
+\begin{equation}
+ \pointwiseprod{Y}{X}=\sum_{i}y_{i}b_{i} -\pointwiseprod{C}{X} 
+\end{equation}
+If $ X \succeq 0 $ then $\pointwiseprod{Y}{X} \geq 0$ by
+Fact~\ref{fact:positive_pointwise} which means that $
+\pointwiseprod{C}{X} \leq \sum_{i}y_{i}b_{i} $. This proves that there
+is an upper bound to the maximization problem, and the smaller is the
+upper bound the better.
+
+\begin{definition}
+  A semidefinite program in the form~\eqref{eq:sdp-primal} is called
+  the \introduceterm{primal} program, and its \introduceterm{dual} is the program
+  \begin{alignat*}{2}
+    \minimize  b^{T}y\\
+    \subjectto  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succeq 0
+  \end{alignat*}
+\end{definition}
+
+The primal and the dual programs bound each other, assuming they have
+feasible solution. We know that in linear programming the optimum
+values for the two programs are the same. In semidefinite programming
+the things are a little bit more tricky.  We start by proving a
+version of Farkas Lemma for this framework.
+
+\begin{lemma}[Farkas Lemma for semidefinite programs]
+  Let be $A_{1}, A_{2}, \ldots A_{m}$ and $B$ some $n \times n$
+  symmetric matrices over the reals. Then the inequality
+  \begin{equation}
+    y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m} - B \succ 0
+  \end{equation}
+  has no solutions $ y_{1}, y_{2}, \ldots,y_{m} $ if and only if there
+  exists a symmetric matrix $ X\not=0 $
+\begin{alignat*}{2}
+  \pointwiseprod{A_{1}}{X} = 0\\
+   \pointwiseprod{A_{2}}{X} = 0\\
+   \vdots \\
+   \pointwiseprod{A_{m}}{X} = 0 \\
+   \pointwiseprod{B}{X} \geq 0\\
+   X \succeq 0.
+\end{alignat*}
+\end{lemma}
+\begin{proof}
+
+  \stressterm{If part:} A for a solution $X$ for the second system
+  implies that
+  \begin{equation}
+    \pointwiseprod{Y}{X}
+    \leq 0
+  \end{equation}
+  for any $ Y=y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m}-B $, and
+  since $ X\succeq 0 $ and $ X\not=0 $ then by
+  fact~\ref{fact:strict_positive_pointwise} it holds that $ Y $ is not
+  positive definite\footnote{We will see that this part cannot be
+    improved to provide proof of unsatisfiability in case the
+    constraint is relaxed to $ Y\succeq 0 $.}.
+
+  \stressterm{Only if:} This part is more difficult so we first prove
+  it with $ B=0 $.
+
+  Consider the linear subspace $ L\subseteq\RR^{n \times n} $
+  generated by $y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m}$.
+  %
+  If $ L $ is disjoint from the interior of the convex cone $
+  \positivesemidefinite[n] $, then there is an hyperplane $ H $
+  separating $ L $ and the interior of
+  $\positivesemidefinite$\footnote{We use the hyperplane separator
+    theorem, which proof is outside of the scope of this course.}.
+  %
+  Assume $H$ is characterized by some non trivial equation $
+  \pointwiseprod{X}{Y}=0$ where $ X $ are the coefficients and $ Y $
+  the variables. Matrix $ X $ can be made symmetric, and since the
+  equation is non trivial, $ X\not=0 $.
+  %
+  $ L $ must be contained in $H$ otherwise $ L $ would not be in one
+  of the halfspaces. It follows that $ \pointwiseprod{X}{A_{i}}=
+  \pointwiseprod{A_{i}}{X}=0 $ for every $ i $. 
+  %
+  For every $ Y\in\positivesemidefinite[n] $ the separator $ X $ has $
+  \pointwiseprod{X}{Y}\geq 0 $ which implies $ X \succeq 0 $
+  because of fact~\ref{fact:positive_pointwise}.  
+ 
+  Now we go back to $ B\not=0$. We consider the new constraint
+  \begin{equation}
+    y_{1}\begin{bmatrix}A_{1} & 0\\ 0 & 0\end{bmatrix}
+    +y_{2}\begin{bmatrix}A_{2} & 0\\ 0 & 0\end{bmatrix} + \cdots
+    +y_{m}\begin{bmatrix}A_{m} & 0\\ 0 & 0\end{bmatrix} 
+    + z \begin{bmatrix} -B & 0\\ 0 & 1\end{bmatrix} \succ 0
+  \end{equation}
+  which is equivalent to the former one: if $ z=0 $ then the sum
+  is not positive definite, so $ z\not=0 $ in any solution. 
+
+  If there is no such solution there must be a non zero $ n+1 \times
+  n+1 $ matrix $ X'\succeq 0 $. Let us call $X$ the submatrix made by
+  its $ n $ first columns and rows. Then $ \pointwiseprod{A_{i}}{X}
+  =0$ and $ \pointwiseprod{\begin{bmatrix} -B & 0\\ 0 &
+      1\end{bmatrix}}{X'} = -\pointwiseprod{B}{X}+x'_{n+1,n+1} = 0
+  $. By semidefiniteness of $ X'$ then $ x'_{n+1,n+1}\geq 0$ and thus
+  $ \pointwiseprod{B}{X}\geq 0 $.
+\end{proof}
+
+We are now set to prove the duality theorem. In a way similar to
+linear programming duality, the Farkas lemma provides a general way to
+witness unsatisfiability of the primal by the means of the dual, and
+vice versa. Unfortunately for the case of semidefinite programming
+there is some condition in order to get strong duality\footnote{This
+  is called \introduceterm{Slater condition} and apply in general to
+  convex programming. If both the primal and the dual have strictly
+  feasible solutions, \ie solutions which are in the interior of the
+  convex body, then strong duality in convex programming
+  follows. Notice that the solutions do not need to be optimal
+  ones.}.
+
+\begin{theorem}
+  Assume both primal and dual have feasible solutions. Then $v_{P}
+  \geq v_{D}$, where $v_{P}$ and $ v_{D} $ are the optimal values to
+  the primal and dual respectively. Moreover, if the primal has a
+  strictly feasible solution (a solution $X$ such that $X \succ 0$,
+  \ie $X$ is positive definite) then 
+  \begin{enumerate}
+    \item The dual optimum is attained (which is not always the case
+    for SDPs)
+    \item $ v_{P} = v_{D}$ 
+    \item 
+  \end{enumerate}
+  Similarly, if the dual is strictly feasible, then the primal optimal
+  value is achieved, and equals the dual optimal value. Hence, if both
+  the primal and dual have strictly feasible solutions, then both
+  $v_{P}$ and $v_{D}$ are attained.
+  \end{theorem}
+
 
 We are going to witness unsatisfiability of a semidefinite program as
 follow:
@@ -255,6 +450,9 @@ follow:
 
 
 \section{Examples\ldots (probably not enough time)}
+
+
+
 
 % ------------------------- EPILOGUE ------------------------------
 \bibliography{soscourse}
