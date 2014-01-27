@@ -143,11 +143,6 @@ $ y^{T}Ay \leq 0 $.
 \end{fact}
 
 \begin{fact}
-  Let $A$ and $B$ any symmetric matrices, then $
-  \trace{AB}=\pointwiseprod{A}{B} $.
-\end{fact}
-
-\begin{fact}
   Let any two matrices $ A \in\RR^{n\times m}$ and $ B \in\RR^{m\times
     n} $. Then $ \trace{AB}= \trace{BA}$.
 \end{fact}
@@ -230,9 +225,12 @@ relaxation. We constrain $Y$ to be positive semidefinite.
 
 A semidefinite program is a refinement of a linear program in which
 the variables have a natural square matrix structure, and such
-structure is a positive semidefinite matrix. We denote semidefinite
-programs (\sdp) in one of this way (which are equivalent because of
-the Cholesky decomposition).
+structure is a positive semidefinite matrix. Semidefinite programming
+has found many uses in combinatorics and approximation
+algorithms~\cite{gartner2012approximation}.
+%
+We denote semidefinite programs (\sdp) in one of this way (which are
+equivalent because of the Cholesky decomposition).
 
 \begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
@@ -509,8 +507,139 @@ there is some condition in order to get strong duality\footnote{This
   solution then the dual optimum is attained as well.
 \end{exercise}
 
-\section{Examples of \sdp with bad behavior}
+\section{Examples of \sdp\ with bad behavior}
 
+In the proof of the strong duality theorem
+(Theorem~\ref{thm:strongduality}) the optimum is attained by assuming
+that the there is a strictly feasible dual solution. Furthermore we
+used that to prove that primal and dual optimum are the same.  We will
+see classic examples from\cite{lovasz2003semidefinite} in which the
+two optimum are not the same (\ie\ there is a \introduceterm{duality
+  gap}) or in which the optimum is only reached in the limit.
+
+\begin{example}\label{eg:sdp-limit-solution}
+  Consider the program
+  \begin{alignat*}{2}
+    \maximize -x_{1}\\
+    \subjectto \begin{bmatrix}
+      x_{1} & 1 & 0\\
+      1 & x_{2} & 0 \\
+      0 & 0 & x_{1}
+    \end{bmatrix}\succeq 0
+  \end{alignat*}
+
+  Because of the positive semidefinite requirement, we get that $
+  x_{1},x_{2}\geq 0 $ and that $ x_{1}x_{2}\geq 1 $. The objective
+  function  $ -x_{1} $ can get arbitrarily close to $ 0 $ but will
+  stay below it. This $ v_{P}=0 $ and there is no solution which
+  actually get to that value. 
+\end{example}
+
+So in the previous program we have an optimum, which is reached only
+in the limit.
+
+\begin{example}\label{eg:sdp-duality-gap}
+  Consider the primal program 
+  \begin{alignat}{2}
+    \maximize -x_{33}\\
+    \subjectto x_{12} + x_{21} + x_{33} = 1\\
+    & x_{22}=0\\
+    & X \succeq 0
+  \end{alignat}
+  The feasible solutions for this programs are matrices of the form 
+  \begin{equation}
+    \begin{bmatrix}
+      a & 0 & b\\
+      0 & 0 & 0\\
+      b & 0 & 1
+    \end{bmatrix}
+  \end{equation}
+ which $ a \geq b^{2} $ and $ v_{P}=-1 $. Now we consider its dual
+ program
+  \begin{alignat}{2}
+    \minimize y_{1}\\
+    \subjectto y_{1} \begin{bmatrix}
+      0 & 1 & 0\\
+      1 & 0 & 0\\
+      0 & 0 & 1
+    \end{bmatrix} + 
+    y_{2} \begin{bmatrix}
+      0 & 0 & 0\\
+      0 & 1 & 0\\
+      0 & 0 & 0
+    \end{bmatrix} 
+    \succeq 
+    \begin{bmatrix}
+      0 & 0 & 0\\
+      0 & 0 & 0\\
+      0 & 0 & -1
+    \end{bmatrix}
+  \end{alignat}
+  Dual solutions have $ y_{1}=0 $ and $ y_{2}\geq 0 $, thus $ v_{D}=0
+  $. See that $ v_{P} < v_{D} $, thus there is a duality gap of $ -1 $.
+\end{example}
+
+\begin{example}\label{eg:sdp-close-gap}
+  Consider a variant of the program in
+  Example~\ref{eg:sdp-duality-gap} where $ x_{11} $ is involved in the
+  optimized function.
+  \begin{alignat}{2}
+    \maximize -\epsilon x_{11} -x_{33}\\
+    \subjectto x_{12} + x_{21} + x_{33} = 1\\
+    & x_{22}=0\\
+    & X \succeq 0
+  \end{alignat}
+  The feasible solutions for this programs do not change, and are
+  still matrices of the form
+  \begin{equation}
+    \begin{bmatrix}
+      a & 0 & b\\
+      0 & 0 & 0\\
+      b & 0 & 1
+    \end{bmatrix}
+  \end{equation}
+  where $ a \geq b^{2} $ and so $ v_{P}=-1$ as in the previous case,
+  since it pays to make $ a$ as small as possible and we can fix it to
+  be $ 0 $. Now we consider its dual program
+  \begin{alignat}{2}
+    \minimize y_{1}\\
+    \subjectto y_{1} \begin{bmatrix}
+      0 & 1 & 0\\
+      1 & 0 & 0\\
+      0 & 0 & 1
+    \end{bmatrix} + 
+    y_{2} \begin{bmatrix}
+      0 & 0 & 0\\
+      0 & 1 & 0\\
+      0 & 0 & 0
+    \end{bmatrix} 
+    \succeq 
+    \begin{bmatrix}
+      -\epsilon & 0 & 0\\
+      0 & 0 & 0\\
+      0 & 0 & -1
+    \end{bmatrix}\label{eq:dual_constraint}
+  \end{alignat}
+  Now see that with $ y_{1}=-1 $ and $ y_{2}= \frac{1}{\epsilon} $ the
+  constrain matrix in \eqref{eq:dual_constraint} is
+  \begin{equation}
+    \begin{bmatrix}
+      \epsilon & -1 & 0\\
+      -1 & \frac{1}{\epsilon} & 0\\
+      0 & 0 & 0
+    \end{bmatrix} = \begin{bmatrix}
+      \sqrt{\epsilon} \\
+      -\frac{1}{\sqrt{\epsilon}}\\
+      0
+    \end{bmatrix}
+    \cdot
+    \begin{bmatrix}
+      \sqrt{\epsilon} & -\frac{1}{\sqrt{\epsilon}} & 0.
+    \end{bmatrix}
+  \end{equation}
+  Since the matrix is positive semidefinite then the dual solution is
+  feasible and $ v_{D}=-1 $, equal to the primal optimum.
+\end{example}
 
 
 
