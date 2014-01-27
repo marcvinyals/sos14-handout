@@ -193,19 +193,19 @@ expressed by the left quadratic program that follows.
 
 \begin{figure*}
 \begin{minipage}[t]{0.5\textwidth}
-\begin{alignat*}{2}\label{eq:maxindset1}
-  \maximize \sum_{i}x_{i}\\
-  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$}\\
-  & x^{2}_{i} -x_{i}= 0
-\end{alignat*}
+\begin{alignat}{2}
+  \maximize \sum_{i}x_{i} \notag\\
+  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$} \label{eq:maxindset1}\\
+  & x^{2}_{i} -x_{i}= 0 \notag
+\end{alignat}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
-\begin{alignat*}{2}
-  \maximize \sum_{i}x^{2}_{i}\\
-  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$}\\
-  & x^{2}_{i} -x_{0}x_{i} =0\\
-  & x^{2}_{0} = 1
-\end{alignat*}
+\begin{alignat}{2}
+  \maximize \sum_{i}x^{2}_{i} \notag\\
+  \subjectto x_{i}x_{j} =0 \qquad \text{\ if $\{i,j\}\in E$} \label{eq:maxindset2}\\
+  & x^{2}_{i} -x_{0}x_{i} =0 \notag\\
+  & x^{2}_{0} = 1 \notag
+\end{alignat}
 \end{minipage}
 \end{figure*}
 
@@ -238,26 +238,31 @@ the Cholesky decomposition).
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \pointwiseprod{C}{X}\\
-  \subjectto \pointwiseprod{A_{1}}{X} \leq b_{1}\\
-  & \pointwiseprod{A_{2}}{X} \leq b_{2}\\
+  \subjectto \pointwiseprod{A_{1}}{X} = b_{1}\\
+  & \pointwiseprod{A_{2}}{X} = b_{2}\\
   & \vdots \\
-  & \pointwiseprod{A_{\ell}}{X} \leq b_{\ell}\\
+  & \pointwiseprod{A_{\ell}}{X} = b_{\ell}\\
   & X \succeq 0
 \end{alignat*}
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \sum_{i,j}c_{i,j} (v_{i}^{T}v_{j}) \\
-  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})\leq b_{1}\\
-  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})\leq b_{2}\\
+  \subjectto \sum_{i,j} a_{i,j} (v^{T}_{i}v_{j})= b_{1}\\
+  & \sum_{i,j} a^{2}_{i,j} (v^{T}_{i}v_{j})= b_{2}\\
   & \vdots \\
-  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})\leq b_{\ell}\\
+  & \sum_{i,j} a^{\ell}_{i,j} (v^{T}_{i}v_{j})= b_{\ell}\\
   & |v_{0}| = 1
 \end{alignat*}
 \end{minipage}
 \end{figure}
 %
-Where $ A_i $ and $ C $ are symmetric matrices.  It is possible write
+Where $ A_i $ and $ C $ are symmetric matrices.  
+%
+A solution $X$ is called \introduceterm{strictly feasible} if $ X
+\succ 0 $.
+%
+It is possible write
 $\sdp$ in a more general fashion: we can have constraints on many
 different positive semidefinite matrices, since if $ X_{1}\succeq 0 $
 and $ X_{2} \succeq 0$ then $ \begin{bmatrix}
@@ -301,14 +306,14 @@ which is the key for semidefinite programming, as it was for linear
 programming.
 
 Consider a semidefinite program for an optimization problem. 
-\begin{alignat*}{2}
-  \maximize \pointwiseprod{C}{X}\\
-  \subjectto \pointwiseprod{A_{1}}{X} = b_{1}\\
-  & \pointwiseprod{A_{2}}{X} = b_{2}\\
-  & \vdots \\
-  & \pointwiseprod{A_{m}}{X} = b_{m}\\
-  & X \succeq 0
-\end{alignat*}
+\begin{alignat}{2}
+  \maximize \pointwiseprod{C}{X} \notag\\
+  \subjectto \pointwiseprod{A_{1}}{X} = b_{1} \notag\\
+  & \pointwiseprod{A_{2}}{X} = b_{2} \label{eq:sdp-primal}\tag{P}\\
+  & \vdots \notag\\
+  & \pointwiseprod{A_{m}}{X} = b_{m} \notag\\
+  & X \succeq 0 \notag
+\end{alignat}
 
 Consider a combination of proof lines with coefficient $ y^{T}=
 [y_{1}\ldots y_{m}]$, such that $ Y= \sum_{i}y_{i}A_{i} - C \succeq
@@ -325,10 +330,13 @@ upper bound the better.
 \begin{definition}
   A semidefinite program in the form~\eqref{eq:sdp-primal} is called
   the \introduceterm{primal} program, and its \introduceterm{dual} is the program
-  \begin{alignat*}{2}
-    \minimize  b^{T}y\\
-    \subjectto  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succeq 0
-  \end{alignat*}
+  \begin{alignat}{2}
+    \minimize  b^{T}y \notag \\
+    \subjectto  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succeq
+    0 \label{eq:sdp-dual} \tag{D}
+  \end{alignat}
+  A \introduceterm{strictly feasible} solution for this program is one
+  such  $  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succ 0 $.
 \end{definition}
 
 The primal and the dual programs bound each other, assuming they have
@@ -338,6 +346,7 @@ the things are a little bit more tricky.  We start by proving a
 version of Farkas Lemma for this framework.
 
 \begin{lemma}[Farkas Lemma for semidefinite programs]
+  \label{lmm:farkas_sdp}
   Let be $A_{1}, A_{2}, \ldots A_{m}$ and $B$ some $n \times n$
   symmetric matrices over the reals. Then the inequality
   \begin{equation}
@@ -425,31 +434,82 @@ there is some condition in order to get strong duality\footnote{This
   follows. Notice that the solutions do not need to be optimal
   ones.}.
 
-\begin{theorem}
+
+\begin{theorem}\label{thm:strongduality}
   Assume both primal and dual have feasible solutions. Then $v_{P}
   \geq v_{D}$, where $v_{P}$ and $ v_{D} $ are the optimal values to
-  the primal and dual respectively. Moreover, if the primal has a
-  strictly feasible solution (a solution $X$ such that $X \succ 0$,
-  \ie $X$ is positive definite) then 
+  the primal and dual respectively. Moreover, if the dual has a
+  strictly feasible solution then
   \begin{enumerate}
-    \item The dual optimum is attained (which is not always the case
-    for SDPs)
+    \item The primal optimum is attained
     \item $ v_{P} = v_{D}$ 
-    \item 
   \end{enumerate}
   Similarly, if the dual is strictly feasible, then the primal optimal
   value is achieved, and equals the dual optimal value. Hence, if both
   the primal and dual have strictly feasible solutions, then both
   $v_{P}$ and $v_{D}$ are attained.
-  \end{theorem}
+\end{theorem}
 
+\begin{proof}
+  Let be $X$ any solution for program~\eqref{eq:sdp-primal} and $ y $
+  a solution for program~\eqref{eq:sdp-dual}. By
+  Fact~\ref{fact:positive_pointwise} we get that
+  \begin{equation}
+    0 \leq \pointwiseprod{\sum_{i} y_{i} A_{i}-C}{X} = y^{T}b - \pointwiseprod{C}{X} 
+  \end{equation}
+  which means that $ v_{P} \leq v_{D}$\footnote{This part of the
+    theorem is often called weak duality theorem.}.
 
-We are going to witness unsatisfiability of a semidefinite program as
-follow:
+  Furthermore the constraints $ b^{T}y < v_{D} $ and $
+  \sum_{i}y_{i}A_{i} \succeq C $ have no feasible solution by
+  definition of the dual. Thus consider the matrices 
+  \begin{equation}
+    A'_{i} = \begin{bmatrix}
+      -b_{i} & 0\\
+      0 & A_{i}
+    \end{bmatrix}
+    \qquad
+    C' = \begin{bmatrix}
+      -v_{D} & 0\\
+      0 & C
+  \end{bmatrix}
+  \end{equation}
+  then the system $ \sum_{i}y_{i}A'_{i} \succ C' $ is unsatisfiable
+  and then by Farkas lemma there is a non zero positive semidefinite
+  matrix $X'$ such that $ \pointwiseprod{A'_{i}}{X'} = 0 $ for all $
+  1\leq i\leq m $ and $\pointwiseprod{C'}{X'} \geq 0 $. Let us write
+  \begin{equation}
+    X'=\begin{bmatrix}
+      x_{00} & x^{T}\\
+      x & X
+    \end{bmatrix}
+  \end{equation}
+  so we get that 
+  \begin{equation}\label{eq:scaled_primal_solution}
+    \pointwiseprod{A_{i}}{X} = x_{00}b_{i} \quad 
+    \text{for $i=1\ldots m$}
+    \qquad 
+    \pointwiseprod{C}{X} \geq x_{00}v_{d}.
+  \end{equation}
+  We claim that $ x_{00} \not= 0$ since otherwise $ X $ solution would
+  be a witness (by Farkas Lemma) of the unsolvability of
+  program~\eqref{eq:sdp-dual} by strict feasible solutions, and this
+  contradicts our assumptions. Since $ x_{00}\not=0 $ we can assume $
+  x_{00}=1 $ by scaling the solution in~\eqref{eq:scaled_primal_solution}. 
 
+  After rescaling, $ X $ is feasible a solution of
+  program~\eqref{eq:sdp-primal} with value $ \pointwiseprod{C}{X}\geq
+  v_{D} $. Thus we get that $ v_{D}\leq v_{P} $.
+\end{proof}
 
+\begin{exercise}
+  In the proof of Theorem~\ref{thm:strongduality} we showed only that
+  if the dual has strictly feasible solution then the primal optimum
+  is attained. Please prove that if the primal has strictly feasible
+  solution then the dual optimum is attained as well.
+\end{exercise}
 
-\section{Examples\ldots (probably not enough time)}
+\section{Examples of \sdp with bad behavior}
 
 
 
