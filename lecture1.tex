@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-27, 17:25 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-27, 23:01 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -32,29 +32,28 @@ This lecture is a sort of scaled down demo of the rest of the
 course. Here we see that we can express decisions and optimization
 problems by the means of \introduceterm{integer programs}. This
 translation works for $ \NP $-hard problems, thus there cannot be
-efficient algorithma to solve integer programs unless $\PTIME=\NP$,
+efficient algorithms to solve integer programs unless $\PTIME=\NP$,
 which is considered by many to be very unlikely\footnote{Most of the
-  hardness result we will see during the course won't rely on any
-  unproved assumption. This of course does not apply for guest
-  lectures.}.
+  hardness results we will see during the course won't rely on any
+  unproved assumption.}.
 
-In any case there are no \stressterm{known} efficient algorithm to
-solve integer programs, and a viable strategy is to
-\introduceterm{relax} the integer program to something more
-manageable: for example a liner program.
+In any case there is no \stressterm{known} efficient algorithm that
+solves integer programs; a viable strategy is to \introduceterm{relax}
+the integer programs to something easier to manage: for example liner
+programs.
 
-The most naive way to do that is to transform the integrality
-constraints into fractional linear constraints, \eg $ x \in\{0,1\} $
-into $ 0 \leq x \leq 1 $, and leave the other constraints as they
-are\footnote{We can assume that all such constraints are affine,
-  namely of the three forms
+The most naive way to do that is to transform the integral constraints
+into fractional linear constraints, \eg $ x \in\{0,1\} $ into $ 0 \leq
+x \leq 1 $, and leave the other constraints alone\footnote{We can
+  assume that all such constraints are affine, namely they have one of
+  the three forms
   \begin{equation*}
     \sum_{i}a_{i}x_{i} \leq b \quad   \sum_{i}a_{i}x_{i} \geq b \quad \sum_{i}a_{i}x_{i} = b
   \end{equation*}
   for $a_i$ and $ b $ in \RR}.
 
 Once we relax the integer program we have a lot of new fractional
-solution that are not allowed in the integer one. For example consider
+solutions that were not allowed before. Consider, for example,
 the program that characterizes the maximum independent sets of graph $
 K_{3} $, \ie, the triangle.
 
@@ -66,31 +65,31 @@ K_{3} $, \ie, the triangle.
              & \varboolean{x_{1}},\ \varboolean{x_{2}},\ \varboolean{x_{3}}.\notag
 \end{alignat}
 
-Its \introduceterm{integer optimum} is 1 since no two variables can be
-both 1, but if we relax the constraints and allow $ \varbounded{x_{i}}
-$, then the linear program has a \introduceterm{fractional optimum}
-of $ \frac{3}{2} $, by setting all variables to $\frac{1}{2}$.
+Its \introduceterm{integer optimum} is 1, but if we relax the
+constraints and allow $ \varbounded{x_{i}} $, then the linear program
+has a \introduceterm{fractional optimum} of $ \frac{3}{2} $, by
+setting all variables to $\frac{1}{2}$.
 
-Most of the course will study systematic techniques to improve the
-relaxation, adding variables and inequalities in order to
+During most of the course we will study systematic techniques to
+improve the relaxation: we add variables and inequalities in order to
 \stressterm{cut away} feasible fractional solutions without changing
 the set of integer solutions. The quality and the complexity of such
 techniques is controlled by a parameter called \introduceterm{rank}:
-larger the rank, less fractional solution remain.
+the larger the rank, the fewer fractional solutions remain.
 
 \section{Linear programming}
 
-The most classic and studied optimization formalism is
-\introduceterm{linear programming}, which is illustrated by books as
+The most studied optimization formalism is \introduceterm{linear
+  programming}, which is illustrated by books as
 \cite{matousek2007understanding}: we want to optimize (either minimize
 of maximize) a linear function $ \sum_{i} c_{i}x_{i} $ over the set of
 variables $ \{x_{i}\}^{n}_{i=1} $, which are constrained to satisfy a
 set of linear inequalities and linear equations. Without loss of
 generality we can assume a linear program to have one of the following
-forms\footnote{While we will discuss the left form more often, the
+forms\footnote{While we will discuss the left form more often. The
   right one is also very common and is called the
   \introduceterm{standard form}. The standard form is particularly
-  useful in the simplex implementation.}.
+  useful in implementations of the simplex algorithm.}.
 
 \begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
@@ -109,19 +108,19 @@ forms\footnote{While we will discuss the left form more often, the
 \end{figure}
 
 
-In order to optimize a linear program it is of course necessary to
-understand is the program is \stressterm{feasible}, \ie if the is a
-value of $ x $ that satisfies, for example the linear inequalities $Ax
-\leq b$. Thus linear programs can describe both \stressterm{decision} and
+In order to optimize a linear program it we need to check if the
+program is \stressterm{feasible}, \ie if there is a value of $ x $
+that satisfies the linear constraints. Indeed we can use linear
+programs to describe either \stressterm{decision} or
 \stressterm{optimization} problems.
 
-The striking feature of linear program is the possibility to
+The striking feature of linear programming is the possibility to
 \stressterm{witness} the unsatisfiability of a set of linear
-inequalities. This feature is formalized by \introduceterm{Farkas
+inequalities. This feature is formalized by \introduceterm{Farkas'
   Lemma}: as it happens often with fundamental results, there are
-several ways to state Farkas Lemma.
+several ways to state Farkas' Lemma.
 
-\begin{lemma}[Farkas Lemma]
+\begin{lemma}[Farkas' Lemma for linear programming] 
   A set of linear inequalities $ Ax \leq b $ is unsatisfiable if and
   only if there exists a positive vector $ y \geq 0$ such that $
   y^{T}A = 0$ and $y^{T}b = -1$.
@@ -133,28 +132,28 @@ several ways to state Farkas Lemma.
   % how large and how hard to find is a proof that a set of constraints
   % is unsatisfiable of that a function cannot be optimized pass a
   % certain threshold.
-  Given two inequalities $ a^{T}x \leq b $ and $c^{T}x \leq d$ then
-  any positive combination is a semantic consequence. Thus we can
+  Two inequalities $ a^{T}x \leq b $ and $c^{T}x \leq d$ entail any
+  positive combination as a logical consequence. Thus we can
   design a proof system $\proofsystem{LP}$ for sets of linear
   inequalities with the following inference rule,
   \begin{equation*}
     \frac{a^{T}x \leq b \quad c^{T}x \leq d}{(\alpha a + \gamma c)x
       \leq (\alpha b + \gamma d)x  }
   \end{equation*}
-  with $\alpha \geq 0, \gamma \geq 0$. Farkas Lemma states that such
-  proof system can always deduce a contradiction $ 0 \leq -1 $ from a
-  set of unsatisfiable linear inequalities.
+  with $\alpha \geq 0, \gamma \geq 0$. Farkas' Lemma claims that such
+  proof system can deduce the contradiction $ 0 \leq -1 $ from any
+  unsatisfiable set of linear inequalities.
 \end{marginfigure}
 
-If the linear program is used for optimization, it is interesting that
-we can take positive combinations to prove bounds on the function to
-be optimized. Start with the \introduceterm{primal} program that asks to minimize $c^{T}x$
-under constraints $ Ax \leq b, x\geq 0$ (notice that we highlighted
-the non-negativity constraints). Now consider a non negative vector $
-y^{T}$ such that $ y^{T}A \geq c^{T}$ and such that $ y^{T}b = v$. For
-every feasible solution $ x $ of the primal program it holds that 
+If the linear program represents an optimization problem we can even
+take positive combinations to prove bounds on the function to be
+optimized. We start with the \introduceterm{primal} program that asks
+to maximize $c^{T}x$ under constraints $ Ax \leq b$ and $ x\geq 0$ (notice
+that we highlighted the non negativity constraints). Now consider a
+non negative vector $ y^{T}$ such that $ y^{T}A \geq c^{T}$. For every
+feasible solution $ x $ of the primal program it holds that
 \begin{equation}
-  c^{T} x \leq y^{T}Ax \leq y^{T} b\tag{weak duality}\label{eq:weak_duality}
+  c^{T} x \leq y^{T}Ax \leq y^{T} b\tag{weak duality}\label{eq:weak_duality}.
 \end{equation}
 Thus the solution $ y\geq 0 $ witnesses the \stressterm{upper bound} $
 b^{T}y $ to the maximum achievable in the primal
@@ -175,37 +174,38 @@ of~\eqref{eq:dualprogram} is~\eqref{eq:primalprogram}.
 \begin{minipage}[t]{0.5\textwidth}%
 \begin{alignat}{2}
   \minimize b^{T}y \notag\\
-  \label{eq:dualprogram}  \subjectto A^{T}y \leq c \tag{D}\\
+  \label{eq:dualprogram}  \subjectto A^{T}y \geq c \tag{D}\\
   & \varpositive{y}\notag
 \end{alignat}
 \end{minipage}
 \end{figure}
 
-We saw that Farkas Lemma gives a complete solution of the decision
-case. From the same Farkas Lemma it is possible to prove the
-\introduceterm{duality theorem}, which basically claims that there are
-solutions of the dual program that witness tight bounds on the primal
-program (and viceversa).
+Farkas' Lemma gives a complete solution of the decision case, but
+Farkas' Lemma also implies the \introduceterm{duality theorem}, which
+basically claims that there are solutions of the dual program that
+witness tight bounds for the primal program (and vice versa).
 
 \begin{marginfigure}
-  As in the case of Farkas Lemma,
-  Theorem claims that proof system $\proofsystem{LP}$ is complete in
-  the sense that can prove all valid linear inequalities.
+  Theorem~\ref{thm:lp-duality} claims that proof system
+  $\proofsystem{LP}$ can prove all valid linear inequalities. In proof
+  theoretic jargon:  Farkas' Lemma is the completeness of
+  $\proofsystem{LP}$, while Theorem~\ref{thm:lp-duality} is the 
+  implicational completeness of $ \proofsystem{LP}$.
 \end{marginfigure}
 
-\begin{theorem}[Duality theorem]
+\begin{theorem}[Duality theorem]\label{thm:lp-duality}
   Consider the linear programs~\eqref{eq:primalprogram}
-  and~\eqref{eq:dualprogram}, exactly one of the following happens
+  and~\eqref{eq:dualprogram}, exactly one of the following holds
   \begin{itemize}
-    \item Neither~\eqref{eq:primalprogram} nor~\eqref{eq:dualprogram} have a
-    feasible solution.
-    \item Program~\eqref{eq:primalprogram} has solutions with
-    arbitrarily large value, and program~\eqref{eq:dualprogram} is
-    unfeasible.
-    \item Program~\eqref{eq:dualprogram} has solutions with
-    arbitrarily small value, and program~\eqref{eq:primalprogram} is
-    unfeasible.
-    \item Both~\eqref{eq:primalprogram} and~\eqref{eq:dualprogram}
+    \item neither~\eqref{eq:primalprogram} nor~\eqref{eq:dualprogram} have a
+    feasible solution;
+    \item program~\eqref{eq:primalprogram} has solutions with
+    arbitrarily large values, and program~\eqref{eq:dualprogram} is
+    unsatisfiable;
+    \item program~\eqref{eq:dualprogram} has solutions with
+    arbitrarily small values, and program~\eqref{eq:primalprogram} is
+    unsatisfiable;
+    \item both~\eqref{eq:primalprogram} and~\eqref{eq:dualprogram}
     have optimal solutions. Let $ x^{*}$ and $ y^{*}$ such solutions, then
     \begin{equation*}
       c^{T} x^{*}=b^{T}y^{*}.
@@ -216,49 +216,52 @@ program (and viceversa).
 \section{Complexity of Linear programming}
 
 Deciding the satisfiability of a set of linear inequalities is clearly
-in \NP\@.  Farkas Lemma and Duality Theorem shows that also deciding
-its unsatisfiability is in \NP, thus the problem is in $ \NP \cap
-\coNP $. But actually there are well known efficient algorithms for
-this problem. All of them are based the geometric interpretation of
-the system of linear inequalities as a convex polyhedron. 
+in \NP.
+% 
+Farkas' Lemma and Duality Theorem show that deciding its
+unsatisfiability is also in \NP, thus the problem is in $ \NP \cap \coNP
+$. But actually there are well known efficient algorithms for this
+problem. All of them are based the geometric interpretation of the
+system of linear inequalities as a convex polyhedron.
 \begin{itemize}
-  \item The \introduceterm{simplex method} is the first algorithm
-  invented for linear programming and has been invented by (Dantzig,
-  1947). It does not run in polynomial time, but it is quite fast in
-  practice. The idea is to walk on the edges of the polyhedron induced
-  by the linear program, in order to reach the vertex with optimal
-  value.
+  \item The \introduceterm{simplex method} is the first algorithm for
+  linear programming and has been invented by Dantzig (1947). It does
+  not run in polynomial time, but it is quite fast in practice. The
+  idea is to walk on the edges of the polyhedron induced by the linear
+  program, in order to reach the vertex with optimal value.
   \item The first polynomial time algorithm for linear programming is
   based on the \introduceterm{ellipsoid method} (Khachyian, 1979). The
-  simplex is much faster in practice, but of course the ellipsoid has
-  great theoretical value, and runs under more general conditions. For
-  example super polynomial size linear programs, assuming the program
-  has an efficient \introduceterm{separator}\footnote{A separator is
-    an oracle that, given a point $x$ outside of the set of feasible
-    solutions $F$, outputs an hyperplan separating $ p$ from $ F$.}.
-  The algorithms assumes that the set of feasible solutions is in a
-  0-centered ball of large enough radius, and completely
-  contains some ball of range $ \epsilon $.
+  simplex method is much faster in practice, but of course the
+  ellipsoid method has great theoretical value, and runs under more
+  general conditions. For example it allows to optimize over super
+  polynomial size linear programs in polynomial time, assuming the
+  program has an efficient \introduceterm{separator}\footnote{A
+    separator is an oracle that, given a point $x$ outside the set
+    of feasible solutions $F$, outputs an hyperplane separating $ x$
+    from $ F$.}.  The algorithm assumes that the set of feasible
+  solutions is in a 0-centered ball of large enough radius, and that
+  it completely contains some ball of range $ \epsilon $.
   %
-  The algorithm check whether the center of the ball is feasible. If
-  it is not then the separator oracle suggest which half of the ball
+  The algorithm checks whether the center of the ball is feasible. If
+  it is not then the separator oracle suggests which half of the ball
   to save and which to forget. A new ellipsoid of smaller volume
   ``encircles'' the useful half.  The idea is to encircle the set of
   feasible solutions with smaller and smaller ellipsoids, until either
-  the center of the one ellipsoid is feasible or the ellipsoid is so
-  small that cannot contain a ball of range $ \epsilon $.
+  the center of the last ellipsoid is a feasible solution or the
+  ellipsoid is so small that cannot contain a ball of range $ \epsilon
+  $.
   
   \item Since the ellipsoid method is so inefficient in practice, the
-  simplex is usually preferred. The advent of \introduceterm{interior
-    point methods} changed the scenario, providing a family of
-  polynomial time algorithms which are fast in practice. The first
-  member of such family is due to Karmakar (1984): his algorithm is
-  based on the idea of exploring the space of solution walking through
-  the interior of the polytope. The original algorithm was not faster
-  than the simplex method but nowadays there are competitive
-  improvements and variants. We must observe that interior point
-  methods were already used in the context of non-linear programming
-  way before than Karmakar algorithm.
+  simplex method is usually preferred. The advent of
+  \introduceterm{interior point methods} changed the scenario,
+  providing a family of polynomial time algorithms which are fast in
+  practice. The first member of this family is due to Karmakar (1984):
+  his algorithm is based on the idea of exploring the space of
+  solutions by walking through the interior of the polytope. The
+  original algorithm was not faster than the simplex method but
+  nowadays there are competitive implementations and variants. We must
+  observe that interior point methods were already employed in the
+  context of non-linear programming way before Karmakar algorithm.
 \end{itemize}
 
 \section{Integer programs and Linear relaxations}
@@ -266,21 +269,21 @@ the system of linear inequalities as a convex polyhedron.
 Most problems in computer science require solutions that are discrete,
 integer or $ \{0,1\} $. It is not possible express such constraints as
 linear inequalities, so we need a new formalism called
-\introduceterm{integer program}. An integer program may have the
-following form.
+\introduceterm{integer programming}. An integer program may have the
+form
 
 \begin{alignat*}{2}
   \maximize  c^{T}x\\
   \subjectto Ax \leq b\\
-  & \varboolean{x_{i}}\text{\ or\ }\vardomain{x_{i}}{\ZZ} 
+  & \varboolean{x_{i}}\text{\ or\ }\vardomain{x_{i}}{\ZZ}.
 \end{alignat*}
 
 It is pretty clear that integer programs are in $ \NP $, and that they
-are expressive enough to encode $\NP$-complete problems, thus Integer
+are expressive enough to encode $\NP$-complete problems, thus integer
 programming is $\NP$-complete.
 %
-With a \introduceterm{linear relaxation} we trade the expressibility
-of the program with and efficient solver. We drop all non-linear
+With a \introduceterm{linear relaxation} we trade expressibility
+for efficiency: we drop all non-linear
 constraints and we substitute them with fractional ones (\eg, $
 x_{i}\in \ZZ $ becomes $ x_{i}\in\RR $ and $ x_{i} \in\{0,1\} $
 becomes $ 0\leq x_{i}\leq 1 $).
@@ -290,12 +293,13 @@ becomes $ 0\leq x_{i}\leq 1 $).
   Consider the bipartite graph $G=(L,R,E)$, where $L$ and $R$ are two
   disjoint sets of vertices and $ E\subseteq L\times R $, and consider
   a weight function $\functionsignature{w}{E}{\RR} $.  The Maximum
-  weighted bipartite matching problem looks for the largest matching
-  in the bipartite graph, and we can encoding as follows.
+  weighted bipartite matching problem looks for the matching of
+  largest weight in the bipartite graph, and we can represent it with
+  an integer program
   \begin{alignat*}{3}
     \maximize \sum_{e\in E} w(e) x_{e}\\
     \subjectto \sum_{e \ni v} x_{e} =1 \quad \text{for each $v\in L\cup R$}\\
-    & x_{e} \in\{0,1\}
+    & x_{e} \in\{0,1\}.
   \end{alignat*}
   This is one of the few cases for which the integer program and its linear
   relaxation have the \stressterm{same optimum value}.
@@ -306,9 +310,10 @@ Example~\ref{eg:bipartitematching} is in the following property of the
 matrix of constraints.
 
 \begin{marginfigure}
-  The criteria of total unimodularity given in Definition~\ref{def:tum} is
-  not efficiently verifiable. Instead there are other sufficient (but
-  maybe not necessary) criteria which can be verified in polynomial time.
+  The criterion of total unimodularity given in
+  Definition~\ref{def:tum} is not efficiently verifiable. Instead
+  there are other sufficient criteria which can be verified in
+  polynomial time.
 \end{marginfigure}
 
 \begin{definition}\label{def:tum}
@@ -323,16 +328,16 @@ matrix of constraints.
 \end{theorem}
 
 The previous theorem implies that an integer program with total
-unimodular matrix of constrains can be solved efficiently by solving
+unimodular matrix of constraints can be efficiently solved by solving
 its linear relaxation.
 
 
 \section{Integrality gaps and Rounding}
 
-In the case of Example~\ref{eg:bipartitematching}, we saw that the
+In the case of Example~\ref{eg:bipartitematching} we saw that the
 integer program and its linear relaxation have the same optimum, but
-this is not necessarily the same. Actually the gap between the integer
-and the fractional optimum can be as large as possible.\footnote{%
+this is not the case in general. Actually the gap between the integer
+and the fractional optimum can be very large.\footnote{%
   Consider the problem of computing the maximum independent set of a
   graph $ G=(V,E) $. In this case we want to maximize the objective
   function $ \sum_{v\in V} x_{v} $ under the assumption that $
@@ -346,15 +351,15 @@ For an optimization problem we may consider $\sOPT$, the integer
 optimum, and $ \sFRAC$, which is the optimum of the relaxation. A
 strategy to solve integer program is to relax it in some way, and to
 \introduceterm{round its fractional solution} in order to get an
-integer feasible solution. The rounding techniques is strongly
+integer feasible solution. The rounding technique is strongly
 dependent on the particular optimization problem and it is out of the
 scope of this lecture.
 %
-Let $ \sROUND $ denotes such solution, then for (say) a minimization problem
+Let $ \sROUND $ denotes such solution, then for (say) a maximization problem
 we have
 \begin{equation}
   \label{eq:round_opt_frac}
-  \sFRAC \leq \sOPT \leq \sROUND
+  \sFRAC \geq \sOPT \geq \sROUND
 \end{equation}
 
 \begin{definition}
@@ -365,19 +370,22 @@ we have
 is the \introduceterm{integrality gap} of the relaxation.
 \end{definition}
 
-Very often the analysis of an approximation algorithm is achieved by
-determining the ratio between the fractional optimum and its rounded
-value, $ \frac{\sROUND}{\sFRAC} $. The latter is bounded from below by
-the integrality gap, 
+Very often the analysis of an approximation algorithm for a
+maximization problem is achieved by determining the ratio between the
+fractional optimum and its rounded value, $ \frac{\sROUND}{\sFRAC}
+$. The latter is bounded from above by the integrality
+gap\footnote{For a minimization problem we get $ \sFRAC \leq \sOPT
+  \leq \sROUND $, so the integrality gap actually lower bounds $
+  \frac{\sROUND}{\sFRAC}$.}.
 
 \section{Improving the linear relaxations}
 
-We discussed that the gap between the relaxed program and the integer
-one is a key concept correlated with approximation algorithms and in
-particular with their analysis. In order to get better relaxation we
-can add \stressterm{additional inequalities} to the initial
-program. Such inequalities are valid for integer solutions but still
-shave off some of the fractional solutions.
+We discussed the gap between an integer program and its linear
+relaxation, which is a key concept in the analysis of approximation
+algorithms. To get a tighter relaxation we can add
+\stressterm{additional inequalities} to the initial program. Such
+inequalities must be valid for integer solutions but may still shave
+off some of the fractional solutions.
 
 Given an arbitrary linear program let $ \sol{P}$ be the convex hull of
 its feasible solutions, and $ \sol{P}_{I} $ the convex hull of the
