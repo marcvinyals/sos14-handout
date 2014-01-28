@@ -1,13 +1,13 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-28, 00:07 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-28, 12:52 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
 \def\DataTitle{1. Linear relaxations of integer programs.}
 \def\DataTitleShort{Linear programming}
-\def\DataDate{27 January, 2014}
+\def\DataDate{28 January, 2014}
 \def\DataDocname{Lecture 1 --- \DataDate}
 \def\DataLecturer{Massimo Lauria}
 \def\DataScribe{Massimo Lauria}
@@ -386,6 +386,16 @@ algorithms. To get a tighter relaxation we can add
 \stressterm{additional inequalities} to the initial program. Such
 inequalities must be valid for integer solutions but may still shave
 off some of the fractional solutions.
+\begin{marginfigure}
+  Consider again the integer program for the maximum independent set
+  in~\eqref{eq:triangle-ind-set}. We know that any clique in the graph
+  can intersect the independent set with at most one element. So for
+  every maximal clique $ C $ we can add the linear constraint $
+  \sum_{v\in C}x_{v} \leq 1$. The graph in the example is indeed a
+  clique of three elements, so it is possible to make the linear
+  program equivalent to the integer one with just one such additional
+  inequality.
+\end{marginfigure}
 
 Given an arbitrary linear program let $ \sol{P}$ be the convex hull of
 its feasible solutions, and $ \sol{P}_{I} $ the convex hull of its
