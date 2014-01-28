@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-28, 13:32 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-28, 14:25 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -565,7 +565,22 @@ first the linear program is augmented to $ \approx n^{2} $ variables,
 and then is projected again to the original variables. Moving to the
 larger space allows to get tighter inequalities in the original space.
 
-\pagebreak
+\begin{example}
+  Consider the inequality $ x-\frac{1}{2} $, together with the
+  canonical inequalities $ 0\leq x \leq 1 $. The fractional solutions
+  are $ \frac{1}{2} \leq x \leq 1 $, but the only integer solution is
+  $ x=1 $. We now see a simple example of lift and project method with
+  an additional variable $ y $ which intended meaning is $ x^{2} $,
+  with $0\leq y \leq 1$. Variable $ y $ captures just some of the
+  properties of $ x^{2} $. Quadratic inequalities $ (x-\frac{1}{2})x
+  \geq 0 $ and $ (x-\frac{1}{2})(1-x) $ are be represented,
+  respectively, by $ y \geq \frac{1}{2}x $ and $ y \leq \frac{3x-1}{2}
+  $, and quadratic equation $ x^{2}-x=0 $ by $ y=x $.
+  %
+  Now the set of linear inequalities involving $ y$ implies
+  $(x,y)=(1,1)$, which gives $ x=1 $ after projection.
+  
+\end{example}
 
 \begin{theorem}\cite{lovasz1991cones}
   Let be $\sol{P}$ a polytope described by $ n^{O(1)} $
