@@ -7,18 +7,17 @@
 % ---------------------------- USER DATA ------------------------------
 \def\DataTitle{2. Semidefinite programming and Relaxation}
 \def\DataTitleShort{Semidefinite programming}
-\def\DataDate{28 January, 2014}
+\def\DataDate{30 January, 2014}
 \def\DataDocname{Lecture 2 --- \DataDate}
 \def\DataLecturer{Massimo Lauria}
 \def\DataScribe{Massimo Lauria}
 \def\DataKeywords{semidefinite programming, positive semidefinite matrices}
 
 \def\DataAbstract{%
-  Semidefinite programs have been proved to be valuable tools in
-  approximation algorithms and in combinatorial optimization, since
-  semidefinite relaxations are usually stronger than linear one. In
-  lecture we describe what is a semidefinite program and we
-  introduce hierarchies of sdp relaxations.}
+  Semidefinite programs is a valuable tools in approximation
+  algorithms and in combinatorial optimization, since semidefinite
+  relaxations are usually stronger than linear ones. In this lecture
+  we describe what is a semidefinite program.}
 
 % ---------------------------- PREAMBLE -------------------------------
 \documentclass[a4paper,twoside,justified]{tufte-handout}
@@ -42,8 +41,9 @@ A fundamental concept in semidefinite programming is the one of
   positive semidefinite and is also non-singular.
 \end{definition}
 We denote the set of positive semidefinite matrices in $\RR^{n\times
-  n}$ as $\positivesemidefinite$ and we say that $ A\succeq $ when $ A
-\in \positivesemidefinite $.
+  n}$ as $\positivesemidefinite$ and we say that $ A\succeq 0$ when $ A
+\in \positivesemidefinite $. We say that $ A \succ 0 $ when $ A $ is
+positive definite.
 
 \begin{fact}
   $ \positivesemidefinite $ is closed under positive
@@ -58,9 +58,9 @@ is positive semidefinite for $ \alpha_{1}\geq 0, \alpha_{2}\geq 0,
 
 \section{Matrix decompositions}
 
-Positive definite matrices have a lot of nice properties, and in
-particular they have a set of useful decomposition. If a matrix $ A
-\succ 0 $ then there are decompositions
+
+Positive definite matrices have a set of useful decomposition. If a
+matrix $ A \succ 0 $ then there are decompositions
 
 \begin{align}
   A = U^{T}U & & \text{Cholesky decomposition}\\
@@ -71,23 +71,42 @@ particular they have a set of useful decomposition. If a matrix $ A
 where $ U,L,D,Q,\Lambda $ are real matrices in $ \RR^{n\times n}
 $. Furthermore $ U,L,D $ are unique.
 
+\begin{marginfigure}
+  \stressterm{Spectral decomposition:} we have that $A$ is symmetric
+  and we need to show that eigenspaces with different eigenvalues are
+  orthogonal: pick $ x $ with eigenvalue $ \lambda $ and $ y $ with
+  eigenvalue $ \mu $,
+  \begin{equation}
+   x^{T} A y = \lambda x^{T} y = \mu x^{T}y
+  \end{equation}
+  If $ \lambda \not=\mu $ then $ x^{T}y=0 $.
+
+  Symmetric real matrices have real eigenvalues: since $A$ is real,
+  the eigenvectors can be real as well. For any eigenvector $
+  x $ with eigenvalue $ \lambda $, we get that $ (Ax)^{T} Ax = x^{T}
+  A^{T} A x = x^{T} A A x = \lambda^{2} |x|^{2}$ is real and
+  positive. Thus $ \lambda $ is real.
+
+  Positive semidefiniteness of $ A $ implies that $ \lambda $ is also
+  positive.
+\end{marginfigure}
+%
+
+
 In \introduceterm{spectral decomposition} (also called
 \introduceterm{eigendecomposition}), matrix $ Q $ is an
-\introduceterm{orthogonal matrix} which columns are unitary
-eigenvectors of $ A $, \ie $ QQ^{T} = I$, and $ \Lambda $ is the
-diagonal matrix containing the corresponding positive
-eigenvectors\footnote{to prove this first you show that every
-  eigenvalue is real and positive, and then that eingenspaces with
-  different eigenvalues are orthogonal.}.
+\introduceterm{orthogonal matrix}---it columns are unitary eigenvectors
+of $ A $, \ie $ QQ^{T} = I$; and $ \Lambda $ is the diagonal matrix
+containing the corresponding positive eigenvalues.
 %
 Consider the Euclidean geometry induced by the norm $ x^{T}x $ , then
-the geometry induced by the norm $ x^{T}A x$ is an Euclidean one,
-where the space is scaled along different axis.
+the geometry induced by the norm $ x^{T}A x$ is Euclidean,
+but the space is scaled along different axis.
 
 In the \introduceterm{Cholesky decomposition} the matrix $ U $ is an
-upper triangular real matrix where diagonal entries are positive. This
-representation witnesses the fact that $ A $ is definite positive,
-since $ x^{T}A x = x^{T}U^{T}U x = |Ux|^{2} > 0 $.
+upper triangular real matrix. This representation witnesses the fact
+that $ A $ is definite positive, since $ x^{T}A x = x^{T}U^{T}U x =
+|Ux|^{2} > 0 $.
 
 The \introduceterm{LDL decomposition} is a slight modification of
 Cholesky decomposition. The matrix $ L$ is \introduceterm{lower unit
@@ -97,9 +116,9 @@ symmetric matrix, but for positive definite matrices the diagonal
 matrix $D$ has positive entries. The peculiarity of this
 decomposition is that the components of $ L $ and $ D $ are rational
 functions of the entries of $ A $. Indeed the LDL decomposition is a
-partial version of Cholesky decomposition which avoid computing square
+partial version of Cholesky decomposition that avoid computing square
 roots. The decomposition for positive definite matrix $A$ follows by
-induction from the equation (we have $\alpha>0$).
+induction from the equation (we have $\alpha>0$)
 \begin{equation}\label{eq:matr-decomp}
   \begin{bmatrix}
     \alpha & v^{T} \\
@@ -132,8 +151,13 @@ $ and $D$ can be zero; the matrices $ U $, $ L $, $ D $ are not uniquely
 defined; there are some zero eigenvectors in $ \Lambda $. In
 particular in equation~\eqref{eq:matr-decomp} we get that $ \alpha
 \geq 0 $ by positive semidefiniteness, but if $ \alpha $ is zero, then
-$ v $ must be the zero vector too, otherwise there would be $ y $ such that
-$ y^{T}Ay \leq 0 $.
+$ v $ must be the zero vector too, otherwise\footnote{If the matrix
+  has a minor $M=\begin{bmatrix}
+    0 & a\\ a & b
+  \end{bmatrix}$ then pick vector $y=[t,1] $. Then $ y^{T}My =
+  2ta+b^{2}$, which is negative for the appropriate choice of $ t $.}
+  there would be $ y $ such that
+  $ y^{T}Ay < 0 $.
 
 
 \section{Some useful facts about matrices}
@@ -158,16 +182,22 @@ $ y^{T}Ay \leq 0 $.
   $ for all $ B \in \positivesemidefinite $.
 \end{fact}
 \begin{proof}
-  If $ A $ and $ B $ as positive semidefinite, then by using the
-  spectral decomposition we represent $ A $ as $Q^{T}\Lambda Q$.
+  If $ A $ and $ B $ as positive semidefinite, then we represent $ A $
+  as $Q^{T}\Lambda Q$ using spectral decomposition and apply the chain
+  of equations
   \begin{equation}
     \pointwiseprod{A}{B}=\trace{AB}=\trace{Q^{T}\Lambda Q B}
     =\trace{\Lambda Q B Q^{T}}. 
   \end{equation}
-  Fix $ B' = Q B Q^{T} $, that is positive semidefinite, so all its
-  diagonal entries are non negatives. Also $ \Lambda $ is a diagonal
-  non negative matrix. Thus $
-  \trace{AB}=\trace{\Lambda B'}=\sum_{i}\lambda_{i}b'_{ii} \geq 0$.
+  Fix $ B' = Q B Q^{T} $, which is positive semidefinite and has non
+  negative diagonal entries. Also $ \Lambda $ is a diagonal
+  non negative matrix, thus $
+  \trace{AB}=\trace{\Lambda B'}=\sum_{i}\lambda_{i}b'_{ii} \geq 0$. 
+
+  For the other direction is sufficient to consider $ y$ such that $
+  y^{T}Ay <0$. Then fix $ B=yy^{T} $ and observe that $
+  \pointwiseprod{A}{B}=y^{T}Ay$. $ B $ is semidefinite positive by
+  construction.
 \end{proof}
 
 \begin{fact}\label{fact:strict_positive_pointwise}
@@ -205,14 +235,15 @@ expressed by the left quadratic program that follows.
 \end{figure*}
 
 
-For convenience will consider a new dummy ``$x$'' variable $ x_{0} $,
-and we homogenize the program, as shown before. 
+For convenience will consider a new dummy ``$x$'' variable $ x_{0} $
+to remove linear terms as in~\eqref{eq:maxindset2}.
 %
 The idea now is to relax the quadratic constraints by encoding the
 products $x_{i}x_{j} $ as new variables $ y_{ij} $. Some of the
 identities implied by the interpretation $ y_{ij} = x_{i}x_{j} $ are
-enforced by the program, but not all of them can ---it would not be a
-relaxation. We constrain $Y$ to be positive semidefinite.
+enforced by the program, but not all of them can ---this is why it is
+a relaxation. One of the properties of matrix $ Y =xx^{T} $ that we
+can enforce is positive semidefiniteness.  
 %
 
 \begin{alignat*}{2}
@@ -225,14 +256,12 @@ relaxation. We constrain $Y$ to be positive semidefinite.
 
 A semidefinite program is a refinement of a linear program in which
 the variables have a natural square matrix structure, and such
-structure is a positive semidefinite matrix. Semidefinite programming
+matrix is positive semidefinite. Semidefinite programming
 has found many uses in combinatorics and approximation
 algorithms~\cite{gartner2012approximation}.
 %
-We denote semidefinite programs (\sdp) in one of this way (which are
-equivalent because of the Cholesky decomposition).
+We denote semidefinite programs (\sdp) in one of this equivalent ways
 
-\begin{figure}
 \begin{minipage}[t]{0.5\textwidth}
 \begin{alignat*}{2}
   \maximize \pointwiseprod{C}{X}\\
@@ -253,9 +282,8 @@ equivalent because of the Cholesky decomposition).
   & |v_{0}| = 1
 \end{alignat*}
 \end{minipage}
-\end{figure}
 %
-Where $ A_i $ and $ C $ are symmetric matrices.  
+where $ A_i $ and $ C $ are symmetric matrices.  
 %
 A solution $X$ is called \introduceterm{strictly feasible} if $ X
 \succ 0 $.
@@ -274,8 +302,8 @@ translate inequality constraints into equality constraints using
 positive slack variables. Furthermore we can relax the condition of
 symmetry for matrices $ A_{i} $ and $ C $, since $ X $ itself is
 required to be symmetric. Some forms of the semidefinite program are
-more convenient than others, when it comes to prove theorem.
-
+more convenient than others, when it comes to prove theorems.
+%
 Another equivalent form of semidefinite program is the following:
 \begin{alignat*}{2}
   \minimize b^{T}y\\
@@ -295,12 +323,12 @@ study duality.
 
 The duality of semidefinite programming is a more general (and
 complex) version of duality of linear programs. We will discuss its
-proof here. Most of the proofs in this part comes from \Lovasz
-lectures notes~\cite{lovasz2003semidefinite}.
+proof here. Most of the proofs in this section come from \Lovasz
+lecture notes~\cite{lovasz2003semidefinite}.
 
 
 First we describe a form of ``unsatisfiability'' proof for $ \sdp $
-which is the key for semidefinite programming, as it was for linear
+which is the key to semidefinite programming, as it was to linear
 programming.
 
 Consider a semidefinite program for an optimization problem. 
@@ -317,7 +345,7 @@ Consider a combination of proof lines with coefficient $ y^{T}=
 [y_{1}\ldots y_{m}]$, such that $ Y= \sum_{i}y_{i}A_{i} - C \succeq
 0$. Then 
 \begin{equation}
- \pointwiseprod{Y}{X}=\sum_{i}y_{i}b_{i} -\pointwiseprod{C}{X} 
+ \pointwiseprod{Y}{X}=\sum_{i}y_{i}b_{i} -\pointwiseprod{C}{X}. 
 \end{equation}
 If $ X \succeq 0 $ then $\pointwiseprod{Y}{X} \geq 0$ by
 Fact~\ref{fact:positive_pointwise} which means that $
@@ -333,22 +361,22 @@ upper bound the better.
     \subjectto  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succeq
     0 \label{eq:sdp-dual} \tag{D}
   \end{alignat}
-  A \introduceterm{strictly feasible} solution for this program is one
-  such  $  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succ 0 $.
+  A solution is \introduceterm{strictly feasible} if
+  $  y_{1}A_{1}+\cdots+y_{m}A_{m} -C \succ 0 $ holds.
 \end{definition}
 
-The primal and the dual programs bound each other, assuming they have
-feasible solution. We know that in linear programming the optimum
-values for the two programs are the same. In semidefinite programming
-the things are a little bit more tricky.  We start by proving a
-version of Farkas Lemma for this framework.
+The primal and the dual programs bound each other, assuming they both
+have feasible solutions. We know that in linear programming the
+optimum values for the two programs are the same. In semidefinite
+programming it gets a little bit more tricky.  We start by proving a
+version of Farkas' Lemma for this framework.
 
-\begin{lemma}[Farkas Lemma for semidefinite programs]
+\begin{lemma}[Farkas' Lemma for semidefinite programs]
   \label{lmm:farkas_sdp}
-  Let be $A_{1}, A_{2}, \ldots A_{m}$ and $B$ some $n \times n$
+  Let be $A_{1}, A_{2}, \ldots A_{m}$ and $C$ some $n \times n$
   symmetric matrices over the reals. Then the inequality
-  \begin{equation}
-    y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m} - B \succ 0
+  \begin{equation}\label{eq:farkas_pd}
+    y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m} - C \succ 0
   \end{equation}
   has no solutions $ y_{1}, y_{2}, \ldots,y_{m} $ if and only if there
   exists a symmetric matrix $ X\not=0 $
@@ -357,95 +385,94 @@ version of Farkas Lemma for this framework.
    \pointwiseprod{A_{2}}{X} = 0\\
    \vdots \\
    \pointwiseprod{A_{m}}{X} = 0 \\
-   \pointwiseprod{B}{X} \geq 0\\
+   \pointwiseprod{C}{X} \geq 0\\
    X \succeq 0.
 \end{alignat*}
 \end{lemma}
 \begin{proof}
 
-  \stressterm{If part:} A for a solution $X$ for the second system
-  implies that
+  \stressterm{If part:} A solution $X$ for the second system
+  implies
   \begin{equation}
     \pointwiseprod{Y}{X}
     \leq 0
   \end{equation}
-  for any $ Y=y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m}-B $, and
-  since $ X\succeq 0 $ and $ X\not=0 $ then by
-  fact~\ref{fact:strict_positive_pointwise} it holds that $ Y $ is not
-  positive definite\footnote{We will see that this part cannot be
-    improved to provide proof of unsatisfiability in case the
-    constraint is relaxed to $ Y\succeq 0 $.}.
+  for any $ Y=y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m}-C $. It
+  follows that $ Y $ is not positive definite\footnote{We will see
+    that this part cannot be improved to provide proof of
+    unsatisfiability in case the constraint is relaxed to $ Y\succeq 0
+    $.} because $ X\succeq 0 $, $ X\not=0 $ and Fact~\ref{fact:strict_positive_pointwise}.
 
-  \stressterm{Only if:} This part is more difficult so we first prove
-  it with $ B=0 $.
+  \stressterm{Only if:} We first prove this part with $ C=0 $.
 
   Consider the linear subspace $ L\subseteq\RR^{n \times n} $
   generated by $y_{1}A_{1}+y_{2}A_{2} + \cdots + y_{m}A_{m}$.
   %
-  If $ L $ is disjoint from the interior of the convex cone $
-  \positivesemidefinite[n] $, then there is an hyperplane $ H $
+  If equation~\eqref{eq:farkas_pd} has no solution, then $ L $ is
+  disjoint from the interior of the convex cone $
+  \positivesemidefinite[n] $ and there is an hyperplane $ H $
   separating $ L $ and the interior of
-  $\positivesemidefinite$\footnote{We use the hyperplane separator
-    theorem, which proof is outside of the scope of this course.}.
+  $\positivesemidefinite[n]$\footnote{By the hyperplane separator
+    theorem, which we won't prove here.}.
   %
   Assume $H$ is characterized by some non trivial equation $
   \pointwiseprod{X}{Y}=0$ where $ X $ are the coefficients and $ Y $
   the variables. Matrix $ X $ can be made symmetric, and since the
   equation is non trivial, $ X\not=0 $.
   %
-  $ L $ must be contained in $H$ otherwise $ L $ would not be in one
-  of the halfspaces. It follows that $ \pointwiseprod{X}{A_{i}}=
-  \pointwiseprod{A_{i}}{X}=0 $ for every $ i $. 
+  $ L $ is in $H$ otherwise $ L $ would not be in one of the
+  halfspaces. It follows that $ \pointwiseprod{X}{A_{i}}=
+  \pointwiseprod{A_{i}}{X}=0 $ for every $ i $.
   %
   For every $ Y\in\positivesemidefinite[n] $ the separator $ X $ has $
   \pointwiseprod{X}{Y}\geq 0 $ which implies $ X \succeq 0 $
   because of fact~\ref{fact:positive_pointwise}.  
  
-  Now we go back to $ B\not=0$. We consider the new constraint
+  Now we go back to $ C\not=0$. We consider the new constraint
   \begin{equation}
     y_{1}\begin{bmatrix}A_{1} & 0\\ 0 & 0\end{bmatrix}
     +y_{2}\begin{bmatrix}A_{2} & 0\\ 0 & 0\end{bmatrix} + \cdots
     +y_{m}\begin{bmatrix}A_{m} & 0\\ 0 & 0\end{bmatrix} 
-    + z \begin{bmatrix} -B & 0\\ 0 & 1\end{bmatrix} \succ 0
+    + z \begin{bmatrix} -C & 0\\ 0 & 1\end{bmatrix} \succ 0
   \end{equation}
-  which is equivalent to the former one: if $ z=0 $ then the sum
-  is not positive definite, so $ z\not=0 $ in any solution. 
+  which is equivalent to~\eqref{eq:farkas_pd}: if $ z=0 $ then the sum
+  is not positive definite, so every solution must have $ z\not=0 $.
 
-  If there is no such solution there must be a non zero $ n+1 \times
-  n+1 $ matrix $ X'\succeq 0 $. Let us call $X$ the submatrix made by
-  its $ n $ first columns and rows. Then $ \pointwiseprod{A_{i}}{X}
-  =0$ and $ \pointwiseprod{\begin{bmatrix} -B & 0\\ 0 &
-      1\end{bmatrix}}{X'} = -\pointwiseprod{B}{X}+x'_{n+1,n+1} = 0
+  If there is no such solution then by reducing to the homogeneous
+  case, there must be a non zero $ n+1 \times n+1 $ matrix $ X'\succeq
+  0 $ that witnesses it. Let us call $X$ the submatrix made by its
+  first $n$ columns and $n$ rows. Then $ \pointwiseprod{A_{i}}{X} =0$
+  and $ \pointwiseprod{\begin{bmatrix} -C & 0\\ 0 &
+      1\end{bmatrix}}{X'} = -\pointwiseprod{C}{X}+x'_{n+1,n+1} = 0
   $. By semidefiniteness of $ X'$ then $ x'_{n+1,n+1}\geq 0$ and thus
-  $ \pointwiseprod{B}{X}\geq 0 $.
+  $ \pointwiseprod{C}{X}\geq 0 $.
 \end{proof}
 
 We are now set to prove the duality theorem. In a way similar to
-linear programming duality, the Farkas lemma provides a general way to
-witness unsatisfiability of the primal by the means of the dual, and
-vice versa. Unfortunately for the case of semidefinite programming
-there is some condition in order to get strong duality\footnote{This
-  is called \introduceterm{Slater condition} and apply in general to
-  convex programming. If both the primal and the dual have strictly
-  feasible solutions, \ie solutions which are in the interior of the
-  convex body, then strong duality in convex programming
-  follows. Notice that the solutions do not need to be optimal
-  ones.}.
+linear programming duality, the Farkas' lemma provides a general way
+to witness unsatisfiability of the primal by the means of the dual,
+and vice versa. Unfortunately for semidefinite programming there are
+some conditions in order to get strong duality\footnote{This is called
+  \introduceterm{Slater condition} and apply in general to convex
+  programming. If both the primal and the dual have strictly feasible
+  solutions, \ie solutions which are in the interior of the convex
+  body, then strong duality in convex programming follows. Notice that
+  the two strictly feasible solutions do not need to be optimal.}.
 
 
 \begin{theorem}\label{thm:strongduality}
-  Assume both primal and dual have feasible solutions. Then $v_{P}
+  Assume that both primal and dual have feasible solutions. Then $v_{P}
   \geq v_{D}$, where $v_{P}$ and $ v_{D} $ are the optimal values to
-  the primal and dual respectively. Moreover, if the dual has a
+  the primal and dual, respectively. Moreover, if the dual has a
   strictly feasible solution then
   \begin{enumerate}
-    \item The primal optimum is attained
-    \item $ v_{P} = v_{D}$ 
+    \item the primal optimum is attained;
+    \item $ v_{P} = v_{D}$.
   \end{enumerate}
-  Similarly, if the dual is strictly feasible, then the primal optimal
-  value is achieved, and equals the dual optimal value. Hence, if both
-  the primal and dual have strictly feasible solutions, then both
-  $v_{P}$ and $v_{D}$ are attained.
+  Similarly, if the primal is strictly feasible, then the dual optimum
+  is attained, and it is equal to the dual optimum. Hence, if both the
+  primal and dual have strictly feasible solutions, then both $v_{P}$
+  and $v_{D}$ are attained.
 \end{theorem}
 
 \begin{proof}
@@ -453,7 +480,7 @@ there is some condition in order to get strong duality\footnote{This
   a solution for program~\eqref{eq:sdp-dual}. By
   Fact~\ref{fact:positive_pointwise} we get that
   \begin{equation}
-    0 \leq \pointwiseprod{\sum_{i} y_{i} A_{i}-C}{X} = y^{T}b - \pointwiseprod{C}{X} 
+    0 \leq \pointwiseprod{\left(\sum_{i} y_{i} A_{i}-C\right)}{X} = y^{T}b - \pointwiseprod{C}{X} 
   \end{equation}
   which means that $ v_{P} \leq v_{D}$\footnote{This part of the
     theorem is often called weak duality theorem.}.
@@ -473,7 +500,7 @@ there is some condition in order to get strong duality\footnote{This
   \end{bmatrix}
   \end{equation}
   then the system $ \sum_{i}y_{i}A'_{i} \succ C' $ is unsatisfiable
-  and then by Farkas lemma there is a non zero positive semidefinite
+  and then by Farkas' Lemma there is a non zero positive semidefinite
   matrix $X'$ such that $ \pointwiseprod{A'_{i}}{X'} = 0 $ for all $
   1\leq i\leq m $ and $\pointwiseprod{C'}{X'} \geq 0 $. Let us write
   \begin{equation}
@@ -489,31 +516,31 @@ there is some condition in order to get strong duality\footnote{This
     \qquad 
     \pointwiseprod{C}{X} \geq x_{00}v_{d}.
   \end{equation}
-  We claim that $ x_{00} \not= 0$ since otherwise $ X $ solution would
-  be a witness (by Farkas Lemma) of the unsolvability of
+  We claim that $ x_{00} \not= 0$ since otherwise $ X $  would
+  be a witness (by Farkas' Lemma) of the unsolvability of
   program~\eqref{eq:sdp-dual} by strict feasible solutions, and this
-  contradicts our assumptions. Since $ x_{00}\not=0 $ we can assume $
+  contradicts our assumption. Since $ x_{00}\not=0 $ we can assume $
   x_{00}=1 $ by scaling the solution in~\eqref{eq:scaled_primal_solution}. 
 
   After rescaling, $ X $ is feasible a solution of
   program~\eqref{eq:sdp-primal} with value $ \pointwiseprod{C}{X}\geq
-  v_{D} $. Thus we get that $ v_{D}\leq v_{P} $.
+  v_{D} $. Thus we get that $ v_{P}\leq v_{D} $.
 \end{proof}
 
 \begin{exercise}
-  In the proof of Theorem~\ref{thm:strongduality} we showed only that
+  In the proof of Theorem~\ref{thm:strongduality} we just showed that
   if the dual has strictly feasible solution then the primal optimum
   is attained. Please prove that if the primal has strictly feasible
   solution then the dual optimum is attained as well.
 \end{exercise}
 
-\section{Examples of \sdp\ with bad behavior}
+\section{Examples of strong duality failing}
 
 In the proof of the strong duality theorem
 (Theorem~\ref{thm:strongduality}) the optimum is attained by assuming
 that the there is a strictly feasible dual solution. Furthermore we
 used that to prove that primal and dual optimum are the same.  We will
-see classic examples from\cite{lovasz2003semidefinite} in which the
+see examples from\cite{lovasz2003semidefinite} in which the
 two optimum are not the same (\ie\ there is a \introduceterm{duality
   gap}) or in which the optimum is only reached in the limit.
 
@@ -530,9 +557,9 @@ two optimum are not the same (\ie\ there is a \introduceterm{duality
 
   Because of the positive semidefinite requirement, we get that $
   x_{1},x_{2}\geq 0 $ and that $ x_{1}x_{2}\geq 1 $. The objective
-  function  $ -x_{1} $ can get arbitrarily close to $ 0 $ but will
-  stay below it. This $ v_{P}=0 $ and there is no solution which
-  actually get to that value. 
+  function $ -x_{1} $ can get arbitrarily close to $ 0 $ but will stay
+  negative, thus $ v_{P}=0 $ and there is no solution which actually
+  get to that value.
 \end{example}
 
 So in the previous program we have an optimum, which is reached only
@@ -554,7 +581,7 @@ in the limit.
       b & 0 & 1
     \end{bmatrix}
   \end{equation}
- which $ a \geq b^{2} $ and $ v_{P}=-1 $. Now we consider its dual
+ which implies $ a \geq b^{2} $ and $ v_{P}=-1 $. Now we consider its dual
  program
   \begin{alignat}{2}
     \minimize y_{1}\\
@@ -576,7 +603,7 @@ in the limit.
     \end{bmatrix}
   \end{alignat}
   Dual solutions have $ y_{1}=0 $ and $ y_{2}\geq 0 $, thus $ v_{D}=0
-  $. See that $ v_{P} < v_{D} $, thus there is a duality gap of $ -1 $.
+  $. Here we have a duality gap of $-1$ between $ v_{P}$ and $ v_{D} $.
 \end{example}
 
 \begin{example}\label{eg:sdp-close-gap}
@@ -638,7 +665,7 @@ in the limit.
     \end{bmatrix}
   \end{equation}
   Since the matrix is positive semidefinite then the dual solution is
-  feasible and $ v_{D}=-1 $, equal to the primal optimum.
+  feasible and $ v_{D}=-1 $, which is equal to the primal optimum.
 \end{example}
 
 
