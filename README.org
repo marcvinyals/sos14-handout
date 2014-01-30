@@ -12,8 +12,8 @@
 
 *Sum of squares and integer programming relaxations - Winter 2014 (handouts)*
 
-This repository contains the lecture notes for the course. /Please use
-github  facilities/ in  order  to  signal and  correct  typos, and  to
+This repository contains  the lecture notes for the  course.  /You can
+use github  facilities/ in order to  signal and correct typos,  and to
 integrate the lecture notes.
 
 *LaTeX info*
