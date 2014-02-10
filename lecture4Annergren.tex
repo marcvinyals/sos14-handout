@@ -24,28 +24,32 @@
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
 
-\section{Maximum cut problem\cite{poljak1995maximumcut}}
+\section{Motivation for SDP relaxations}
+SDP relaxations are more complicated to construct than linear relaxations, but more powerful. To see this, we consider the maximum cut problem.
+
+\subsection{Maximum cut problem\cite{poljak1995maximumcut}}
 We consider a finite, undirected and loopless graph $G(V,E)$, where $V$ denotes the set of vertexes and $E$ denotes the set of edges. Each edge is weighted according to some function $c:E\rightarrow \RR$. 
 
-Let $S\subset V$, the \introduceterm{cut} is defined as the edges with one end in $S$ and the other end in $V\backslash S$ and the \introduceterm{weight of the cut} is the sum of the weights corresponding to the edges belonging to the cut. 
+Let $S\subseteq V$, the \introduceterm{cut} is defined as the edges with one end in $S$ and the other end in $V\backslash S$ and the \introduceterm{weight of the cut} is the sum of the weights corresponding to the edges belonging to the cut. 
 
 The maximum cut problem is equivalent to the problem of finding the set $S$ that maximizes the weight of the induced cut. It is NP-complete\cite{karp1972NPhard}.
 
-
-
-\section{Motivation for SDP relaxations}
-SDP relaxations are more complicated to construct than linear relaxations, but more powerful. To see this, we consider the maximum cut problem. Several approximation algorithms have been developed to be able to solve it with a high \introduceterm{performance guarantee}\footnote{The performance guarantee is defined as
+Several approximation algorithms have been developed to be able to solve it with a high \introduceterm{performance guarantee}\footnote{The performance guarantee is defined as
 \begin{equation*}
 \rho=\frac{\text{optimal value of relaxed problem}}{\text{optimal value of original problem}},
 \end{equation*}
 that is, the inverse of the integrality gap.} in polynomial time. The approximation algorithm with the highest performance guarantee is an SDP relaxation that achieves $\rho\approx 0.878$.
 
+However, any Sherali-Adams relaxation of degree $t=n^{s(\epsilon)}$ can only achieve a performance guarantee of $1/2 + \epsilon$\footnote{Citation needed}.
+
 \section{Small example of SDP relaxation}
-We want to show that a polynomial $F(x,y)$ is non-negative. We can do this in a tractable manner by reformulating $F(x,y)$ as a sum of squared polynomials using SDP relaxation. Consider
+We want to show that a polynomial $p$ is non-negative over some polytope and write $p\geq 0$. If the polynomial $p$ is expressible as a sum of squared polynomials, then we can find such representation in a tractable manner by reformulating the problem as a SDP relaxation. Let us see a small example. Consider
 \begin{equation*}
-F(x,y)=2x^4+2x^3y-x^2y^2+5y^4.
+F(x,y)=2x^4+2x^3y-x^2y^2+5y^4
 \end{equation*}
-The monomials in $F(x,y)$ of degree at most half of the degree of $F(x,y)$ are $x^2$, $y^2$ and $xy$. Given these, we perform the following matrix operation:
+and assume it is expressible as a sum of squared polynomials. These have degree at least 2, half the degree of $F$, and furthermore since $F$ is homogeneous they have degree exactly 2. The monomials in $(x,y)$ of degree 2 are $x^2$, $y^2$ and $xy$.
+
+We can express sums of squares of polynomials with the following matrix operation:
 \begin{align}
 \label{matrixOperation}
 &\begin{pmatrix}
@@ -91,7 +95,7 @@ Q=
 1 & 0 & 5
 \end{pmatrix}.
 \end{eqnarray*}
-To construct the sum of squared polynomials yielding $F(x,y)$, we perform a Cholesky factorization of the matrix $Q$ in the following way:
+To construct the sum of squared polynomials yielding $F(x,y)$, we perform a Cholesky factorization\footnote{Need SDP?} of the matrix $Q$ in the following way:
 \begin{align*}
 &F(x,y)=\begin{pmatrix}
 x^2\\
@@ -131,7 +135,7 @@ xy
 \end{align*}
 We have reformulated $F(x,y)$ as a sum of squared polynomials and, consequently, we have shown that $F(x,y)\geq0$.
 
-It is important to note that a polynomial $p\geq 0$ on $\RR^n$ does not imply that $p$ can be expressed as a sum of squared polynomials if $n\geq2$. An example of this is the Motzkin polynomial\cite{motzkin1967sos},
+It is important to note that not every polynomial $p\geq 0$ on $\RR^n$ can be expressed as a sum of squared polynomials if $n\geq2$. An example of this is the Motzkin polynomial\cite{motzkin1967sos},
 \begin{align*}
 M(x,y,z)=x^6+y^4z^2+y^2z^4-3x^2y^2z^2.
 \end{align*}
@@ -147,6 +151,8 @@ where
 1,x_1,x_2,\ldots,x_n,x_1^2,x_1x_2,\ldots,x_1x_n,\ldots,x_n^2,\dots,x_1^t,\ldots,x_n^t
 \end{align}
 is a basis of $p(x)$ and $p$ is the coefficient vector of $p(x)$ with respect to \eqref{basis}. 
+
+{\Huge Is this just wrong?}
 
 We introduce the auxillary variable $y_{00\ldots 0}=1$ and perform the variable substitution $x_1^ix_2^j\cdots x_n^l=y_{ij\ldots l}$. The moment matrix $M_t(y)$ has rows and columns labelled according to the basis \eqref{basis} and its elements are the corresponding $y_{ij\ldots l}$. For simplicity, we only show the case for $n=2$ and $t=2$, 
 \begin{eqnarray*}
@@ -176,17 +182,17 @@ Consequently, we have that $p^2(x)\geq0\Leftrightarrow M_t(y)\succeq0$.
 \subsection{Geometric interpretation}
 As for the \Lovasz-\Schrijver hierarchy, we introduce the auxiliary variable $x_0=1$ and perform the variable substitution $x_ix_j=Y_{ij}$ for every $i,j=0,\ldots,n$. We let any terms of degree zero be represented by $Y_{00}$. We enforce the following constraints on $Y$:
 \begin{enumerate}
-\item $Y=Y^T$,
-\item $Y_{0i}=Y_{i0}=Y_{ii}, \quad\text{for}\ i=0,\ldots,n$,
-\item $Y^{(i)}\in P \quad\text{for}\ i=0,\ldots,n$,
-\item $Y^{(0)}-Y^{(i)}\in P \quad\text{for}\ i=0,\ldots,n$.
-\item $Y\succeq0$,
+\item \label{lsp-symmetry} $Y=Y^T$,
+\item \label{lsp-eatsquares} $y_{0i}=y_{i0}=y_{ii}, \quad\text{for}\ i=0,\ldots,n$,
+\item \label{lsp-multiplyx} $Y^{(i)}\in P \quad\text{for}\ i=0,\ldots,n$,
+\item \label{lsp-multiplyoneminusx} $Y^{(0)}-Y^{(i)}\in P \quad\text{for}\ i=0,\ldots,n$.
+\item \label{lsp-sdp} $Y\succeq0$.
 \end{enumerate}
-Constraint 1) and 2) are due to that $x_ix_j=x_jx_i$ and $x_i-x_i^2=0$. Constraint 3) and 4) stem from 
+Constraints~\ref{lsp-symmetry} and~\ref{lsp-eatsquares} are due to that $x_ix_j=x_jx_i$ and $x_i-x_i^2=0$. Constraints~\ref{lsp-multiplyx} and~\ref{lsp-multiplyoneminusx} stem from 
 \[\sum_{j=1}^{n} A^{(j)}Y_{ij}-bY_{i0}\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
 and 
 \[\sum_{j=1}^{n} A^{(j)}(Y_{0j}-Y_{ij})-b(Y_{00}-Y_{i0})\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
-respectively. The matrix constraint 3) is equivalent to $p^2(Y)\geq0$ for all polynomials $p(\cdot)$ of degree one.
+respectively\footnote{Uh??}. The matrix constraint~\ref{lsp-sdp} is equivalent to $p^2(Y)\geq0$ for all polynomials $p(\cdot)$\footnote{undef?} of degree one as discussed previously\footnote{I CAN'T REFERENCE SECTIONS BY NUMBER. AAARGH!}.
 
 \subsection{Operator and rank}
 The operation $N_+(P)$ is the projection over $1=Y_{00}$, $x_1=Y_{01}$,\ldots,$x_n=Y_{0n}$. The rank $t$ of a proof in LS$_+$ is the same as for \Lovasz-\Schrijver hierarchy. Note that, if $P$ is the polytope corresponding to the set of initial inequalities then $N_+(P)$ is determined by inequalities derivable in rank one. 
@@ -221,18 +227,20 @@ We consider a system of constraints
 f_1=0,\ldots,f_k=0,\ h_1\geq0,\ldots,h_m\geq0,
 \end{equation}
 where $f_i$ and $h_i$ are polynomials of $x_1,\ldots,x_n$, and we require $0\leq x_i \leq 1$ and $x_i^2-x_i=0$. We introduce the following pair of polynomials:
-\begin{eqnarray}
+\begin{equation}
 \label{polpair}
-(f,h)=\bigg(\sum_{s=1}^kf_sg_s,\ \sum_{I\subset\{1,\ldots,m\}}\big(\Pi_{i\in I}h_i\big)\big(\sum_je^2_{I\ j}\big)\bigg),
-\end{eqnarray}
-where $e_s$ and $g_s$ are arbitrary polynomials. If $f+h=-1$, we know that system \eqref{problemsatz} has no feasible solution. Such a polynomial pair is called the \introduceterm{refutation} for \eqref{problemsatz}. The degree of the refutation is given by
+f = \sum_{s=1}^kf_sg_s,\quad h = \sum_{I\subseteq\{1,\ldots,m\}}\big(\prod_{i\in I}h_i\big)\big(\sum_je^2_{I\ j}\big),
+\end{equation}
+where $e_s$ and $g_s$ are arbitrary polynomials\footnote{$e_s$ are elements of the base?}. If $f+h=-1$, we know that system \eqref{problemsatz} has no feasible solution. Such a polynomial pair is called the \introduceterm{refutation} for \eqref{problemsatz}. The degree of the refutation is given by
 \begin{equation}
 \label{degreesatz}
-\underset{s,I,j}{\text{max}}\{\text{deg}(f_s,g_s),\text{deg}(e^2_{I\ j}\Pi_{i\in I}h_i)\}.
+\max_{s,I,j}\{\deg(f_s,g_s),\deg(e^2_{I\ j}\prod_{i\in I}h_i)\}.
 \end{equation} 
 
 \section{Positivstellensatz calculus\cite{grigoriev2001complexity}}
-We still consider the system of constraints \eqref{problemsatz}. We let $f$ defined in \eqref{polpair} instead be an arbitrary polynomial derived from $f_1=0,\ldots,f_k=0$ and $x_i^2-x_i=0$. If $f+h=-1$, we call the polynomial pair the \introduceterm{Positivstellensatz calculus refutation} of \eqref{polpair}. The degree of the refutation is the maximum degree of $e^2_{I\ j}\Pi_{i\in I}h_i$ and of the derivation for $f$.
+Positivstellensatz calculus is the dynamic version of Positivstellensatz. Again our input is the system of constraints \eqref{problemsatz}, but now we let $f$ defined in \eqref{polpair} instead be an arbitrary polynomial derived from $f_1=0,\ldots,f_k=0$ and $x_i^2-x_i=0$ using the polynomial calculus inference rules. If $f+h=-1$, we call the polynomial pair the \introduceterm{Positivstellensatz calculus refutation} of \eqref{polpair}. The degree of the refutation is the maximum degree of $e^2_{I\ j}\prod_{i\in I}h_i$ and of the derivation for $f$.
+
+{\Huge Keep painting here}
 
 \section{Sum-of-squares hierarchy}
  The sum-of-squares hierarchy is a weaker version of the Positivstellensatz proof system. We consider the same system \eqref{problemsatz}. We introduce the following polynomial:
