@@ -36,6 +36,58 @@ This particular example would also work with a weaker proof system such as Shera
 
 \section{Upper bound for Lasserre}
 
+We will now see an algorithm for max-cut formalizable in low levels of Lasserre but not of Sherali-Adams.
+
+For the max-cut problem we are given a graph $G(V,E)$ and we want to find a subset $S \subseteq V$ of vertices such that $|E_G(S,\bar S)|$ is maximum.
+
+We formalize the problem by
+
+\begin{alignat}{2}
+\label{eq:max-cut}
+  \maximize \sum_{u\in V} z_{ij}\notag \\
+  \subjectto x_i - x_j \leq z_{ij},\notag \\
+& x_j - x_i \leq z_{ij},\notag \\
+& z_{ij} \leq x_i + x_j,\notag \\
+& z_{ij} \leq 2 - x_i - x_j \quad \forall{(i,j)\in E}.
+\end{alignat}
+
+Observe that $x_i=1/2$, $z_{ij}=1$ is a valid fractional solution, but it can be very far from the feasible optimum. For instance, when $G$ is the complete graph the fractional optimum is approximately $n^2/2$ while the real solution is approximately $n^2/4$. The integrality gap is roughly $1/2$.
+
+At the $n^{\delta(\epsilon)}$-th level of the Sherali-Adams hierarchy, the integrality gap is still $1/2+\epsilon$\cite{CMM09}, so this is the best we can do. However, there is an algorithm that gives an approximation ratio of at least $0.878$\cite{GW95}, and we will see that this algorithm can be formulated in terms of a Lasserre program.
+
+Let us first do some observations about the space of solutions. $M^t(Y)_{IJ}=\langle v_i, v_J \rangle$, so $y_I=\langle v_I,v_\emptyset \rangle = \langle v_I,v_I \rangle = | v_I |^2$. $|v_\emptyset/2-v_I|^2=|v_\emptyset/4|^2-\langle v_0,v_I\rangle+|v_I|^2=1/4$, so the space of solutions is a sphere centered at $v_\emptyset/2$. We can try to exploit this fact by separating vectors that live far away.
+
+To simplify the process of sampling separator hyperplanes, we will use another formulation where the space of solutions is a unit sphere.
+
+\begin{alignat}{2}
+\label{eq:max-cut-gw}
+  \maximize \frac{1- \langle u_i,u_j \rangle}{2}\notag \\
+  \subjectto |u_i|^2 = 1 \quad \forall i\in V.
+\end{alignat}
+
+So first of all we need to show that our original formulation \eqref{eq:max-cut} implies the transformed formulation \eqref{eq:max-cut-gw} and in fact we will show that this is the case using the 5th level of the Lasserre hierarchy.
+
+Let $y \in L_5(K)$ be a solution. We can restrict 3 variables to be integers: $z_{ij}$, $x_i$, and $x_j$ and we obtain another solution $\hat y \in L_2(K)$ whose components $\hat y_{z_{ij}}$, $\hat y_{x_i}}$, and $\hat y_{x_j}$ are integers. For these particular components, the constraints in \eqref{eq:max-cut} plus the integrality restriction imply the stronger relation $\hat y_{z_{ij}}=|\hat y_{x_i}-\hat y_{x_j}|$. Since $\hat y$ is on the 2nd level of the Lasserre hierarchy, we can rewrite $|\hat y_{x_i}-\hat y_{x_j}|=\hat y_{x_i} + \hat y_{x_j} - 2\hat y_{\{x_i,x_j\}}$.
+
+This relation also holds for any (even fractional) solution in the 5th level of the Lasserre hierarchy because we can see it as a convex combination of integer solutions in the 2nd level. We repeat the argument for every choice of $i$ and $j$.
+
+So if $v$ is a solution of $L_5(K)$, then $u$ defined by $u_i = v_\emptyset - 2v_i$ satisfies the following.
+
+$|u_i|^2 = |v_\emptyset - 2v_i|^2 = |v_\emptyset|^2 -4\langle v_\emptyset,v_i\rangle + 4|v_i|^2 =1$, so $u$ is a solution of \eqref{eq:max-cut-gw}.
+
+$\langle u_i,u_j\rangle = |v_\emptyset|^2 -2 \langle v_i,v_\emptyset\rangle -2\langle v_\emptyset,v_j\rangle +4\langle v_i,v_j\rangle = 1 - 2(x_i+x_j-2x_{ij}) = z_{ij}$, from where $z_{ij} = (1-\langle u_i,u_j \rangle)/2$. We conclude that the functions we are optimizing have the same value.
+
+We will show that meh.
+
+We now follow the GW strategy to sample solutions to \eqref{eq:max-cut-gw}. We sample a hyperplane by sampling its normal vector $h$ and let the partition be each of the subspaces. This is $i \in S$ if and only if $\langle u_i,h \rangle > 0$.
+
+We want to sample $h$ uniformly over all directions, which we can do by sampling each component independently according to a normal distribution. Indeed, the probability of sampling a specific coordinate $x_i$ is $\Pr[h_i=x_i] = \frac{1}{\sqrt {2\pi}}e^{-x_i^2/2}$. Then the probability of sampling a specific vector $x$ is $\Pr[h=x] = \frac{1}{\sqrt {2\pi}}e^{-\sum_i x_i^2/2} = \frac{1}{\sqrt {2\pi}}e^{-|x|^2/2}$, which depends on the length of $x$ but not on its direction.
+
+The solution we obtain by the rounding technique is $\sROUND = \mathbb{E}|E(S,\bar S)|=\sum\Pr[(i,j)\in E(S,\bar S)]=\sum \theta_{ij}$, where $\theta_{ij}$ is the angle between $u_i$ and $u_j$. Then $\theta_{ij}=\arccos(\langle u_i,u_j \rangle) = \arccos(1-2z_{ij})$.
+
+On the other hand, the solution we obtain by the SDP technique is $\sFRAC = \sum z_{ij}$. We obtain a lower bound for the approximation ratio and the integrality gap of \begin{equation}\frac{\sROUND}{\sFRAC} = \frac{\sum \arccos(1-2z_{ij})/\pi}{\sum z_{ij}} \geq \inf_{0 < x < 1} \frac{\arccos(1-2x)}{\pi x} \geq 0.878.\end{equation}
+
+
 \section{A reminder of Fourier Analysis}
 
 And now for something completely different we introduce definitions and notation for Fourier analysis of Boolean functions so we will have them fresh for the following lectures.
