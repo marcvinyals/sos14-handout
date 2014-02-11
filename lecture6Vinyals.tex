@@ -1,0 +1,79 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: ""
+% Encoding  : UTF-8
+
+% ---------------------------- USER DATA ------------------------------
+\def\DataTitle{6. Upper bounds and approximation algorithms}
+\def\DataTitleShort{Upper bounds}
+\def\DataDate{11 February, 2014}
+\def\DataDocname{Lecture 4 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Marc Vinyals}
+\def\DataKeywords{}
+\def\DataAbstract{We show an upper bound for the Lasserre hierarchy}
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+\begin{document} 
+% --------------------------- DOCUMENT --------------------------------
+
+\section{Example of local consistency}
+
+We want to finish showing how the Lasserre proof system can be made locally consistent. This is, we can find solutions that are integer over some suitable subset of the variables without needing to go up the whole hierarchy.
+
+We had seen that if we have a point $y\in L_t(K)$ and a set of variables $|S| \leq t$ then there exist a probability distribution $\mathcal{D}(S)$ such that $\Pr_{z \sim \mathcal{D}} [ \bigwedge_{i \in I} z_i =1 ] = y_I$, $z \cap S \in \{0,1\}^{|S|}$ and $z \in L_{t - |S|}$.
+
+We want to show the 3-colouring problem: given a graph $G(V,E)$ and a set $\{R,G,B\}$, we want to colour the vertices such that no adjacent vertices share a colour. We can model the problem as a linear program in the following way. We have variables $x_{ic}$ meaning that the vertex $i$ is coloured $c$, and we impose the restrictions $x_{iR}+x_{iG}+x_{iB} \geq 1 \quad \forall i\in V$ to ensure that every vertex has a colour and $x_{ic} + x_{jc} \leq 1 \quad \forall (i,j) \in E$ to ensure that adjacent vertices do not share a colour.
+
+Assume $y \in L_{3t}(K)$ is a point in the $3t$-th level of the Lasserre hierarchy and let $U \subseteq V$, $|U| \leq t$ be a subset of vertices. Then we can extract a distribution of points in $L_{3(t-|U|)}(K)$ that have integer values over $U \times \{R,G,B\}$, even though the solutions may be globally invalid.
+
+This means that if we only want to satisfy local constraints, we do not need the full power of Lasserre but we can settle for going up to as many levels as variables we wish to satisfy.
+
+This particular example would also work with a weaker proof system such as Sherali-Adams, what Lasserre buys you is the ability to do global reasoning since the SDP constraint has a global structure.
+
+\section{Upper bound for Lasserre}
+
+\section{A reminder of Fourier Analysis}
+
+And now for something completely different we introduce definitions and notation for Fourier analysis of Boolean functions so we will have them fresh for the following lectures.
+
+Given a Boolean function $\functionsignature{f}{\{0,1\}}{\RR}$, we want to express it as a linear combination of simple functions, this is $f = \sum_{S \subseteq [n]} \alpha_S \chi_S$. The character function of a set $\chi_S$ counts the parity of $x \land S$, this is $\chi_S(x) = (-1)^{\sum_{i\in S} x_i}$. If we use the so-called Fourier variables $y_i = 1-2x_i = (-1)^{x_i}$, then we can also express the characters as $\chi_S(x) = \prod_{i\in S} y_i$.
+
+\begin{lemma}
+  $\mathbb{E} \chi_S = [S=\emptyset]$
+\end{lemma}
+\begin{proof}
+  If $S=\emptyset$ we are done. Otherwise pick $i\in S$.
+\begin{align}
+2^n \mathbb{E} \chi_S &=
+\sum_{x \in \{0,1\}^n} \chi_S(x) = 
+\sum_{x : x_i = 0} \chi_S(x) + \sum_{x : x_i = 1} \chi_S(x) \\ &= 
+\sum_{x : x_i = 0} \chi_S(x) - \sum_{x : x_i = 0} \chi_S(x) = 0
+\end{align}
+\end{proof}
+
+\begin{lemma}
+  $\{\chi_S\}_S$ is an orthonormal basis.
+\end{lemma}
+\begin{proof}
+  $\langle \chi_S, \chi_T \rangle = \mathbb{E}\chi_{S \triangle T}$
+\end{proof}
+
+We usually write the coefficients $\alpha_S$ of $f$ in the Fourier basis as $\hat{f}(S)$, and it holds that $\hat{f}(S) = \langle f,\chi_S \rangle$.
+
+If we denote the vector of coefficients of $f$ by $\hat f$, then it holds that $\langle f,g \rangle_{\{0,1\}\to\RR} = \langle \hat f, \hat g \rangle_{\RR^{2^n}}$ (Plancherel) and that $\|f\|_{\{0,1\}\to\RR}^2=\|\hat f\|_{\RR^{2^n}}^2$ (Parseval).
+
+% ------------------------- EPILOGUE ------------------------------
+\bibliography{soscourse}
+\bibliographystyle{alpha}
+
+\end{document} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
