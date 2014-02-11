@@ -43,7 +43,7 @@ that is, the inverse of the integrality gap.} in polynomial time. The approximat
 However, any Sherali-Adams relaxation of degree $t=n^{s(\epsilon)}$ can only achieve a performance guarantee of $1/2 + \epsilon$\footnote{Citation needed}.
 
 \section{Small example of SDP relaxation}
-We want to show that a polynomial $p$ is non-negative over some polytope and write $p\geq 0$. If the polynomial $p$ is expressible as a sum of squared polynomials, then we can find such representation in a tractable manner by reformulating the problem as a SDP relaxation. Let us see a small example. Consider
+We want to show that a polynomial $p$ is non-negative over some polytope and write $p\geq 0$. If the polynomial $p$ is expressible as a sum of squared polynomials, then we can find such representation in a tractable manner by reformulating the problem as a SDP relaxation\footnote{Parrilo}. Let us see a small example. Consider
 \begin{equation*}
 F(x,y)=2x^4+2x^3y-x^2y^2+5y^4
 \end{equation*}
@@ -203,10 +203,10 @@ The projection $N_+^t(P)$ can be solved in $n^{\mathcal{O}(t)}$ given a polynomi
 Consider the following problem:
 \begin{alignat}{2}
 \label{example1}
-  \maximize \sum x_u\notag \\
+  \maximize \sum_{u\in V} x_u\notag \\
   \subjectto G=(V,E)=K_n\notag \\
   & x_u+x_v\leq 1,\notag \\
-&\{u,v\}\in E\notag\\
+&(u,v)\in E\notag\\
 &x_u\in\{0,1\}.
 \end{alignat}
 We want to show that the objective value of \eqref{example1} is at most one, this is equivalent to showing that $\sum x_u\leq 1$. Using LS$_+$, we can do this in rank one.
@@ -229,36 +229,44 @@ f_1=0,\ldots,f_k=0,\ h_1\geq0,\ldots,h_m\geq0,
 where $f_i$ and $h_i$ are polynomials of $x_1,\ldots,x_n$, and we require $0\leq x_i \leq 1$ and $x_i^2-x_i=0$. We introduce the following pair of polynomials:
 \begin{equation}
 \label{polpair}
-f = \sum_{s=1}^kf_sg_s,\quad h = \sum_{I\subseteq\{1,\ldots,m\}}\big(\prod_{i\in I}h_i\big)\big(\sum_je^2_{I\ j}\big),
+f = \sum_{s=1}^kf_sg_s,\quad h = \sum_{I\subseteq\{1,\ldots,m\}}\big(\prod_{i\in I}h_i\big)\big(\sum_je^2_{I,j}\big),
 \end{equation}
-where $e_s$ and $g_s$ are arbitrary polynomials\footnote{$e_s$ are elements of the base?}. If $f+h=-1$, we know that system \eqref{problemsatz} has no feasible solution. Such a polynomial pair is called the \introduceterm{refutation} for \eqref{problemsatz}. The degree of the refutation is given by
+where $e_{I,j}$ and $g_s$ are arbitrary polynomials. If $f+h=-1$, we know that system \eqref{problemsatz} has no feasible solution because our initial constraints imply that $f=0$ and $g \geq 0$. Such a polynomial pair is called the \introduceterm{refutation} for \eqref{problemsatz}. The degree of the refutation is given by
 \begin{equation}
 \label{degreesatz}
-\max_{s,I,j}\{\deg(f_s,g_s),\deg(e^2_{I\ j}\prod_{i\in I}h_i)\}.
+\max_{s,I,j}\{\deg(f_s,g_s),\deg(e^2_{I,j}\prod_{i\in I}h_i)\}.
 \end{equation} 
 
 \section{Positivstellensatz calculus\cite{grigoriev2001complexity}}
-Positivstellensatz calculus is the dynamic version of Positivstellensatz. Again our input is the system of constraints \eqref{problemsatz}, but now we let $f$ defined in \eqref{polpair} instead be an arbitrary polynomial derived from $f_1=0,\ldots,f_k=0$ and $x_i^2-x_i=0$ using the polynomial calculus inference rules. If $f+h=-1$, we call the polynomial pair the \introduceterm{Positivstellensatz calculus refutation} of \eqref{polpair}. The degree of the refutation is the maximum degree of $e^2_{I\ j}\prod_{i\in I}h_i$ and of the derivation for $f$.
-
-{\Huge Keep painting here}
+Positivstellensatz calculus is the dynamic version of Positivstellensatz. Again our input is the system of constraints \eqref{problemsatz}, but now we let $f$ defined in \eqref{polpair} instead be an arbitrary polynomial derived from $f_1=0,\ldots,f_k=0$ and $x_i^2-x_i=0$ using the polynomial calculus inference rules\footnote{
+The polynomial calculus inference rules are
+\begin{equation*}
+\frac{p \quad q}{\alpha p + \beta q} , \quad \frac{p}{xp}
+\end{equation*}
+for any polynomials $p,q$, coefficients $\alpha,\beta$ and variable $x$.
+}. If $f+h=-1$, we call the polynomial pair the \introduceterm{Positivstellensatz calculus refutation} of \eqref{polpair}. The degree of the refutation is the maximum degree of $e^2_{I,j}\prod_{i\in I}h_i$ and of the derivation for $f$.
 
 \section{Sum-of-squares hierarchy}
- The sum-of-squares hierarchy is a weaker version of the Positivstellensatz proof system. We consider the same system \eqref{problemsatz}. We introduce the following polynomial:
+ The sum-of-squares hierarchy is a weaker version of the Positivstellensatz proof system where we do not allow to multiply constraints $h_j \geq 0$ together. We consider the same system \eqref{problemsatz}. We introduce the following polynomial:
 \begin{eqnarray}
 \label{polsos}
 p=u_0+\sum_{j}u_jh_j+\sum_ig_if_i,
 \end{eqnarray}
  where $u_j$ are sum-of-squares and $g_i$ are arbitrary polynomials. The degree of a proof is the maximal degree of $u_0$, $u_jh_j$ and $g_if_i$.
 
-We start with $h_1\geq0,\ldots,h_m\geq0$ and a fixed $t$. The constraints are to be \introduceterm{localized on moment matrices}, that is $M_t(h_iy).$ Assume $t=1$ and let $h_1=x_1^2+3x_1$, then
-\begin{eqnarray*}
-M_1(h_1y)=
-\begin{pmatrix}
-                        y_{20}+3y_{10}  & y_{30}+3y_{20}  & y_{21}+3y_{11}\cr
-               y_{30}+3y_{20}  & y_{40}+3y_{30} & y_{31}+3y_{21}\cr
-                 y_{21}+3y_{11} & y_{31}+3y_{21}& y_{22}+3y_{12}\cr
-\end{pmatrix}.
-\end{eqnarray*} 
+\subsection{Geometrical interpretation}
+
+We start with $h_1\geq0,\ldots,h_m\geq0$ and a fixed $t$. As usual we lift the problem to a larger space and have the moment matrix $M^t=(y_{A \cup B})$ indexed by $|A|,|B| \leq t$. The constraints are to be \introduceterm{localized on moment matrices}, that is $M^t(h_i \circ Y)$. If $h_i = \sum_{S} \alpha_S \prod_{i\in S} x_i$ and we substitute $\prod_{i\in S}x_i$ for $y_S$, then $M^t(h_i \circ Y) = \sum_S \alpha_S (y_{A \cup B \cup S})$.
+
+%Assume $t=1$ and let $h_1=x_1^2+3x_1$, then
+%\begin{eqnarray*}
+%M^1(h_1 \circ Y)=
+%\begin{pmatrix}
+%                        y_{20}+3y_{10}  & y_{30}+3y_{20}  & y_{21}+3y_{11}\cr
+%               y_{30}+3y_{20}  & y_{40}+3y_{30} & y_{31}+3y_{21}\cr
+%                 y_{21}+3y_{11} & y_{31}+3y_{21}& y_{22}+3y_{12}\cr
+%\end{pmatrix}.
+%\end{eqnarray*} 
 
 We want to find a $y$ such that $M_t(y)\succeq0$ and $M_t(h_jy)\succeq0$ where the last matrix inequality is equivalent to $h_jp^2(y)$ for all polynomials $p$ of degree at most $t$.
 
