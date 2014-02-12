@@ -1,0 +1,175 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-28, 14:33 (CET) Massimo Lauria"
+% Encoding  : UTF-8
+
+% ---------------------------- USER DATA ------------------------------
+\def\DataTitle{5. .}
+\def\DataTitleShort{}
+\def\DataDate{3 February, 2014}
+\def\DataDocname{Lecture 5 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Sangxia Huang}
+\def\DataKeywords{integer programming, linear programming,
+  \Lovasz-\Schrijver, Sherali-Adams}
+
+\def\DataAbstract{%
+  }
+
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+\begin{document} 
+% --------------------------- DOCUMENT --------------------------------
+
+In this lecture we prove some properties of solution vectors of
+the Lasserre hierarchy.
+
+First, we recall the notations defined in previous lectures.
+Let
+\begin{alignat}{2}
+  K &= \left\{ x \in \RR^n | \forall i, h_i(x) \ge 0 \right\} \label{eq:setK}
+\end{alignat}
+be some relaxation of a binary feasibility problem.
+That is, $K$ is the set of fractional points that satisfies all the constraints,
+where the $h_i$'s are polynomial constraints. In most of the previous
+examples, all $h_i$'s are linear and therefore $K$ is a \stressterm{polytope}.
+Otherwise, we usually call $K$ a \introduceterm{semialgebraic set}.
+In the rest of the lecture, we assume that all constraints are linear.
+
+The polytope $\sol{P}_{I}=\mathbf{conv}(K \cap \{0,1\}^n)$ is the convex hull of
+all integral solutions. Recall that 
+\introduceterm{the $t$-th level of the Lasserre hierarchy}
+$L_t(K)$ is the set of vectors $y \in \RR^{2^{[n]}}$
+that satisfy the following constraints
+\begin{alignat}{2}
+  M_t(y) & \succeq 0  \notag \\
+  M_t(h_i \circ y) & \succeq 0, \quad \forall i \label{eq:lasserre-definition} \\
+  y_{\emptyset} &= 1 \notag.
+\end{alignat}
+Let $Q_t(K)$ be the projection of $L_t(K)$ over $y_{\{i\}}=:x_i$.
+For simplicity of notation, in the rest of the note, we 
+write $y_i$ instead of $y_{\{i\}}$.
+
+\section{Basic properties of the Lasserre solutions}
+We first discuss some of the basic properties of the Lasserre relaxation.
+\begin{lemma}\label{lemma:basic-lasserre-prop}
+  Define $K$ and $L_t(K)$ as above for some $t \ge 0$, and $y \in L_t(K)$.
+  Then the following holds:
+  \begin{enumerate}
+    \item For any $I \subseteq J$, $|J| \le t$, $0 \le y_J \le y_I$.
+    \item For all $|I| \le t$, $0 \le y_I \le 1$.
+    \item For $|I| \le t$, $|J| \le t$, $|y_{|I \cup J|}| \le \sqrt{y_I y_J}$.
+    \item For $|S| \le t$, $y \in L_t(K)$, 
+      if there exists $i \in S$, $y_i=0$, then $y_S=0$.
+      Similarly, if for all $i \in S$, $y_i=1$, then $y_S=1$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  1) The part $y_J \ge 0$ follows from the constraint $M_t(y) \succeq 0$.
+  To show that $y_I \ge y_J$, note that we have
+  \begin{alignat}{2}
+    \left[
+    \begin{array}{c c}
+      y_I & y_{I \cup J} \\
+      y_{I \cup J} & y_J 
+    \end{array}
+    \right] &\succeq 0. \label{eq:yIJ}
+  \end{alignat}
+  Since $I \subseteq J$, we have that $y_{I \cup J} = y_{J}$.
+  Therefore the above implies that $y_I y_J - y_J^2 \ge 0$.
+  Since $y_I, y_J \ge 0$, we have that $y_I \ge y_J$.
+  
+  2) This is an easy corollary of the first point.
+
+  3) Again, consider (\ref{eq:yIJ}). We have that 
+  $y_I y_J - y_{I \cup J}^2 \ge 0$.
+
+  4) The first half of the statement follows by applying the first statement
+  of the lemma and having $I:=\{i\}$ and $J:=S$.
+
+  For the second half of the statement, we can use the fact that the Sherali-Adams
+  constraints are implied by the Lasserre constraints, and use
+  \[
+  \sum_{H \subseteq S'} (-1)^{|H|} y_H \ge 0
+  \]
+  inductively for all sets $S' \subseteq S$.
+\end{proof}
+
+Next, we show that the vectors in $L_t(K)$ can be written as a convex
+combination of fractional solutions that are locally integral. 
+We have the following theorem.
+\begin{theorem}\label{thm:local-integral-solution}
+
+\end{theorem}
+
+
+\introduceterm{integer programs}. 
+$ \NP $-hard 
+\stressterm{known} 
+\eg
+$ \varbounded{x_{i}} $
+\section{Complexity of Linear programming}
+
+Deciding the satisfiability of a set of linear inequalities is clearly
+in \NP.
+% 
+Farkas' Lemma and Duality Theorem show that deciding its
+unsatisfiability is also in \NP, thus the problem is in $ \NP \cap \coNP
+$. But actually there are well known efficient algorithms for this
+problem. All of them are based the geometric interpretation of the
+system of linear inequalities as a convex polyhedron.
+\begin{itemize}
+  \item The \introduceterm{simplex method} is the first algorithm for
+  linear programming and has been invented by Dantzig (1947). It does
+  not run in polynomial time, but it is quite fast in practice. The
+  idea is to walk on the edges of the polyhedron induced by the linear
+  program, in order to reach the vertex with optimal value.
+  \item The first polynomial time algorithm for linear programming is
+  based on the \introduceterm{ellipsoid method} (Khachyian, 1979). The
+  simplex method is much faster in practice, but of course the
+  ellipsoid method has great theoretical value, and runs under more
+  general conditions. For example it allows to optimize over super
+  polynomial size linear programs in polynomial time, assuming the
+  program has an efficient \introduceterm{separator}\footnote{A
+    separator is an oracle that, given a point $x$ outside the set
+    of feasible solutions $F$, outputs an hyperplane separating $ x$
+    from $ F$.}.  The algorithm assumes that the set of feasible
+  solutions is in a 0-centered ball of large enough radius, and that
+  it completely contains some ball of range $ \epsilon $.
+  %
+  The algorithm checks whether the center of the ball is feasible. If
+  it is not then the separator oracle suggests which half of the ball
+  to save and which to forget. A new ellipsoid of smaller volume
+  ``encircles'' the useful half.  The idea is to encircle the set of
+  feasible solutions with smaller and smaller ellipsoids, until either
+  the center of the last ellipsoid is a feasible solution or the
+  ellipsoid is so small that cannot contain a ball of range $ \epsilon
+  $.
+  
+  \item Since the ellipsoid method is so inefficient in practice, the
+  simplex method is usually preferred. The advent of
+  \introduceterm{interior point methods} changed the scenario,
+  providing a family of polynomial time algorithms which are fast in
+  practice. The first member of this family is due to Karmakar (1984):
+  his algorithm is based on the idea of exploring the space of
+  solutions by walking through the interior of the polytope. The
+  original algorithm was not faster than the simplex method but
+  nowadays there are competitive implementations and variants. We must
+  observe that interior point methods were already employed in the
+  context of non-linear programming way before Karmakar algorithm.
+\end{itemize}
+
+\begin{definition}\label{def:tum}
+  A matrix $ M $ is called \introduceterm{totally unimodular} if every
+  square submatrix of $ M $ has determinant in $\{-1,0,1\}$.
+\end{definition}
+\end{document} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
