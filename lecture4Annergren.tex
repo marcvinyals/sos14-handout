@@ -40,7 +40,7 @@ Several approximation algorithms have been developed to be able to solve it with
 \end{equation*}
 that is, the inverse of the integrality gap.} in polynomial time. The approximation algorithm with the highest performance guarantee is an SDP relaxation that achieves $\rho\approx 0.878$.
 
-However, any Sherali-Adams relaxation of degree $t=n^{s(\epsilon)}$ can only achieve a performance guarantee of $1/2 + \epsilon$\footnote{Citation needed}.
+However, any Sherali-Adams relaxation of degree $t=n^{\delta(\epsilon)}$ can only achieve a performance guarantee of $1/2 + \epsilon$\footnote{Citation needed}.
 
 \section{Small example of SDP relaxation}
 We want to show that a polynomial $p$ is non-negative over some polytope and write $p\geq 0$. If the polynomial $p$ is expressible as a sum of squared polynomials, then we can find such representation in a tractable manner by reformulating the problem as a SDP relaxation\footnote{Parrilo}. Let us see a small example. Consider
@@ -143,7 +143,7 @@ M(x,y,z)=x^6+y^4z^2+y^2z^4-3x^2y^2z^2.
 \section{Moment matrix\cite{lasserre2001globalOpt}}
 We consider polynomials $p(x):\RR^n\rightarrow\RR$ of degree $t$. We can express them as
 \begin{eqnarray*}
-p(x)=\sum_{\alpha}p_{\alpha}x^{\alpha},\ \text{with}\   x^{\alpha}=x_1^{\alpha_1}x_2^{\alpha_2}\cdots x_n^{\alpha_n},\ \text{and}\  \sum_{i=1}^n\alpha_i\leq t,
+p(x)=\sum_{\alpha \in [t]^n}p_{\alpha}x^{\alpha},\ \text{with}\   x^{\alpha}=x_1^{\alpha_1}x_2^{\alpha_2}\cdots x_n^{\alpha_n},\ \text{and}\  \sum_{i=1}^n\alpha_i\leq t,
 \end{eqnarray*}
 where 
 \begin{align}
@@ -152,9 +152,7 @@ where
 \end{align}
 is a basis of $p(x)$ and $p$ is the coefficient vector of $p(x)$ with respect to \eqref{basis}. 
 
-{\Huge Is this just wrong?}
-
-We introduce the auxillary variable $y_{00\ldots 0}=1$ and perform the variable substitution $x_1^ix_2^j\cdots x_n^l=y_{ij\ldots l}$. The moment matrix $M_t(y)$ has rows and columns labelled according to the basis \eqref{basis} and its elements are the corresponding $y_{ij\ldots l}$. For simplicity, we only show the case for $n=2$ and $t=2$, 
+We introduce the auxiliary variable $y_{00\ldots 0}=1$ and perform the variable substitution $x_1^ix_2^j\cdots x_n^l=y_{ij\ldots l}$. The moment matrix $M_t(y)$ has rows and columns labelled according to the basis \eqref{basis} and its elements are the corresponding $y_{ij\ldots l}$. For simplicity, we only show the case for $n=2$ and $t=2$, 
 \begin{eqnarray*}
 M_2(y)=
 \bordermatrix{~ & 1            & x_1     &x_2      &x_1^2 &x_1x_2&x_2^2 \cr
@@ -180,7 +178,7 @@ Consequently, we have that $p^2(x)\geq0\Leftrightarrow M_t(y)\succeq0$.
  LS$_+$\footnote{The \Lovasz-\Schrijver hierarchy with SDP.} is a lift and project relaxation as its linear version. We are still limited to start each iteration with linear inequalities and we are only allowed to introduce quadratic inequalities. In fact, the only difference is that the matrix constraint $Y\succeq0$ has been added.
 
 \subsection{Geometric interpretation}
-As for the \Lovasz-\Schrijver hierarchy, we introduce the auxiliary variable $x_0=1$ and perform the variable substitution $x_ix_j=Y_{ij}$ for every $i,j=0,\ldots,n$. We let any terms of degree zero be represented by $Y_{00}$. We enforce the following constraints on $Y$:
+As for the \Lovasz-\Schrijver hierarchy, we introduce the auxiliary variable $x_0=1$ and perform the variable substitution $x_ix_j=y_{ij}$ for every $i,j=0,\ldots,n$. We let any terms of degree zero be represented by $y_{00}$. We enforce the following constraints on $Y$:
 \begin{enumerate}
 \item \label{lsp-symmetry} $Y=Y^T$,
 \item \label{lsp-eatsquares} $y_{0i}=y_{i0}=y_{ii}, \quad\text{for}\ i=0,\ldots,n$,
@@ -189,10 +187,10 @@ As for the \Lovasz-\Schrijver hierarchy, we introduce the auxiliary variable $x_
 \item \label{lsp-sdp} $Y\succeq0$.
 \end{enumerate}
 Constraints~\ref{lsp-symmetry} and~\ref{lsp-eatsquares} are due to that $x_ix_j=x_jx_i$ and $x_i-x_i^2=0$. Constraints~\ref{lsp-multiplyx} and~\ref{lsp-multiplyoneminusx} stem from 
-\[\sum_{j=1}^{n} A^{(j)}Y_{ij}-bY_{i0}\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
+\[\sum_{j=1}^{n} A^{(j)}y_{ij}-by_{i0}\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
 and 
-\[\sum_{j=1}^{n} A^{(j)}(Y_{0j}-Y_{ij})-b(Y_{00}-Y_{i0})\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
-respectively\footnote{Uh??}. The matrix constraint~\ref{lsp-sdp} is equivalent to $p^2(Y)\geq0$ for all polynomials $p(\cdot)$\footnote{undef?} of degree one as discussed previously\footnote{I CAN'T REFERENCE SECTIONS BY NUMBER. AAARGH!}.
+\[\sum_{j=1}^{n} A^{(j)}(y_{0j}-y_{ij})-b(y_{00}-y_{i0})\leq 0, \quad\text{for}\ i=0,\ldots,n,\]
+respectively. The matrix constraint~\ref{lsp-sdp} is equivalent to $p^2(Y)\geq0$ for all polynomials $p(\cdot)$ of degree one as discussed previously.
 
 \subsection{Operator and rank}
 The operation $N_+(P)$ is the projection over $1=Y_{00}$, $x_1=Y_{01}$,\ldots,$x_n=Y_{0n}$. The rank $t$ of a proof in LS$_+$ is the same as for \Lovasz-\Schrijver hierarchy. Note that, if $P$ is the polytope corresponding to the set of initial inequalities then $N_+(P)$ is determined by inequalities derivable in rank one. 
@@ -200,16 +198,16 @@ The operation $N_+(P)$ is the projection over $1=Y_{00}$, $x_1=Y_{01}$,\ldots,$x
 The projection $N_+^t(P)$ can be solved in $n^{\mathcal{O}(t)}$ given a polynomial time separator of $P$. We can use the same separator as for $N^t(P)$, with the additional requirement that $Y\succeq0$.
 
 \begin{example}
-Consider the following problem:
+Consider the maximum independent set problem on a graph $G(V,E)$
 \begin{alignat}{2}
 \label{example1}
   \maximize \sum_{u\in V} x_u\notag \\
-  \subjectto G=(V,E)=K_n\notag \\
-  & x_u+x_v\leq 1,\notag \\
-&(u,v)\in E\notag\\
+  \subjectto x_u+x_v\leq 1,\quad (u,v)\in E\notag\\
 &x_u\in\{0,1\}.
 \end{alignat}
-We want to show that the objective value of \eqref{example1} is at most one, this is equivalent to showing that $\sum x_u\leq 1$. Using LS$_+$, we can do this in rank one.
+Over the complete graph of order $n$ we want to show that the objective value of \eqref{example1} is at most one, this is equivalent to showing that $\sum x_u\leq 1$. 
+If we are using LS relaxations, then we need rank $n$.
+Using LS$_+$, we can do this in rank one.
 
 The axioms of the proof are $1-x_u-x_v\geq 0$, $x_u^2-x_u=0$, and we can derive
 \begin{alignat*}{2}
@@ -247,7 +245,7 @@ for any polynomials $p,q$, coefficients $\alpha,\beta$ and variable $x$.
 }. If $f+h=-1$, we call the polynomial pair the \introduceterm{Positivstellensatz calculus refutation} of \eqref{polpair}. The degree of the refutation is the maximum degree of $e^2_{I,j}\prod_{i\in I}h_i$ and of the derivation for $f$.
 
 \section{Sum-of-squares hierarchy}
- The sum-of-squares hierarchy is a weaker version of the Positivstellensatz proof system where we do not allow to multiply constraints $h_j \geq 0$ together. We consider the same system \eqref{problemsatz}. We introduce the following polynomial:
+ The Lasserre\footnote{also known as sum-of-squares} hierarchy is a weaker version of the Positivstellensatz proof system where we do not allow to multiply constraints $h_j \geq 0$ together. We consider the same system \eqref{problemsatz}. We introduce the following polynomial:
 \begin{eqnarray}
 \label{polsos}
 p=u_0+\sum_{j}u_jh_j+\sum_ig_if_i,
@@ -256,7 +254,7 @@ p=u_0+\sum_{j}u_jh_j+\sum_ig_if_i,
 
 \subsection{Geometrical interpretation}
 
-We start with $h_1\geq0,\ldots,h_m\geq0$ and a fixed $t$. As usual we lift the problem to a larger space and have the moment matrix $M^t=(y_{A \cup B})$ indexed by $|A|,|B| \leq t$. The constraints are to be \introduceterm{localized on moment matrices}, that is $M^t(h_i \circ Y)$. If $h_i = \sum_{S} \alpha_S \prod_{i\in S} x_i$ and we substitute $\prod_{i\in S}x_i$ for $y_S$, then $M^t(h_i \circ Y) = \sum_S \alpha_S (y_{A \cup B \cup S})$.
+We start with $h_1\geq0,\ldots,h_m\geq0$ and a fixed $t$. As it was the case with Sherali-Adams we lift the problem to a larger space and we implicitly enforce $x_i^2=x_i$ constraints by considering multilinearized polynomials, thus we have the moment matrix $M^t=(y_{A \cup B})$ indexed by sets $|A|,|B| \leq t$. The constraints are to be \introduceterm{localized on moment matrices}, that is $M^t(h_i \circ Y)$. If $h_i = \sum_{S} \alpha_S \prod_{i\in S} x_i$ and we substitute every monomial $\prod_{i\in S}x_i$ for $y_S$, then the constraint becomes $M^t(h_i \circ Y) = \sum_S \alpha_S (y_{A \cup B \cup S})$.
 
 %Assume $t=1$ and let $h_1=x_1^2+3x_1$, then
 %\begin{eqnarray*}
@@ -268,11 +266,32 @@ We start with $h_1\geq0,\ldots,h_m\geq0$ and a fixed $t$. As usual we lift the p
 %\end{pmatrix}.
 %\end{eqnarray*} 
 
-We want to find a $y$ such that $M_t(y)\succeq0$ and $M_t(h_jy)\succeq0$ where the last matrix inequality is equivalent to $h_jp^2(y)$ for all polynomials $p$ of degree at most $t$.
+We want to find a $y$ such that $M_t(y)\succeq0$ and $M_t(h_jy)\succeq0$ where the last matrix inequality is equivalent to $h_jp^2(y)$ for all multilinear polynomials $p$ of degree at most $t$.
 
 We let $Q_t(K)$ denote the projection over $1=y_{\emptyset}$ and $x_i=y_{\{i\}}$ for all $i$, where $K$ is the set defined by the inequalities $h_1\geq0,\ldots,h_m\geq0$. 
 
+This setting does not allow equality constraints, but we can deal with them by splitting each equality $f_i = 0$ into $f_i \geq 0$ and $f_i \leq 0$.
 
+Lasserre relaxations are stronger than Sherali-Adams. The following is an example of how to derive SA inequalities by using the Lasserre setup. Say we have the constraint $h(x)= x \geq 0$ and we want to derive the constraint $x(1-y)(1-z) \geq 0$.
+
+The moment matrix of the constraint $h$ is
+
+\begin{equation}
+M^2(h \circ Y)=
+\bordermatrix{
+~ & x & xy & xz & xyz \cr
+x & y_{x} & y_{xy} & y_{xz} & y_{xyz}\cr
+xy & y_{xy} & y_{xy} & y_{xyz} & y_{xyz} \cr
+xz & y_{xz} & y_{xyz} & y_{xz} & y_{xyz} \cr
+xyz & y_{xyz} & y_{xyz} & y_{xyz} & y_{xyz} \cr
+}.
+\end{equation}
+
+The condition $M^2(h \circ Y) \succeq 0$ is equivalent to that $\alpha^T M^2(h \circ Y) \alpha \geq 0$ for any vector $\alpha$, in particular it holds for the vector $(\begin{matrix}1 & -1 & -1 & 1\end{matrix})^T$ corresponding to $(1-y)(1-z)=(1-y-z+yz)$. Performing the calculation yields
+\begin{equation}
+y_x - y_{xy} - y_{xz} + y_{xyz} \geq 0
+\end{equation}
+which is the constraint we would have obtained applying the Sherali-Adams method.
 
 
 
