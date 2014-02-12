@@ -102,70 +102,125 @@ Next, we show that the vectors in $L_t(K)$ can be written as a convex
 combination of fractional solutions that are locally integral. 
 We have the following theorem.
 \begin{theorem}\label{thm:local-integral-solution}
-
+  Let $y \in L_t(K)$ and $S \subseteq [n]$, $|S| \le t$.
+  Then $y \in \mathbf{conv}(z | z \in L_{t-|S|}(K); \forall i \in S, z_i \in \{0,1\})$.
 \end{theorem}
+To prove Theorem~\ref{thm:local-integral-solution}, we first prove the following claim.
+\begin{claim}\label{claim:main-local-integral-claim}
+  Let $y \in L_t(K)$, and $i \in [n]$ be some variable where $y_i \notin \{0,1\}$.
+  Then there exists $z^0, z^1 \in L_{t-1}(K)$, and $\alpha, \beta \in [0,1]$
+  $\alpha+\beta=1$, such that $z^0_i=0$, $z^1_i=1$, and $y=\alpha z^0 + \beta z^1$.
+\end{claim}
+\begin{proof}
+  Since $y_i \notin \{0,1\}$, we can define the elements of $z^0$ and $z^1$ as
+  the following
+  \begin{alignat*}{2}
+    z^1_I &= \frac{y_{I \cup \{i\}}}{y_i}, \\
+    z^0_I &= \frac{y_I - y_{I \cup \{i\}}}{1-y_i}.
+  \end{alignat*}
+  Clearly $z^0_0$ and $z^1_i=1$, and $y=y_i \cdot z^1 + (1-y_i) \cdot z^0$.
+  Now we verify that $z^0, z^1 \in L_t(K)$.
 
+  First, we check that $M_t(y) \succeq 0$ implies that $M_{t-1}(z^1) \succeq 0$.
+  Recall that since the moment matrix $M_t$ is positive semidefinite,
+  there exists $v_S$ for each $S \subseteq [n]$, $|S| \le t$, 
+  such that $M_t(y)_{I,J}=\langle v_I, v_J \rangle$, for all $|I| \le t$, $|J| \le t$.
+  Define
+  \[
+  u^1_I = \frac{1}{\sqrt{y_i}} v_{I \cup \{i\}}.
+  \]
+  Then the matrix $M=(\langle u^1_I, u^1_J \rangle)_{|I| \le t-1, |J| \le t-1}$
+  is positive semidefinite by definition. We need to show that $M_{I,J}=z^1_{I \cup J}$
+  for $|I|,|J| \le t-1$. Note that
+  \[
+  M_{I,J} = \frac{1}{y_i} \langle v_{I \cup \{i\}}, v_{J \cup \{i\}} \rangle
+  =\frac{1}{y_i} y_{I \cup J \cup \{i\}} = z^1_{I \cup J}.
+  \]
+  This shows that $M_t(z^1) \succeq 0$.
 
-\introduceterm{integer programs}. 
-$ \NP $-hard 
-\stressterm{known} 
-\eg
-$ \varbounded{x_{i}} $
-\section{Complexity of Linear programming}
+  Similarly, we can define
+  \[
+  u^0_I = \frac{v_I - v_{I \cup \{i\}}}{\sqrt{1-y_i}},
+  \]
+  and conclude that $M_{t-1}(z^0) \succeq 0$.
 
-Deciding the satisfiability of a set of linear inequalities is clearly
-in \NP.
-% 
-Farkas' Lemma and Duality Theorem show that deciding its
-unsatisfiability is also in \NP, thus the problem is in $ \NP \cap \coNP
-$. But actually there are well known efficient algorithms for this
-problem. All of them are based the geometric interpretation of the
-system of linear inequalities as a convex polyhedron.
-\begin{itemize}
-  \item The \introduceterm{simplex method} is the first algorithm for
-  linear programming and has been invented by Dantzig (1947). It does
-  not run in polynomial time, but it is quite fast in practice. The
-  idea is to walk on the edges of the polyhedron induced by the linear
-  program, in order to reach the vertex with optimal value.
-  \item The first polynomial time algorithm for linear programming is
-  based on the \introduceterm{ellipsoid method} (Khachyian, 1979). The
-  simplex method is much faster in practice, but of course the
-  ellipsoid method has great theoretical value, and runs under more
-  general conditions. For example it allows to optimize over super
-  polynomial size linear programs in polynomial time, assuming the
-  program has an efficient \introduceterm{separator}\footnote{A
-    separator is an oracle that, given a point $x$ outside the set
-    of feasible solutions $F$, outputs an hyperplane separating $ x$
-    from $ F$.}.  The algorithm assumes that the set of feasible
-  solutions is in a 0-centered ball of large enough radius, and that
-  it completely contains some ball of range $ \epsilon $.
-  %
-  The algorithm checks whether the center of the ball is feasible. If
-  it is not then the separator oracle suggests which half of the ball
-  to save and which to forget. A new ellipsoid of smaller volume
-  ``encircles'' the useful half.  The idea is to encircle the set of
-  feasible solutions with smaller and smaller ellipsoids, until either
-  the center of the last ellipsoid is a feasible solution or the
-  ellipsoid is so small that cannot contain a ball of range $ \epsilon
-  $.
-  
-  \item Since the ellipsoid method is so inefficient in practice, the
-  simplex method is usually preferred. The advent of
-  \introduceterm{interior point methods} changed the scenario,
-  providing a family of polynomial time algorithms which are fast in
-  practice. The first member of this family is due to Karmakar (1984):
-  his algorithm is based on the idea of exploring the space of
-  solutions by walking through the interior of the polytope. The
-  original algorithm was not faster than the simplex method but
-  nowadays there are competitive implementations and variants. We must
-  observe that interior point methods were already employed in the
-  context of non-linear programming way before Karmakar algorithm.
-\end{itemize}
+  The final thing we need to show is that $M_t(h \circ y) \succeq 0$
+  implies that $M_{t-1}(h \circ z^0) \succeq 0$ and $M_{t-1}(h \circ z^1) \succeq 0$.
+  The proof idea is similar to the above argument.
+  Remember that if we assume that $h=\sum_S \alpha_S \prod_{i \in S} x_i$,
+  then
+  \[
+  M^t(h \circ y)_{I,J} = \langle \tilde{v}_I, \tilde{v}_J \rangle 
+  = \sum_S \alpha_S y_{I \cup J \cup S}.
+  \]
+  Now define 
+  \[
+  \tilde{v}^1_I = \frac{\tilde{v}_{I \cup \{i\}}}{y_i},
+  \]
+  and we can verify that indeed $M^{t-1}(h \circ z^1) \succeq 0$.
+  Similarly we can show that $M^{t-1}(h \circ z^0) \succeq 0$.
+\end{proof}
 
-\begin{definition}\label{def:tum}
-  A matrix $ M $ is called \introduceterm{totally unimodular} if every
-  square submatrix of $ M $ has determinant in $\{-1,0,1\}$.
-\end{definition}
+%\introduceterm{integer programs}. 
+%$ \NP $-hard 
+%\stressterm{known} 
+%\eg
+%$ \varbounded{x_{i}} $
+%\section{Complexity of Linear programming}
+%
+%Deciding the satisfiability of a set of linear inequalities is clearly
+%in \NP.
+%% 
+%Farkas' Lemma and Duality Theorem show that deciding its
+%unsatisfiability is also in \NP, thus the problem is in $ \NP \cap \coNP
+%$. But actually there are well known efficient algorithms for this
+%problem. All of them are based the geometric interpretation of the
+%system of linear inequalities as a convex polyhedron.
+%\begin{itemize}
+%  \item The \introduceterm{simplex method} is the first algorithm for
+%  linear programming and has been invented by Dantzig (1947). It does
+%  not run in polynomial time, but it is quite fast in practice. The
+%  idea is to walk on the edges of the polyhedron induced by the linear
+%  program, in order to reach the vertex with optimal value.
+%  \item The first polynomial time algorithm for linear programming is
+%  based on the \introduceterm{ellipsoid method} (Khachyian, 1979). The
+%  simplex method is much faster in practice, but of course the
+%  ellipsoid method has great theoretical value, and runs under more
+%  general conditions. For example it allows to optimize over super
+%  polynomial size linear programs in polynomial time, assuming the
+%  program has an efficient \introduceterm{separator}\footnote{A
+%    separator is an oracle that, given a point $x$ outside the set
+%    of feasible solutions $F$, outputs an hyperplane separating $ x$
+%    from $ F$.}.  The algorithm assumes that the set of feasible
+%  solutions is in a 0-centered ball of large enough radius, and that
+%  it completely contains some ball of range $ \epsilon $.
+%  %
+%  The algorithm checks whether the center of the ball is feasible. If
+%  it is not then the separator oracle suggests which half of the ball
+%  to save and which to forget. A new ellipsoid of smaller volume
+%  ``encircles'' the useful half.  The idea is to encircle the set of
+%  feasible solutions with smaller and smaller ellipsoids, until either
+%  the center of the last ellipsoid is a feasible solution or the
+%  ellipsoid is so small that cannot contain a ball of range $ \epsilon
+%  $.
+%  
+%  \item Since the ellipsoid method is so inefficient in practice, the
+%  simplex method is usually preferred. The advent of
+%  \introduceterm{interior point methods} changed the scenario,
+%  providing a family of polynomial time algorithms which are fast in
+%  practice. The first member of this family is due to Karmakar (1984):
+%  his algorithm is based on the idea of exploring the space of
+%  solutions by walking through the interior of the polytope. The
+%  original algorithm was not faster than the simplex method but
+%  nowadays there are competitive implementations and variants. We must
+%  observe that interior point methods were already employed in the
+%  context of non-linear programming way before Karmakar algorithm.
+%\end{itemize}
+%
+%\begin{definition}\label{def:tum}
+%  A matrix $ M $ is called \introduceterm{totally unimodular} if every
+%  square submatrix of $ M $ has determinant in $\{-1,0,1\}$.
+%\end{definition}
 \end{document} 
 
 
