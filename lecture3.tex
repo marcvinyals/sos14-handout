@@ -1,0 +1,168 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: "2014-01-28, 14:33 (CET) Massimo Lauria"
+% Encoding  : UTF-8
+
+% ---------------------------- USER DATA ------------------------------
+\def\DataTitle{3. Improving linear relaxations of integer programs.}
+\def\DataTitleShort{Linear programming}
+\def\DataDate{3 February, 2014}
+\def\DataDocname{Lecture 3 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Mariette Annergren}
+\def\DataKeywords{integer programming, linear programming,
+  \Lovasz-\Schrijver, Sherali-Adams}
+
+\def\DataAbstract{%
+  We discuss two methods of improving linear relaxations of integer programs, namely the \Lovasz-\Schrijver- and Sherali-Adams hierarchies. They allow for a systematic way of finding tighter and tighter polytopes containing the convex hull of the integer solutions. The main idea is to \introduceterm{lift}, that is, to augment the linear program to a higher dimensional space and then to \introduceterm{project} it down to the original space where a smaller polytope than the one we started with is obtained. This procedure of lift and project are done in different ways for the different hierarchies, as we shall see.}
+
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+\begin{document} 
+% --------------------------- DOCUMENT --------------------------------
+
+This lecture contained much of the material given in the notes on integer and linear programming \footnote{See notes from first lecture on course webpage.}. Consequently, these lecture notes should be seen as a complement to those.
+
+We consider feasibility problems of the form 
+\begin{alignat}{2}
+\label{feasibilityProblem1}
+  \find x\notag \\
+  \subjectto Ax \geq b \\
+  & x \in \{0,1\}^n.\notag
+\end{alignat}
+The boolean constraint $x \in \{0,1\}^n$ is equivalent to $x_i^2-x_i=0,\ \text{for}\ i=0,\ldots,n$, thus problem \eqref{feasibilityProblem1} can be reformulated as
+\begin{alignat}{2}
+\label{feasibilityProblem2}
+  \find x\notag \\
+  \subjectto Ax \geq b \\
+  & x_i^2-x_i=0,\ \text{for}\ i=0,\ldots,n.\notag
+\end{alignat}
+A simple linear relaxation of these problems are  
+\begin{alignat}{2}
+\label{linearRelaxation1}
+  \find x\notag \\
+  \subjectto Ax \geq b \\
+  & 0\leq x\leq 1,\notag
+\end{alignat}
+where the boolean constraint has been relaxed into a linear inequality constraint. Problem \eqref{linearRelaxation1} is convex and there exists efficient algorithms for solving it. If problem \eqref{linearRelaxation1} lacks a feasible solution, we can state that problems \eqref{feasibilityProblem1} and \eqref{feasibilityProblem2} lack one as well. However, if a feasible solution is found it is rare that it is the boolean solution.
+
+The objective of \Lovasz-\Schrijver- and Sherali-Adams hierarchies is to improve the initial problem relaxation \eqref{linearRelaxation1}. The relaxation is improved in the sense that the feasible set gets smaller and therefore closer to the convex hull of the integer solution. 
+
+We denote the feasible set of problem \eqref{linearRelaxation1} as $\sol{P}$ and the convex hull\footnote{The convex hull of a set $C$ is denoted $\mathbf{conv}C$.} of the integer solution as $\sol{P}_{I}$, we then get
+\begin{equation}
+\sol{P}_{I} = \mathbf{conv}(\sol{P}\cap\{0,1\}^n).
+\end{equation}
+
+In the \Lovasz-\Schrijver- and Sherali-Adams hierarchies each relaxation system induces
+\begin{equation}
+\label{tighterSets}
+\sol{P}=\sol{P}_{0} \supseteq \sol{P}_{1} \supseteq \cdots
+  \supseteq \sol{P}_{t} \supseteq \cdots\supseteq \sol{P}_{I}.
+\end{equation}
+Naturally, if $\sol{P}_{t}=\emptyset$ for any $t$, then $\sol{P}_{I}=\emptyset$. That is, no feasible integer solution exists.
+
+\section{\Lovasz-\Schrijver\ hierarchy}
+In the \Lovasz-\Schrijver\cite{lovasz1991cones} hierarchy the linear program is augmented to a higher dimensional space of approximately $n^2$ dimensions. Quadratic inequalities are introduced which, via a variable substitution, become linear inequalities in the higher dimensional space. These inequalities are then projected back onto the original variables, yielding a tighter feasible set. This procedure can be repeated in an iterative manner to obtain tighter and tighter sets, as depicted in \eqref{tighterSets}.
+
+\begin{example}
+We want to improve the following linear relaxation:
+\begin{alignat}{2}
+\label{example1}
+  \find x\notag \\
+  \subjectto x \geq 1/2 \\
+  & 0\leq x\leq 1,\notag
+\end{alignat}
+which has infinitely many fractional solutions and one boolean solution, $x=1$. We introduce the quadratic inequality 
+\begin{equation}
+\label{quadraticInequality1}
+(1-x)(x-1/2)=3/2x-x^2-1/2\geq 0. 
+\end{equation}
+By substituting $x^2$ with $y$, inequality \eqref{quadraticInequality1} becomes linear with respect to $x$ and $y$. We then project $y$ onto $x$ via the relation $x_i^2-x_i=0,\ \text{for}\ i=0,\ldots,n,$ that is $y=x$. The new feasibility problem is
+\begin{alignat}{2}
+\label{example2}
+  \find x\notag \\
+  \subjectto x \geq 1 \\
+  & 0\leq x\leq 1,\notag
+\end{alignat}
+which only has the boolean solution $x=1$.
+\end{example}
+
+\subsection{Proof system interpretation}
+The \Lovasz-\Schrijver\ hierarchy can be seen as a \introduceterm{proof system} for determining if a given set contains an integer solution. We consider the case when the given set is $\sol{P}$. Consequently, the constraints 
+\begin{equation}
+Ax\leq b,\ 0\leq x\leq1,\ \text{and}\  x_i^2-x_i=0,\ \text{for}\ i=0,\ldots,n, 
+\end{equation}
+are the \introduceterm{axioms} of the proof system. The system allows for quadratic inequalities to be introduced via multiplication and positive combinations of the axioms. How many of these modifications that are done to introduce a particular linear inequality is related to the \introduceterm{rank of the inequality}\footnote{For a definition and related results, see Definition 2 and Theorem 3 in notes from the first lecture on course webpage.}. The original problems \eqref{feasibilityProblem1} and \eqref{feasibilityProblem2} are infeasible if we get the linear inequality $1\leq0$.
+
+\subsection{Geometric interpretation}
+We introduce the matrix variable $Y\in\RR^{(n+1)\times(n+1)}$ and, given $\sol{P}$, we enforce the following constraints on $Y$\footnote{$Y$ has row and columns indexed from $0$ to $n$. $Y_{ij}$ is the element in the $i$th column and $j$th row of $Y$ and the $i$th column of $Y$ is denoted $Y^{(i)}.$}:
+\begin{alignat}{2}
+\label{geometric}
+&Y_{ji}=Y_{ij}, \quad\text{for every}\ i,j=0,\ldots,n,\notag\\ 
+&Y_{0i}=Y_{i0}=Y_{ii}, \quad\text{for}\ i=0,\ldots,n,\\
+&\sum_{j=1}^{n} A^{(j)}Y_{ij}-bY_{i0}\leq 0, \quad\text{for}\ i=0,\ldots,n.\notag
+\end{alignat}
+If $Y$ satisfies the constraints \eqref{geometric}, it satisfies every derivable linear inequality of rank 1. We can see that this is true by introducing the auxiliary variable $x_0=1$ and performing the variable substitution $x_ix_j=Y_{ij}$ for every $i,j=0,\ldots,n$. We let any terms of degree zero be represented by $Y_{00}$. 
+
+Once we have a new set of inequalities expressed in $Y$, we project these back onto the original variables $x$. \footnote{The projection of $Y$ onto $x$ is defined as the \Lovasz-\Schrijver\ operator. It is denoted $N(\cdot)$. We then have $N(\sol{P}_t)=\sol{P}_{t+1}$ and $N^t(\sol{P})=\sol{P}_t$.}
+
+To optimize over a linear program we can, for example, use the \introduceterm{ellipsoidal algorithm}. To use this algorithm it is sufficient to have a separator oracle for the considered convex set, as mentioned in the proof sketch of Theorem 8\footnote{See notes from the first lecture on course webpage.}. A separator in the \Lovasz-\Schrijver\ hierarchy to determine $N^t(\sol{P})$ is based on the following checks: Is
+\begin{enumerate}
+\item $Y=Y^T$,
+\item $Y_{0i}=Y_{i0}=Y_{ii}, \quad\text{for}\ i=0,\ldots,n$,
+\item $Y^{(i)}\in N^{t-1}(\sol{P}) \quad\text{for}\ i=0,\ldots,n$,
+\item $Y^{(0)}-Y^{(i)}\in N^{t-1}(\sol{P}) \quad\text{for}\ i=0,\ldots,n$?
+\end{enumerate}
+If we can find a violated inequality, we can find a separating hyperplane and thus construct a tighter polytope $\sol{P}_t$. This is done with only one call to the separator oracle, meaning that the operations $N^t(\sol{P})$ requires $\mathcal{O}(n^t)$ calls to the oracle. 
+
+\section{Sherali-Adams hierarchy}
+The Sherali-Adams hierarchy can, as the \Lovasz-\Schrijver\ hierarchy, be seen as a lift and project relaxation. However, in the Sherali-Adams hierarchy we do not have to start with linear inequalities. Consequently, we may end up with higher and higher orders of the inequalities for each iteration. It is not until the last iteration that we project the problem back onto linear inequalities. 
+
+\subsection{Proof system interpretation}
+The Sherali-Adams hierarchy can be interpreted as a proof system for determining if the set of polynomial inequalities 
+\begin{equation}
+  p_{1}\geq 0 , p_{2}\geq 0, \ldots , p_{m} \geq 0. 
+\end{equation}
+holds. The Sherali-Adams proof of $p\geq 0$ is
+\begin{equation}
+ \sum_{l=1}^m p_{l} g_{l} + \sum_{i} (x^{2}_{i} -x_{i}) h_{i}
+ + g_{0}= p
+\end{equation}
+where each 
+\begin{equation}
+  g_{l} = \alpha_{l} \prod_{i\in A_{l}} x_{i} \prod_{j \in
+    B_{l}}(1-x_{j})  
+\end{equation}
+with $ \alpha_{l}\geq 0 $ and $ A_{l} \cap B_{l}=\emptyset $, and each $ h_{i} $ is an arbitrary polynomial. For the problem statement we consider here, problem \eqref{linearRelaxation1}, the polynomials $p_l$ for $l=1,\ldots,m$ correspond to the inequality constraint $Ax\leq b$. The original problems \eqref{feasibilityProblem1} and \eqref{feasibilityProblem2} are infeasible if we get $p=-1$.
+
+The \introduceterm{rank of a Sherali-Adams} proof is defined in different ways in literature\footnote{See notes from the first lecture on course webpage.}. Based on the definitions of the rank, we can state the following:
+\begin{equation}
+ N^{t}(\sol{P}) \supseteq S_{t+1}(\sol{P}) ,
+\end{equation}
+where $S_{t}(\sol{P})$ is the polytope we get through a proof of rank at most $ t $.
+
+\subsection{Geometric interpretation}
+Similarly to the \Lovasz-\Schrijver\ hierarchy, we add the auxiliary variable $x_0=1$ and introduce the variable $Y\in \RR^{s} $ where $ s=\binom{n}{\leq t}$. We perform a variable substitution such that every monomial in $p$ is mapped into an element of $Y$, for example,
+\begin{equation*}
+x^{2}_{2} x_{3}x_{5} = Y_{\{2,3,5\}}. 
+\end{equation*}
+We denote the set of points satisfying all the new linear inequalities in $\RR^{s}$ as $\sol{E}$. We can then state that $\sol{E}$ satisfies every derivable linear inequality of rank at most $t$, after projecting over, with some abuse of notation, $(Y_{\emptyset},Y_{1},\ldots,Y_{n})$.
+
+For an example of a Sherali-Adams relaxation, please see page 9 of notes from the first lecture on course webpage.
+
+
+
+% ------------------------- EPILOGUE ------------------------------
+\bibliography{soscourse}
+\bibliographystyle{alpha}
+
+\end{document} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
