@@ -13,119 +13,154 @@
 \def\DataScribe{Marc Vinyals}
 \def\DataKeywords{integer programming, linear programming,
   Sherali-Adams, Lasserre}
-\def\DataAbstract{We show how to give a good approximation for the max-cut problem using only low levels of the Lasserre hierarchy. This implies a separation between Sherali-Adams and Lasserre. Additionally, we show how to obtain locally consistent solutions from intermediate polytopes and we introduce basic Fourier Analysis definitions and properties.}
+\def\DataAbstract{We show how to give a good approximation for the max-cut problem using only low levels of the Lasserre hierarchy. This implies a separation between Sherali-Adams and Lasserre hierarchies. Additionally, we show how to obtain locally consistent solutions from intermediate polytopes and we introduce basic Fourier analysis definitions and properties.}
 
 % ---------------------------- PREAMBLE -------------------------------
 \documentclass[a4paper,twoside,justified]{tufte-handout}
 \usepackage{soscourse} % this is a non standard package
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
-
+\vspace{-1cm}
 \section{Example of local consistency}
 
-We start by showing how the Lasserre proof system can be made locally consistent. This is, we can find solutions that are integer over some suitable subset of the variables without needing to go up the whole hierarchy.
+We start by showing how the Lasserre proof system can be made locally consistent. That is, how we can find solutions that are integer over some suitable subset of the variables without needing to go up the whole hierarchy.
 
-In the previous lecture we saw that if we have a point $y\in L_t(K)$ and a set of variables $|S| \leq t$ then we can express $y$ as a convex combination of points whose $S$-coordinates are integer and are expressible in a lower level of the hierarchy. Formally, there exists a probability distribution $\mathcal{D}(S)$ such that $\Pr_{z \sim \mathcal{D}} [ \bigwedge_{i \in I} z_i =1 ] = y_I$ (convex combination), $z \cap S \in \{0,1\}^{|S|}$ (integrality) and $z \in L_{t - |S|}$ (lower level).
+In the previous lecture we saw that if we have a point $y\in L_t(K)$ and a subset $S\subseteq [n]$ of size $|S| \leq t$, we can express $y$ as a convex combination of points which $S$-coordinates are integer and expressible in a lower level of the hierarchy. Formally, there exists a probability distribution $\mathcal{D}(S)$ over $\{0,1\}^S$ such that $\Pr_{z \sim \mathcal{D}} [ \bigwedge_{i \in I} z_i =1 ] = y_I$ for all $I\subseteq S$ (convex combination), $z_i \in \{0,1\}$ for $i\in S$ (integrality) and $z \in L_{t - |S|}(K)$ (lower level).
 
-Our example is the 3-colouring problem: given a graph $G(V,E)$ and a set $\{R,G,B\}$, we want to colour the vertices such that no adjacent vertices share a colour. We can model the problem as a linear program in the following way. We have variables $x_{ic}$ meaning that the vertex $i$ is coloured $c$, and we impose the restrictions $x_{iR}+x_{iG}+x_{iB} \geq 1 \quad \forall i\in V$ to ensure that every vertex has a colour and $x_{ic} + x_{jc} \leq 1 \quad \forall (i,j) \in E$ to ensure that adjacent vertices do not share a colour.
+Our example is the 3-coloring problem: Given a graph $G(V,E)$ and a set $\{R,G,B\}$, we want to color the vertices such that no adjacent vertices share a color. We can relax the problem to a linear program. We have variables $x_{ic} \in [0,1]^{3|V|}$, meaning that vertex $i$ is colored $c$ if $x_{ic}=1$, and we impose the restrictions 
+\[x_{iR}+x_{iG}+x_{iB} \geq 1 \quad \forall i\in V,\] 
+to ensure that every vertex has a color, and 
+\[x_{ic} + x_{jc} \leq 1 \quad \forall (i,j) \in E,\]
+to ensure that adjacent vertices do not share a color.
 
-Assume $y \in L_{3t}(K)$ is a point in the $3t$-th level of the Lasserre hierarchy and let $U \subseteq V$, $|U| \leq t$ be a subset of vertices. Then we can extract a distribution of points in $L_{3(t-|U|)}(K)$ that have integer values over $U \times \{R,G,B\}$, even though the solutions may be globally invalid.
+Assume $y \in L_{3t}(K)$ and let $U \subseteq V$, $|U| \leq t$ be a subset of vertices. Then we can extract a distribution of points in $L_{3(t-|U|)}(K)$ that have integer values over $U \times \{R,G,B\}$, even though the solutions may be globally invalid.
 
-This means that if we only want to satisfy local constraints, we do not need the full power of Lasserre but we can settle for going up to as many levels as variables we wish to satisfy.
+This means that if we only want to satisfy local constraints, we do not need the full power of Lasserre. 
 
-This particular example would also work with a weaker proof system such as Sherali-Adams, what Lasserre buys you is the ability to do global reasoning since the SDP constraint has a global structure.
+This particular example would also work with a weaker proof system, such as Sherali-Adams. The benefit with Lasserre solutions is the ability to do global reasoning, since the constraint of positive semidefiniteness has a global structure.
 
 \section{Upper bound for Lasserre}
 
-We now describe an algorithm for max-cut formalizable in low levels of Lasserre but not of Sherali-Adams. We follow the presentation of Rothvoß\cite{lasserresurvey2013}.
+We now describe an algorithm for the max-cut problem. The algorithm is formalizable in low levels of Lasserre but not in low levels of Sherali-Adams. We follow the presentation of Rothvoß\cite{lasserresurvey2013}.
 
-For the max-cut problem we are given a graph $G(V,E)$ and we want to find a subset $S \subseteq V$ of vertices such that its edge-neighbourhood $|E_G(S,\bar S)|$ is maximum.
+In the max-cut problem we are given a graph $G(V,E)$ and we want to find a subset $S\subseteq V$ of vertices such that the number of edges in the induced cut, $|E_G(S,\bar S)|$, is maximized. Here, $\bar S=V\backslash S$.
 
-We formalize the problem with a decision variable $x_i$ for every vertex, meaning whether $i$ is in $S$, and a variable $z_e$ for every edge, meaning whether $e$ is in the cut. The integer problem is then
+We formalize the problem with a decision variable $x_i$ for every vertex, where $x_i=1$ if $i\in S$ and $x_i=0$ otherwise, and a decision variable $z_{ij}$ for every edge, where $z_{ij}=1$ if the edge belongs to the cut and $z_{ij}=0$ otherwise. The integer program is then
 \begin{alignat}{2}
 \label{eq:integer-max-cut}
-  \maximize \sum_{u\in V} z_{ij}\notag \\
+  \maximize \sum_{(i,j)\in E} z_{ij}\notag \\
   \subjectto x_i \oplus x_j = z_{ij} \quad \forall{(i,j)\in E}.
 \end{alignat}
 
-The natural linear relaxation is
+The natural linear relaxation of Problem \eqref{eq:integer-max-cut} is
 \begin{alignat}{2}
 \label{eq:max-cut}
-  \maximize \sum_{u\in V} z_{ij}\notag \\
+  \maximize \sum_{(i,j)\in E} z_{ij}\notag \\
   \subjectto x_i - x_j \leq z_{ij},\notag \\
 & x_j - x_i \leq z_{ij},\notag \\
 & z_{ij} \leq x_i + x_j,\notag \\
-& z_{ij} \leq 2 - x_i - x_j \quad \forall{(i,j)\in E}.
+& z_{ij} \leq 2 - x_i - x_j, \quad \forall{(i,j)\in E}.
 \end{alignat}
 
-Observe that $x_i=1/2$, $z_{ij}=1$ is a valid fractional solution, but it can be very far from the feasible optimum. For instance, when $G$ is the complete graph the fractional optimum is approximately $n^2/2$ while the real solution is approximately $n^2/4$. The integrality gap is roughly $1/2$.
+Observe that $x_i=1/2$, $z_{ij}=1$ is a valid fractional solution of Problem \eqref{eq:max-cut}, but it can be very far from the integral solution. For instance, when $G$ is a complete graph, the fractional optimal value is approximately $n^2/2$ while the integral optimal value is approximately $n^2/4$. Thus, the integrality gap is roughly $1/2$.
 
-At the $n^{\delta(\epsilon)}$-th level of the Sherali-Adams hierarchy, the integrality gap is still $1/2+\epsilon$, so this is the best we can do\cite{charikar2009integrality}. However, there is an algorithm\cite{goemans1995improved} that gives an approximation ratio of at least $0.878$, and we will see that this algorithm can be formulated in terms of a Lasserre program.
+At the $n^{\delta(\epsilon)}$-th level of the Sherali-Adams hierarchy\cite{charikar2009integrality}, the integrality gap is still $1/2+\epsilon$, so this is the best we can do with a linear relaxation.
 
-Let us first do some observations about the space of solutions. We had seen in the previous lecture that the moment matrix is positive semidefinite and so it can be expressed as an inner product of vectors, this is $M^t(Y)_{IJ}=\langle v_i, v_J \rangle$. It follows that $y_I=\langle v_I,v_\emptyset \rangle = \langle v_I,v_I \rangle = | v_I |^2$. For any vector $v_I$ it holds that $|v_\emptyset/2-v_I|^2=|v_\emptyset/4|^2-\langle v_0,v_I\rangle+|v_I|^2=1/4$, so the space of solutions is a sphere of radius $1/2$ centered at $v_\emptyset/2$. We can try to exploit this fact by separating vectors that lie far away in this sphere into the two components $S,\bar S$.
+ However, there is an algorithm that gives an integrality gap of at least $0.878$, and we will see that this algorithm can be formulated in terms of a Lasserre program\cite{goemans1995improved}.
 
-To simplify the process of sampling separators, we will use another formulation where the space of solutions is a unit sphere.
+Let us first do some observations about the space of solutions. We have seen in the previous lecture that the moment matrix is positive semidefinite and consequently it can be expressed as an inner product of vectors, that is, $M^t(Y)_{IJ}=\langle v_I, v_J \rangle$.  It follows that $y_I=\langle v_I,v_\emptyset \rangle = \langle v_I,v_I \rangle = | v_I |^2$ and $|v_{\emptyset}|=1$. For any vector $v_I$, we have
+\[|v_\emptyset/2-v_I|^2=|v_\emptyset/2|^2-\langle v_0,v_I\rangle+|v_I|^2=1/4,\]
+ that is, the space of solutions is a sphere of radius $1/2$ centered at $v_\emptyset/2$. We can exploit this fact by separating vectors that lie in this sphere into the two sets $S$ and $\bar S$.
+
+To simplify the process of sampling separators, we perform a vector transformation that maps the space of solutions to a unit sphere centered around the origin. The vector transformation is
+\[u_i=v_{\emptyset}-2v_i,\]
+and the corresponding max-cut formulation becomes
 \begin{alignat}{2}
 \label{eq:max-cut-gw}
-  \maximize \frac{1- \langle u_i,u_j \rangle}{2}\notag \\
-  \subjectto |u_i|^2 = 1 \quad \forall i\in V.
+  \maximize \sum_{(i,j)\in E}\frac{1- \langle u_i,u_j \rangle}{2}\notag \\
+  \subjectto |u_i|^2 = 1, \quad \forall i\in V,
 \end{alignat}
 
-So first of all we need to show that our original relaxation \eqref{eq:max-cut} implies the transformed formulation \eqref{eq:max-cut-gw} and in fact we will show that this is the case using the 5th level of the Lasserre hierarchy.
+We need to show that our original relaxation \eqref{eq:max-cut} implies the transformed formulation \eqref{eq:max-cut-gw}. We will show that this is the case using the 5th level of the Lasserre hierarchy.
 
-Let $K$ be the polytope defined by the original relaxation \eqref{eq:max-cut} and let $y \in L_5(K)$ be a solution in the 5th Lasserre level. We can restrict the three variables $z_{ij}$, $x_i$, and $x_j$ to be integers and we obtain a distribution over solutions $\hat y \in L_2(K)$ whose components $\hat y_{z_{ij}}$, $\hat y_{x_i}$, and $\hat y_{x_j}$ are integers. For these particular components, the constraints in \eqref{eq:max-cut} plus the integrality restriction imply the stronger relation $\hat y_{z_{ij}}=|\hat y_{x_i}-\hat y_{x_j}|$. Since $\hat y$ is on the 2nd level of the Lasserre hierarchy, we can rewrite $|\hat y_{x_i}-\hat y_{x_j}|=\hat y_{x_i} + \hat y_{x_j} - 2\hat y_{\{x_i,x_j\}}$.
-
+Let $K$ be the polytope defined by the original relaxation \eqref{eq:max-cut} and let $y \in L_5(K)$. We can restrict the three variables $z_{ij}$, $x_i$, and $x_j$ to be integers and obtain a distribution over solutions $\hat y \in L_2(K)$ which components $\hat y_{z_{ij}}$, $\hat y_{x_i}$, and $\hat y_{x_j}$ are integers. For these particular components, the constraints in Problem \eqref{eq:max-cut} plus the integrality restriction imply the stronger relation $\hat y_{z_{ij}}=|\hat y_{x_i}-\hat y_{x_j}|$. Since $\hat y$ is on the 2nd level of the Lasserre hierarchy, we have 
+\[|\hat y_{x_i}-\hat y_{x_j}|=\hat y_{x_i} + \hat y_{x_j} - 2\hat y_{\{x_i,x_j\}}.\]
 This relation also holds for any (even fractional) solution in the 5th level of the Lasserre hierarchy because we can see it as a convex combination of integer solutions in the 2nd level. We repeat the argument for every choice of $i$ and $j$.
 
-So if $v$ is a solution in $L_5(K)$, then $u$ defined by $u_i = v_\emptyset - 2v_i$ is a solution of  \eqref{eq:max-cut-gw}. Indeed, $|u_i|^2 = |v_\emptyset - 2v_i|^2 = |v_\emptyset|^2 -4\langle v_\emptyset,v_i\rangle + 4|v_i|^2 =1$, which is the only constraint of \eqref{eq:max-cut-gw}.
+If $v$ is a solution in $L_5(K)$, then $u$ defined by $u_i = v_\emptyset - 2v_i$ is a solution of  Problem \eqref{eq:max-cut-gw}. Indeed, 
+\[|u_i|^2 = |v_\emptyset - 2v_i|^2 = |v_\emptyset|^2 -4\langle v_\emptyset,v_i\rangle + 4|v_i|^2 =1,\]
+ which is the only constraint of Problem \eqref{eq:max-cut-gw}. Furthermore, 
+\begin{alignat*}{2}
+\langle u_i,u_j\rangle =& |v_\emptyset|^2 -2 \langle v_i,v_\emptyset\rangle -2\langle v_\emptyset,v_j\rangle +4\langle v_i,v_j\rangle \\
+ =&1 - 2(x_i+x_j-2x_{ij}) = 1-2z_{ij},
+\end{alignat*}
+thus $z_{ij} = (1-\langle u_i,u_j \rangle)/2$. We conclude that the objective functions which we are optimizing in Problems \eqref{eq:max-cut} and \eqref{eq:max-cut-gw} have the same value.
 
-Furthermore, $\langle u_i,u_j\rangle = |v_\emptyset|^2 -2 \langle v_i,v_\emptyset\rangle -2\langle v_\emptyset,v_j\rangle +4\langle v_i,v_j\rangle = 1 - 2(x_i+x_j-2x_{ij}) = z_{ij}$, from where $z_{ij} = (1-\langle u_i,u_j \rangle)/2$. We conclude that the functions we are optimizing have the same value.
+Note that the 3rd level of Lasserre is enough\cite{lasserresurvey2013} to perform the described relaxation, but we used the 5th level for the sake of simplicity.
 
-Observe that we are crucially using positive semidefiniteness to rewrite the problem with inner products. In fact the 3rd level of Lasserre is enough\cite{lasserresurvey2013}, but we used the 5th level for the sake of simplicity.
+We now follow the Goemans-Williamson strategy to sample solutions to Problem \eqref{eq:max-cut-gw}. We use the intuition that vectors with a small angle between them are in the same part of the graph, while vectors with a large angle between them are in different parts. We cut the sphere with a hyperplane and let the partition be each of the halfspaces. That is, if we choose a hyperplane by sampling its normal vector $h$, then $i \in S$ if and only if $\langle u_i,h \rangle > 0$.
 
-We now follow the Goemans-Williamson strategy to sample solutions to \eqref{eq:max-cut-gw}. We use the intuition that vectors with close angles are in the same part of the graph, while vectors with distant angles are in different parts. We cut the sphere with a hyperplane and let the partition be each of the halfspaces. This is, if we choose a hyperplane by sampling its normal vector $h$, then $i \in S$ if and only if $\langle u_i,h \rangle > 0$.
+We want to sample $h$ uniformly over all directions, which we can do by sampling each component independently according to a normal distribution $N(0,1)$. The normal probability density function of a component is 
+\[d(v)= \frac{1}{\sqrt {2\pi}}e^{-v^2/2},\] 
+and the corresponding density function of a vector is 
+\[d((v_1,\ldots,v_m)) = \frac{1}{(\sqrt {2\pi})^m}e^{-\sum_i v_i^2/2} = \frac{1}{(\sqrt {2\pi})^m}e^{-|v|^2/2},\]
+which depends on the length of $(v_1,\ldots,v_m)$ but not on its direction.
 
-We want to sample $h$ uniformly over all directions, which we can do by sampling each component independently according to a normal distribution $N(0,1)$. Indeed, the probability of sampling a specific coordinate $x_i$ is $\Pr[h_i=x_i] = \frac{1}{\sqrt {2\pi}}e^{-x_i^2/2}$. Then the probability of sampling a specific vector $x$ is $\Pr[h=x] = \frac{1}{\sqrt {2\pi}}e^{-\sum_i x_i^2/2} = \frac{1}{\sqrt {2\pi}}e^{-|x|^2/2}$, which depends on the length of $x$ but not on its direction.
-
-We show a lower for the approximation ratio $\sROUND / \sOPT$ and the integrality gap $\sOPT / \sFRAC$ by computing
-\begin{equation}
-\frac{\sROUND}{\sFRAC}=\frac{\sROUND}{\sOPT}\cdot\frac{\sOPT}{\sFRAC}
-\end{equation}
-and noting that each factor is at most 1 because we are solving a maximization problem.
-
-The solution we obtain by the GW approximation technique is $\sROUND = \mathbb{E}|E(S,\bar S)|=\sum_{(i,j)\in E}\Pr[(i,j)\in E(S,\bar S)]=\sum_{(i,j)\in E} \theta_{ij}/\pi$, where $\theta_{ij}$ is the angle between $u_i$ and $u_j$. Then $\theta_{ij}=\arccos(\langle u_i,u_j \rangle) = \arccos(1-2z_{ij})$.
-
-On the other hand, the solution we obtain by the SDP technique is $\sFRAC = \sum_{(i,j)\in E} z_{ij}$. We obtain a lower bound for the approximation ratio and the integrality gap of \begin{equation}\frac{\sROUND}{\sFRAC} = \frac{\sum_{(i,j)\in E} \arccos(1-2z_{ij})/\pi}{\sum_{(i,j)\in E} z_{ij}} \geq \inf_{0 < x < 1} \frac{\arccos(1-2x)}{\pi x} \geq 0.878.\end{equation}
+We derive a lower bound for the approximation ratio $\sROUND / \sOPT$ and the integrality gap $\sOPT / \sFRAC$, where $\sOPT$ is the optimal value of Problem \eqref{eq:integer-max-cut}, $\sFRAC$ is the optimal value of Problem \eqref{eq:max-cut-gw}, and $\sROUND$ is the expected number of edges in the cut when using the Goemans-Williamson strategy to round the solution of Problem \eqref{eq:max-cut-gw}. We have that
+\begin{equation*}
+\sROUND\leq\sOPT\leq\sFRAC,
+\end{equation*}
+and therefore
+\begin{equation*}
+\frac{\sROUND}{\sFRAC}\leq \frac{\sOPT}{\sFRAC}\ \text{and}\ \frac{\sROUND}{\sFRAC}\leq \frac{\sROUND}{\sOPT}.
+\end{equation*}
+Note that each factor is at most 1 since we are solving a maximization problem. The solution obtained with the Goemans-Williamson strategy is 
+\[\sROUND = \mathbb{E}|E(S,\bar S)|=\sum_{(i,j)\in E}\Pr[(i,j)\in E(S,\bar S)]=\sum_{(i,j)\in E} \theta_{ij}/\pi,\]
+ where $\theta_{ij}$ is the angle between $u_i$ and $u_j$. Then $\theta_{ij}=\arccos(\langle u_i,u_j \rangle) = \arccos(1-2z_{ij})$. On the other hand, the solution we obtain by the SDP technique (Problem \eqref{eq:max-cut-gw}) is 
+\[\sFRAC = \sum_{(i,j)\in E} z_{ij}.\] 
+Therefor, the lower bound of the approximation ratio and the integrality gap becomes
+ \begin{alignat*}{2}
+\frac{\sROUND}{\sFRAC} &= \frac{\sum_{(i,j)\in E} \arccos(1-2z_{ij})/\pi}{\sum_{(i,j)\in E} z_{ij}} \\
+&\geq \inf_{0 < x < 1} \frac{\arccos(1-2x)}{\pi x} \geq 0.878.
+\end{alignat*}
 
 
 \section{A reminder of Fourier Analysis}
 
-And now for something completely different we introduce definitions and notation for Fourier analysis of Boolean functions so we will have them fresh for the following lectures.
+And now for something completely different, we introduce definitions and notation for Fourier analysis of Boolean functions.
 
-Given a Boolean function $\functionsignature{f}{\{0,1\}}{\RR}$, we want to express it as a linear combination of simple functions, this is $f = \sum_{S \subseteq [n]} \alpha_S \chi_S$. The character function of a set $\chi_S$ counts the parity of $x \land S$, this is $\chi_S(x) = (-1)^{\sum_{i\in S} x_i}$.
+Given a Boolean function $\functionsignature{f}{\{0,1\}}{\RR}$, we want to express it as a linear combination of simple functions, that is $f = \sum_{S \subseteq [n]} \alpha_S \chi_S$. The character function of a set, $\chi_S$, counts the parity of $x \land S$, that is $\chi_S(x) = (-1)^{\sum_{i\in S} x_i}$.
 
 If we use the so-called Fourier variables $y_i = 1-2x_i = (-1)^{x_i}$, then we can also express the characters as square-free monomials $\chi_S(x) = \prod_{i\in S} y_i$.
 
 The standard properties of Fourier basis hold, as it is the case with real functions, but with simpler proofs since we only need to deal with finite domains.
 
 \begin{lemma}
-  $\mathbb{E} \chi_S = [S=\emptyset]$.
+\begin{align}
+\sum_{x\in\{0,1\}^n}\frac{\chi_S(x)}{2^n}=\left\{ 
+\begin{array}{l l}
+    1 & \quad \text{if}\ S=\emptyset\\
+    0 & \quad \text{otherwise}
+\end{array} \right.
+\end{align}
 \end{lemma}
 \begin{proof}
-  If $S=\emptyset$ we are done. Otherwise pick any component $i\in S$.
-\begin{align}
-2^n \mathbb{E} \chi_S &=
-\sum_{x \in \{0,1\}^n} \chi_S(x) = 
-\sum_{x : x_i = 0} \chi_S(x) + \sum_{x : x_i = 1} \chi_S(x) \\ &= 
+  If $S=\emptyset$ we are done. Otherwise, pick any component $i\in S$, then
+\begin{alignat*}{2}
+\sum_{x \in \{0,1\}^n} \chi_S(x) &= 
+\sum_{x : x_i = 0} \chi_S(x) + \sum_{x : x_i = 1} \chi_S(x) \\ 
+&= 
 \sum_{x : x_i = 0} \chi_S(x) - \sum_{x : x_i = 0} \chi_S(x) = 0
-\end{align}
+\end{alignat*}
 \end{proof}
 
 \begin{lemma}
   $\{\chi_S\}_S$ is an orthonormal basis.
 \end{lemma}
 \begin{proof}
-  Define the inner product by $\langle \chi_S, \chi_T \rangle = \mathbb{E}\chi_{S \triangle T}$\footnote{The symmetric union of two sets is $S \triangle T = S \cup T \setminus (S \cap T)$, the set of elements in exactly one of the sets}.
+  Define the inner product by 
+\[\langle \chi_S, \chi_T \rangle =\frac{1}{2^n}\sum_{x\in\{0,1\}^n}\chi_{S \triangle T},\]
+where the symmetric union of two sets is denoted $S \triangle T = S \cup T \setminus (S \cap T)$.
 \end{proof}
 
 We usually write the coefficients $\alpha_S$ of $f$ in the Fourier basis as $\hat{f}(S)$, and it holds that $\hat{f}(S) = \langle f,\chi_S \rangle$.
