@@ -7,7 +7,7 @@
 % ---------------------------- USER DATA ------------------------------
 \def\DataTitle{5. Properties of the Lasserre Relaxation.}
 \def\DataTitleShort{Lasserre Relaxation}
-\def\DataDate{3 February, 2014}
+\def\DataDate{10 February, 2014}
 \def\DataDocname{Lecture 5 --- \DataDate}
 \def\DataLecturer{Massimo Lauria}
 \def\DataScribe{Sangxia Huang}
@@ -17,7 +17,7 @@
 \def\DataAbstract{%
 In this lecture, we study the properties of the solution vectors of the Lasserre relaxation.
 We start with some basic properties of the solutions, and then continue to show that
-the solution vectors gives us a family of locally consistent distributions over feasible
+the solution vectors give us a family of locally consistent distributions over feasible
 integral local solutions. At the end of the lecture, we see an example of this property
 in graph coloring.
   }
@@ -31,10 +31,10 @@ in graph coloring.
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
 
-In this lecture we prove some properties of solution vectors of
-the Lasserre hierarchy.
+In this lecture we prove some properties of the solution vectors of
+the Lasserre hierarchy. (These notes follow closely the lecture notes made by Thomas Rothvo{\ss}\cite{lasserresurvey2013}.)
 
-First, we recall the notations defined in previous lectures.
+First, we recall the notation defined in previous lectures.
 Let
 \begin{alignat}{2}
   K &= \left\{ x \in \RR^n | \forall i, h_i(x) \ge 0 \right\} \label{eq:setK}
@@ -50,52 +50,59 @@ The polytope $\sol{P}_{I}=\mathbf{conv}(K \cap \{0,1\}^n)$ is the convex hull of
 all integral solutions. Recall that 
 \introduceterm{the $t$-th level of the Lasserre hierarchy}
 $L_t(K)$ is the set of vectors $y \in \RR^{2^{[n]}}$
-that satisfy the following constraints
+that satisfies the following constraints:
 \begin{alignat}{2}
-  M_t(y) & \succeq 0  \notag \\
-  M_t(h_i \circ y) & \succeq 0, \quad \forall i \label{eq:lasserre-definition} \\
+  M_t(y) & \succeq 0,  \notag \\
+  M_t(h_i \circ y) & \succeq 0, \quad \forall i, \label{eq:lasserre-definition} \\
   y_{\emptyset} &= 1 \notag.
 \end{alignat}
 Let $Q_t(K)$ be the projection of $L_t(K)$ over $y_{\{i\}}=:x_i$.
-For simplicity of notation, in the rest of the note, we 
-write $y_i$ instead of $y_{\{i\}}$.
+For simplicity of notation, we 
+write $y_i$ instead of $y_{\{i\}}$ in the rest of the note.
 
-\section{Basic properties of the Lasserre solutions}
-We first discuss some of the basic properties of the Lasserre relaxation.
+\section{Basic properties of the Lasserre relaxation}
+We first discuss some of the basic properties of the Lasserre relaxation. For more details, see Lemma 1 and the corresponding proof in lecture notes \cite{lasserresurvey2013}.
 \begin{lemma}\label{lemma:basic-lasserre-prop}
-  Define $K$ and $L_t(K)$ as above for some $t \ge 0$, and $y \in L_t(K)$.
+  Define $K$ and $L_t(K)$ as above for some $t \ge 0$, and let $y \in L_t(K)$.
   Then the following holds:
   \begin{enumerate}
-    \item For any $I \subseteq J$, $|J| \le t$, $0 \le y_J \le y_I$.
     \item For all $|I| \le t$, $0 \le y_I \le 1$.
+    \item For any $I \subseteq J$, $|J| \le t$, $0 \le y_J \le y_I$.
     \item For $|I| \le t$, $|J| \le t$, $|y_{|I \cup J|}| \le \sqrt{y_I y_J}$.
     \item For $|S| \le t$, $y \in L_t(K)$, 
-      if there exists $i \in S$, $y_i=0$, then $y_S=0$.
+      if there exists $i \in S$ such that $y_i=0$, then $y_S=0$.
       Similarly, if for all $i \in S$, $y_i=1$, then $y_S=1$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  1) The part $y_J \ge 0$ follows from the constraint $M_t(y) \succeq 0$.
-  To show that $y_I \ge y_J$, note that we have
+For proving the first two statements we make use of the fact that $M_t(y)  \succeq 0$ if and only if every principal minor of $M_t(y)$ is greater than or equal to zero. 
+
+1) Consider the principal minor 
   \begin{alignat}{2}
-    \left[
-    \begin{array}{c c}
+    \begin{vmatrix}
+      y_{\emptyset} & y_{I} \\
+      y_{I} & y_I 
+    \end{vmatrix}
+ &= y_I(1-y_I)\geq 0. \label{eq:y0I}
+  \end{alignat}
+Constraint \eqref{eq:y0I} yields $0 \le y_I \le 1$. 
+
+2) Consider the principal minor
+  \begin{alignat}{2}
+    \begin{vmatrix}
       y_I & y_{I \cup J} \\
       y_{I \cup J} & y_J 
-    \end{array}
-    \right] &\succeq 0. \label{eq:yIJ}
+    \end{vmatrix}
+ &= y_Iy_J-y_{I\cup J}^2\geq 0. \label{eq:yIJ}
   \end{alignat}
   Since $I \subseteq J$, we have that $y_{I \cup J} = y_{J}$.
-  Therefore the above implies that $y_I y_J - y_J^2 \ge 0$.
-  Since $y_I, y_J \ge 0$, we have that $y_I \ge y_J$.
+  Therefore constraint \eqref{eq:yIJ} is equivalent to $y_I y_J - y_J^2 \ge 0$.
+  From 1) we have $y_I, y_J \ge 0$, thus $y_I \ge y_J$.
   
-  2) This is an easy corollary of the first point.
-
-  3) Again, consider (\ref{eq:yIJ}). We have that 
-  $y_I y_J - y_{I \cup J}^2 \ge 0$.
+  3) Again, consider (\ref{eq:yIJ}). 
 
   4) The first half of the statement follows by applying the first statement
-  of the lemma and having $I:=\{i\}$ and $J:=S$.
+  of Lemma~\ref{lemma:basic-lasserre-prop} with $I:=\{i\}$ and $J:=S$.
 
   For the second half of the statement, we can use the fact that the Sherali-Adams
   constraints are implied by the Lasserre constraints, and use
@@ -105,33 +112,32 @@ We first discuss some of the basic properties of the Lasserre relaxation.
   inductively for all sets $S' \subseteq S$.
 \end{proof}
 
-\section{Consistent Local Distributions}
+\section{Consistent local distributions}
 Next, we show that the vectors in $L_t(K)$ can be written as a convex
-combination of fractional solutions that are locally integral. 
-We have the following theorem.
+combination of fractional solutions that are locally integral, see for example Section 2.3 in lecture notes \cite{lasserresurvey2013}.
+We have the following theorem:
 \begin{theorem}\label{thm:local-integral-solution}
   Let $y \in L_t(K)$ and $S \subseteq [n]$, $|S| \le t$.
   Then $y \in \mathbf{conv}(z | z \in L_{t-|S|}(K); \forall i \in S, z_i \in \{0,1\})$.
 \end{theorem}
-To prove Theorem~\ref{thm:local-integral-solution}, we first prove the following claim.
+To prove Theorem~\ref{thm:local-integral-solution}, we first prove the following claim:
 \begin{claim}\label{claim:main-local-integral-claim}
   Let $y \in L_t(K)$, and $i \in [n]$ be some variable where $y_i \notin \{0,1\}$.
-  Then there exists $z^0, z^1 \in L_{t-1}(K)$, and $\alpha, \beta \in [0,1]$
-  $\alpha+\beta=1$, such that $z^0_i=0$, $z^1_i=1$, and $y=\alpha z^0 + \beta z^1$.
+  Then there exist $z^0, z^1 \in L_{t-1}(K)$, and $\alpha, \beta \in [0,1]$, such that
+  $\alpha+\beta=1$, $z^0_i=0$, $z^1_i=1$, and $y=\alpha z^0 + \beta z^1$.
 \end{claim}
 \begin{proof}
   Since $y_i \notin \{0,1\}$, we can define the elements of $z^0$ and $z^1$ as
-  the following
   \begin{alignat*}{2}
     z^1_I &= \frac{y_{I \cup \{i\}}}{y_i}, \\
     z^0_I &= \frac{y_I - y_{I \cup \{i\}}}{1-y_i}.
   \end{alignat*}
-  Clearly $z^0_0$ and $z^1_i=1$, and $y=y_i \cdot z^1 + (1-y_i) \cdot z^0$.
+  Clearly $z^0_i=0$ and $z^1_i=1$, and with $\alpha = 1-y_i$ and $\beta=y_i$, we get $y=\alpha z^0 + \beta z^1$.
   Now we verify that $z^0, z^1 \in L_t(K)$.
 
   First, we check that $M_t(y) \succeq 0$ implies that $M_{t-1}(z^1) \succeq 0$.
   Recall that since the moment matrix $M_t$ is positive semidefinite,
-  there exists $v_S$ for each $S \subseteq [n]$, $|S| \le t$, 
+  there exists a $v_S$ for each $S \subseteq [n]$, $|S| \le t$, 
   such that $M_t(y)_{I,J}=\langle v_I, v_J \rangle$, for all $|I| \le t$, $|J| \le t$.
   Define
   \[
@@ -142,11 +148,11 @@ To prove Theorem~\ref{thm:local-integral-solution}, we first prove the following
   for $|I|,|J| \le t-1$. Note that
   \[
   M_{I,J} = \frac{1}{y_i} \langle v_{I \cup \{i\}}, v_{J \cup \{i\}} \rangle
-  =\frac{1}{y_i} y_{I \cup J \cup \{i\}} = z^1_{I \cup J}.
+  =\frac{1}{y_i} y_{I \cup J \cup \{i\}} = z^1_{I \cup J},
   \]
-  This shows that $M_t(z^1) \succeq 0$.
+  thus, $M_{t-1}(z^1) \succeq 0$.
 
-  Similarly, we can define
+ Second, we check that $M_t(y) \succeq 0$ implies that $M_{t-1}(z^0) \succeq 0$. Similarly to above, we can define
   \[
   u^0_I = \frac{v_I - v_{I \cup \{i\}}}{\sqrt{1-y_i}},
   \]
@@ -155,51 +161,52 @@ To prove Theorem~\ref{thm:local-integral-solution}, we first prove the following
   The final thing we need to show is that $M_t(h \circ y) \succeq 0$
   implies that $M_{t-1}(h \circ z^0) \succeq 0$ and $M_{t-1}(h \circ z^1) \succeq 0$.
   The proof idea is similar to the above argument.
-  Remember that if we assume that $h=\sum_S \alpha_S \prod_{i \in S} x_i$,
+  Remember that if we assume $h=\sum_S \alpha_S \prod_{i \in S} x_i$,
   then
   \[
-  M^t(h \circ y)_{I,J} = \langle \tilde{v}_I, \tilde{v}_J \rangle 
+  M_t(h \circ y)_{I,J} = \langle \tilde{v}_I, \tilde{v}_J \rangle 
   = \sum_S \alpha_S y_{I \cup J \cup S}.
   \]
   Now define 
   \[
   \tilde{v}^1_I = \frac{\tilde{v}_{I \cup \{i\}}}{y_i},
   \]
-  and we can verify that indeed $M^{t-1}(h \circ z^1) \succeq 0$.
-  Similarly we can show that $M^{t-1}(h \circ z^0) \succeq 0$.
+  and we can verify that indeed $M_{t-1}(h \circ z^1) \succeq 0$.
+  Similarly we can show that $M_{t-1}(h \circ z^0) \succeq 0$.
+
+For a different proof formulation see Proof 1 of Lemma 2 in lecture notes\cite{lasserresurvey2013}.
 \end{proof}
 To prove Theorem~\ref{thm:local-integral-solution}, we simply apply Claim~\ref{claim:main-local-integral-claim}
 iteratively to all variables in $S$.
 
-The following statement shows that we need at most $n$-th level of the Lasserre hierarchy to get 
-to $\sol{P}_{I}$.
+The following statement shows that we need at most level $n$ of the Lasserre hierarchy to obtain $\sol{P}_{I}$:
 \begin{corollary}
   $Q_n(K)=\sol{P}_{I}$.
 \end{corollary}
 
-Suppose now that we have some $y \in L_n(K)$. Then summarizing the above,
-we can see that there is some distribution
+Suppose now that we have some $y \in L_n(K)$. Then, summarizing the above,
+we can see that there exists some distribution
 $\mathscr{D}$ over $\{0,1\}^n$, such that for any $I \subseteq [n]$, we have
 \[
 y_I = \Pr_{X \sim \mathscr{D}}\left[\bigwedge_{i \in I}(X_i=1)\right].
 \]
-Now consider sets of indices $J_0, J_1 \subseteq [n]$. By inclusion-exclusion, we have
+Now consider the sets of indices $J_0, J_1 \subseteq [n]$. By the inclusion-exclusion principle, we have
 \[
 \Pr_{X \sim \mathscr{D}}\left[ \bigvee_{i \in J_0} (X_i=1) \right]
 =\sum_{\emptyset \subset H \subseteq J_0} (-1)^{|H|+1} \Pr_{X \sim \mathscr{D}}\left[ \bigwedge_{i \in H} (X_i=1) \right].
 \]
 Negating this gives
-\[
+\begin{equation}
+\label{dist}
 \Pr_{X \sim \mathscr{D}}\left[ \bigwedge_{i \in J_0} (X_i=0) \right]
 =\sum_{H \subseteq J_0} (-1)^{|H|} \Pr_{X \sim \mathscr{D}}\left[ \bigwedge_{i \in H} (X_i=1) \right].
-\]
-Observe that the above equation remains valid if all events are intersected with the same event
-$\bigwedge_{i \in J_1}(X_i=1)$. In other words, we have the following generalized inclusion-exclusion formula
+\end{equation}
+Equation \eqref{dist} yields the generalized inclusion-exclusion formula
 \begin{alignat}{2}
   & \Pr_{X \sim \mathscr{D}} \left[ \bigwedge_{i \in J_1} (X_i = 1) \wedge \bigwedge_{i \in J_0} (X_i = 0) \right] \notag \\
   =& \sum_{H \subseteq J_0} (-1)^{|H|} \Pr_{X \sim \mathscr{D}}\left[ \bigwedge_{i \in J_1 \cup H} (X_i=1) \right]. \label{eq:generalize-incexcl}
 \end{alignat}
-This motivates the following definition.
+This motivates the following definition:
 \begin{definition}\label{def:y-inc-exc}
   For $y \in L_n(K)$, define
   \[
@@ -218,25 +225,26 @@ Also, corresponding to (\ref{eq:generalize-incexcl}), we have
   \bigwedge_{i \in J_0}(X_i=0) \wedge \bigwedge_{i \in J_1}(X_i=1) \right].
 \end{alignat*}
 \begin{definition}
+\label{def:z}
   Assume that $y^{J_0,J_1}_{\emptyset}>0$, define
   \begin{alignat}{2}
     z^{J_0,J_1}_{I} &= \frac{y^{J_0,J_1}_I}{y^{J_0,J_1}_{\emptyset}}. \label{eq:zJ0J1}
   \end{alignat}
 \end{definition}
-If $y \in L_n(K)$, then we have that
+If $y \in L_n(K)$, we have, by Bayes' formula, that
 \[
 z^{J_0,J_1}_{I} = \Pr_{X \sim \mathscr{D}} \left[ \bigwedge_{i \in I} (X_i=1) | 
 \bigwedge_{i \in J_0} (X_i=0) \wedge \bigwedge_{i \in J_1}(X_i=1) \right].
 \]
-This is the intuition of the following lemma.
+This is the intuition of the following lemma:
 \begin{lemma}\label{lemma:local-distribution}
   Let $y \in L_t(K)$, $S \subseteq [n]$, $|S| \le t$. Define $z^{J_0,J_1}$ as in (\ref{eq:zJ0J1}).
   Then we have
   \begin{enumerate}
     \item $\sum_{J_0 \cupdot J_1=S} y^{J_0,J_1}_{\emptyset} = 1$.
-    \item For all $i \in J_0$, $z^{J_0,J_1}_{i}=0$, and for all $i \in J_1$, $z^{J_0,J_1}_{i}=1$.
-    \item For all $J_0,J_1$, $z^{J_0,J_1} \in L_{t-|S|}(K)$.
-    \item We can express $y$ as a convex combination
+    \item for all $i \in J_0$, $z^{J_0,J_1}_{i}=0$, and for all $i \in J_1$, $z^{J_0,J_1}_{i}=1$.
+    \item for all $J_0,J_1$, $z^{J_0,J_1} \in L_{t-|S|}(K)$.
+    \item $y$ expressed as the convex combination
       \[
       y = \sum_{\substack{J_0 \cupdot J_1=S \\ y^{J_0,J_1}_{\emptyset}>0}} y^{J_0,J_1}_{\emptyset} z^{J_0,J_1}.
       \]
@@ -251,7 +259,7 @@ This is the intuition of the following lemma.
     &= \sum_{J_0 \cupdot J_1 = S'} y^{J_0,J_1 \cup \{i\}}_I + \sum_{J_0 \cupdot J_1=S'} y^{J_0 \cup \{i\},J_1}_I \\
     &= \sum_{J_0 \cupdot J_1=S} y^{J_0,J_1}_I.
   \end{alignat*}
-  This gives the RHS of item 4. Set $I=\emptyset$ and note that $y_{\emptyset}=1$ gives us item 1. The proof of item 2 and 3 is
+  This, along with Definition~\ref{def:z}, gives the RHS of the equality in 4). Setting $I=\emptyset$ and noticing that $y_{\emptyset}=1$ give us the equality in 1). The proof of 2) and 3) is
   similar to that of Claim~\ref{claim:main-local-integral-claim}. 
 \end{proof}
 From this, it is easy to define locally consistent probability distributions from vectors in $L_t(K)$.
@@ -263,12 +271,12 @@ From this, it is easy to define locally consistent probability distributions fro
   \]
 \end{theorem}
 \begin{proof}
-  Using Lemma~\ref{lemma:local-distribution}, we can write $y$ as a combination of vectors
+  Using Lemma~\ref{lemma:local-distribution}, we can write $y$ as a combination of vectors,
   \[
   y = \sum_{\substack{J_0 \cupdot J_1=S \\ y^{J_0,J_1}_{\emptyset}>0}} y^{J_0,J_1}_{\emptyset} z^{J_0,J_1}.
   \]
   In the distribution $\mathscr{D}(S)$, with probability $y^{J_0,J_1}_{\emptyset}$, we set all bits in $J_1$ to 1 and
-  all bits in $J_0$ to 0. Note that for $I \subseteq S$
+  all bits in $J_0$ to 0. Note that for $I \subseteq S$,
   \begin{alignat*}{2}
     & \Pr_{z \sim \mathscr{D}(S)}\left[ \bigwedge_{i \in I} (z_i=1) \right] 
     = \sum_{\substack{I \subseteq J_1 \subseteq S \\ J_0=S \setminus J_1}} y^{J_0,J_1}_{\emptyset} \\
@@ -278,7 +286,7 @@ From this, it is easy to define locally consistent probability distributions fro
 
 For a concrete example of this property, we look at \textsc{Graph 3-Coloring}. Let $G=(V,E)$ be an undirected graph
 and suppose it is 3-colorable, \ie, the nodes can be colored with red, green and blue such that adjacent
-nodes get assigned different colors. Then the following relaxation looks for such an assignment
+nodes get assigned different colors. Then we get the following relaxation:
 \[
 \left\{
 \begin{array}{l l}
@@ -291,10 +299,10 @@ nodes get assigned different colors. Then the following relaxation looks for suc
 \begin{lemma}
   Let $y \in L_{3t}(K)$ be a solution for the $3t$-th level Lasserre relaxation of the above program. 
   Then there is a family of distributions $\left\{ \mathscr{D}(S) \right\}_{S \subseteq V, |S| \le t}$, such that for any
-  $S \subseteq V$ with $|S| \le t$, we have
+  $S \subseteq V$ with $|S| \le t$, we have that
   \begin{enumerate}
-    \item Any $\chi$ in the support of $\mathscr{D}(S)$ is a legal coloring for the induced subgraph $G[S]$.
-    \item The probability $\Pr_{\chi \sim \mathscr{D}(S)}[\chi(i_l)=c_l, \forall i=1,\cdots,k] = y_{\{(i_1,c_1),(i_2,c_2),\cdots,(i_k,c_k)\}}$,
+    \item any $\chi$ in the support of $\mathscr{D}(S)$ is a legal coloring for the induced subgraph $G[S]$.
+    \item the probability $\Pr_{\chi \sim \mathscr{D}(S)}[\chi(i_l)=c_l, \forall i=1,\cdots,k] = y_{\{(i_1,c_1),(i_2,c_2),\cdots,(i_k,c_k)\}}$,
       for all $i_1,\cdots,i_k \in S$, $c_1,\cdots,c_k \in \{R,G,B\}$.
   \end{enumerate}
 \end{lemma}
@@ -304,7 +312,8 @@ nodes get assigned different colors. Then the following relaxation looks for suc
 %\stressterm{known} 
 %\eg
 %$ \varbounded{x_{i}} $
-
+\bibliography{soscourse}
+\bibliographystyle{alpha}
 \end{document} 
 
 
