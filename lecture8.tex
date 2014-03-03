@@ -1,11 +1,11 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-01-28, 14:33 (CET) Massimo Lauria"
+% Time-stamp: "2014-03-03, 16:10 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
-\def\DataTitle{8. SOS lower bounds for 3-SAT and 3-XOR (II).}
+\def\DataTitle{8. SoS lower bounds for 3-SAT and 3-XOR (part II).}
 \def\DataTitleShort{Linear programming}
 \def\DataDate{18 February, 2014}
 \def\DataDocname{Lecture 8 --- \DataDate}
@@ -15,7 +15,9 @@
   \Lovasz-\Schrijver, Sherali-Adams}
 
 \def\DataAbstract{%
-  In this lecture, we show that if k-XOR $\varphi$ requires degree D refutations in Binomial calculus, then it requires degree D/2 Positivstellensatz calculus refutations (PC>). This basically means that, when the initial equations are binomial equations, the reasoning power of  Positivstellensatz calculus is completely captured by binomial calculus. This is a very nice feature, since it is simpler to proof degree lower bounds using binomial calculus. }
+The whole lecture is devote to show that if a $k$-XOR formula $\phi$ requires degree $D$ refutations in Binomial Calculus (BC), then it requires degree $D/2$ Positivstellensatz Calculus refutations ($\mathsf{PC}_>$). 
+%  This basically means that, when the initial equations are binomial equations, the reasoning power of  Positivstellensatz calculus is completely captured by binomial calculus. This is a very nice feature, since it is simpler to proof degree lower bounds using binomial calculus.
+}
 
 
 % ---------------------------- PREAMBLE -------------------------------
@@ -24,188 +26,117 @@
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
 
-This lecture is a continuation of the topic that we started in lecture 7. The main theorem that was discussed in lecture 7 gives a lower bound on the degrees of Positivstellensatz calculus refutations\cite{grigoriev2001linear} (PC>) of a given random subset of parity constraints that satisfy some conditions. The theorem states that, roughly, we can expect that only the half of the given constraints can be satisfied. In addition, we had the claim that to proof, using PC>, that the given subset of constraints are unsatisfiable, we need a degree D which is linear in the number of variables $n$. The used Positivstellensatz calculus contains only polynomial equations with no inequalities (based on polynomial calculus (PC)). 
-We start by a bunch of polynomial equations and boolean axioms
-\begin{align*}
-f_i = 0 \;\;\;\;\; \forall j = 1, \dots, m\\
-x_i^2 - x_i = 0\;\;\;\;\; \forall i = 1, \dots, n.
-\end{align*}
-A derivation $p \geq 0$ of a polynomial $p$ is an inference of $p\rq{}$ using the rules (a proof)
-\begin{equation*}
-\AxiomC{$q$}
-\UnaryInfC{$xq$}
-\DisplayProof
-\qquad
-\AxiomC{$p \; \;  \;q$}
-\UnaryInfC{$\alpha p+ \beta q$}
-\DisplayProof,
-\end{equation*}
-such that $p\rq{}+s =p$ with $s$ representing sum of squares polynomial. A refutation in this calculus is then a proof of $ -1 \geq 0$ ($p\rq{}+s = -1$).
-Therefore, our main question  is how large is the degree of the derivation to refute a set of equations. Remember that the degree of a refutation is the maximum degree among:
-\begin{inparaenum}[(i)]
- \item the degree of all polynomials appearing in the derivation of $p\rq{}$,
- \item the degree of $s$
-\end{inparaenum}.
 
-In lecture 7, we proved that we need a large degree to refute a given k-XOR using binomial calculus which is seen as a subset of the more general PC. To do that, we first did a linear change of variables. We moved from the variables $x \in \{0,1\}$, to new variables $y \in \{-1,1\}$. That was very useful, because doing that allowed us to express all the polynomials that encodes the k-XOR in terms of binomial equations\footnote{i.e., an equation between two terms.\\ Remember that a term is just a monomial multiplied by a scalar.}. This is a simplification because the original polynomials are at least of degree $k$.
 
-Now, when the initial set of equations are actually binomial equations, we can reason about them using binomial calculus where we have a more specialized set of inference rules. Recall that a monomial $m$ is a multiplication of several variables
-\begin{equation*}
-m_i = y_{i1} y_{i2} \dots y_{im},
-\end{equation*}
-and a term $t$ is defined to be a monomial with some scalar coefficient
-\begin{equation*}
-t_i = \alpha_i m_i = \alpha_i y_{i1} y_{i2} \dots y_{im}, \text{ such that } \alpha \in F \textbackslash \{0\}.
-\end{equation*}
-where $F$ is allowed here to be any field\footnote{however, for the PC> we work with $\mathbb{R}$. In particular, $-1$ cannot be written as SOS}.
-Given a binomial equation in two terms, we can multiply both sides by a variable or a scalar
-\begin{equation*}
-\AxiomC{$t_1 = t_2$}
-\UnaryInfC{$y_it_1 = y_it_2$}
-\DisplayProof
-\qquad
-\AxiomC{$t_1 = t_2$}
-\UnaryInfC{$\alpha t_1 =\alpha t_2$}
-\DisplayProof,
-\end{equation*}
-or instead, we can apply transitivity of equality
-\begin{equation*}
-\AxiomC{$t_1=t_2 $}
-\AxiomC{$t_2=t_3 $}
-\BinaryInfC{$t_1=t_3 $}
-\DisplayProof.
-\end{equation*}
-A refutation in this binomial calculus is a derivation $1= \alpha$ with $\alpha \neq 0$. The refutation degree is denoted  with $D$, and it represents the minimal $d$\footnote{natural number}, such that the derivation of  $1= \alpha$ is achieved with terms of at most degree $d$.
-
-Using binomial calculus, we proved that the refutation degree is linear in $n$. Particularly, it was shown that in this linear system there are no small sets of equations that are not satisfiable. Therefore, in the proof we must meet an equation that is implied by a medium size set of initial equations. This medium size set of initial equations must contain several variables that appear only once. Thus, these variables must appear in the implied equation. 
-\vspace{0.2cm}
-
-In this lecture, we first want to argue that whatever polynomial $f=0$ that we can derive with binomial calculus, can be expressed as a linear combination of binomials that are provable in binomial calculus. Specifically, we want to argue about the refutations degrees. We want to show that any polynomial that can be derived in a degree smaller than $D$, can  be written as a linear combination of binomials that can be proved in a degree at most $D$.
-More precisely,  we can write such equations in the form:
-\begin{equation*}
-f  = \sum_i \alpha_i (t_i-t_i\rq{}),
-\end{equation*}
-where $t_i = t_i\rq{}$ is provable in binomial calculus. This means that anything that we can prove in the  special binomial calculus that we are using (equations only), we can also prove in binomial calculus. The binomial calculus is seen as a subset of the general Positivstellensatz calculus. The idea is that the way in which we are writing those equations will cause no cancellation, so we don\rq{}t reduce the degree of $f$. In other words, if $f$ is of degree $D$, then for all $i$ the monomials $ (t_i-t_i\rq{})$ have at most degree $D$. This claims that the binomial calculus refutation is as strong as PC>.
-
-\begin{lemma}\label{linComb}
+\begin{lemma}\label{lem:linComb}
 Assume that 
+\begin{equation}\label{eq:f-sum}
+f = \sum_{i} \alpha_i  (t_i-t_i')
+\end{equation}
+where  $(t_i-t_i')$ has a BC refutation of degree $d$, then $f$ can be written as
 \begin{equation*}
-f = \sum_{i=1}^{l} \alpha_i  (t_i-t_i\rq{})
+f = \sum_{i} \beta_i  (s_i-s_i')
 \end{equation*}
-where  $(t_i-t_i\rq{})$ has a binomial calculus refutation of degree $d<D$, then $f$ can be written as
-\begin{equation*}
-f = \sum_{i=1}^{l} \beta_i  (s_i-s_i\rq{})
-\end{equation*}
-where all the monomials in the terms $\{s_i,s_i\rq{}\}_i$ appear in $f$ such that $(s_i-s_i\rq{})$ has a binomial calculus refutation of degree d<D.
+where for each $i$ $(s_i-s_i')$ has a BC refutation of degree $d$  and all monomials in the terms $\{s_i,s_i'\}_i$ are in $f$.
 \end{lemma}
+
 \begin{proof}
-Assume that we have a monomials $m$ appearing in the term $t_i$, but do not appear in $f$. Consider the sum of all terms that contain $m$. then without a loss of generality we can consider the sum
+Assume that some monomial $m$ appears in the RHS of (\ref{eq:f-sum}) but not in $f$. We show that we can prune that monomial from the sum without affecting $f$. Hence, repeating this process we end with the desired expression. To show how the pruning works consider the sum $S_m$ of all terms of the RHS of equation (\ref{eq:f-sum}) containing $m$:
 \begin{equation*}
-f = \sum_{j=1}^{s} \alpha_{ij} (m-t_{ij}).
+S_m = \sum_{j\in A} \alpha_j ( m-t'_j).
 \end{equation*}
-Under our assumptions, we know that $m$ must be canceled out, because it doesn\rq{}t appear in f. This means that the sum
+Wlog each $t'_j$ in the sum above is not containing $m$.
+Moreover as $m$ doesn't appear in $f$ it $m$ must be canceled out, that is $\sum_{j\in A} \alpha_j = 0$. Fix $i\in A$ such that $t'_i$ is one of the $t'_j$ of the equation above.
+ 
+ Then
 \begin{equation*}
-\sum_{j=1}^{s} \alpha_{ij} = 0.
+ S_m=\sum_{j\in A} \alpha_j m -\sum_{j\in A} \alpha_j t'_j\stackrel{\sum_{j\in A}\alpha_j=0}{=}\sum_{j\in A}\alpha_j t'_i - \sum_{j\in A} \alpha_j t'_j
+ =\sum_{j\in A}\alpha_j (t'_i - t'_j).
 \end{equation*}
-Then, we can write
-\begin{equation*}
--\alpha_{i1} = \sum_{j>1}^{s} \alpha_i (m-t_{ij}),
-\end{equation*}
-and therefore we have the equivalent representation
-\begin{equation*}
-\begin{aligned}
- \sum_{j>1}^{s} \alpha_i (t_{i1}-t_{ij}) &=\sum( \alpha_{ij}t_{i1} + \sum(-\alpha_{ij})t_{ij})\\
-&= - \alpha_{i1}t_{i1} - \sum \alpha_{ij}t_{ij} + \sum\alpha_{ij} m\\
-& = \sum \alpha_{ij} (m - t_{ij})
-\end{aligned}
-\end{equation*}
-so we removed the monomial $m$, and used instead $t_{ij}$. We also know that $t_{ij} = t_{i1}$. If we do that for all monomials, we cancel all the monomials that do not appear in $f$ without introducing new monomials. Finally, we end up with the representation that we want.
+Moreover $(t'_i-t'_j)$ for each $j\in A$ can be derived in BC using degree at most $d$ as by hypothesis both $(m-t'_i)$ and $(m-t'_j)$ can be derived in BC using degree at most $d$. Hence we showed how to prune $m$ from the RHS of (\ref{eq:f-sum}).
 \end{proof}
 
-
-\begin{corollary}
-If a polynomial equation $f=0$ is deduced in degree $d<D$ using PC>, then
-\begin{equation*}
-f = \sum \alpha_i (t_i-t_i\rq{}),
-\end{equation*}
-such that, there are no cancellation in the terms, and $(t_i-t_i\rq{})$ is derivable in degree $d<D$.
+\begin{corollary}\label{cor:normal-form}
+If $f=0$ is deduced in degree $d$ by the equational part of $\mathsf{PC}_>$ then $f=\sum_j \alpha_j (t_j-t'_j)$, where each $(t_j-t'_j)$ has a derivation in degree $d$ in BC and there are no cancelations.
 \end{corollary}
+
 \begin{proof}
-The proof is given by induction along the inference of the equation $f$ in binomial calculus. After each  inference step, apply lemma (\ref{linComb}).
+By induction. At the beginning of the $\mathsf{PC}_>$ we have binomials. Then at each inference step apply Lemma \ref{lem:linComb}.
 \end{proof}
 
-Now we will try to find a lower bound for PC> refutations based on the results that we have.
-\begin{theorem}
-The degree of any Positivstellensatz calculus refutation (PC>) of a given k-XOR formula $\varphi$ is greater than or equal to $D/2$
+\begin{theorem}\label{thm:BCtoPC<}
+Given a $k$-XOR formula $\phi$. If the minimum degree to refute the binomial encoding of $\phi$ in Binomial Calculus (BC) is $D$, then the minimum degree to refute the polynomial encoding of $\phi$ in Positivstellensatz Calculus ($\mathsf{PC}_>$) is at least $D/2$.
 \end{theorem}
-
 \begin{proof}
-Assume that we have a proof $p\rq{}+s=-1$, with $s$ sum of squares, and assume that this proof has degree $d<D/2$, then we can write $p\rq{} = 1+s$, and 
-\begin{equation}
-\sum (\alpha_i m_i - \alpha_i\rq{}m_i\rq{}) = 1 + \sum_j (h_j)^2
+Suppose by contradiction that there exists a proof of degree $d<D/2$ of the polynomial encoding $P$ of $\phi$ in $\mathsf{PC}_>$. That is we have an equation of the form 
+\begin{equation}\label{eq:p'sum}
+p'=1+\sum_j h_j^2,
 \end{equation}
-where $s = \sum_j (h_j)^2$. We know that the left hand side of the equation has a degree at most $D/2$, and because $(h_j)^2$ are positive for all $j$, we have no cancellations. Therefore we must have
+where $p'=0$ is inferred from $P$ according to the inference rules of $\mathsf{PC}_>$. By applying Corollary \ref{cor:normal-form} wlog we can suppose that $p'=\sum_i\alpha_i(t_i-t'_i)$, where each $(t_j-t_j')$ has a BC derivation in degree $d$ and there are no cancelations.
+
+Observe that for each $j$ $\deg(h_j^2)\leq d$\footnote{
+By contradiction suppose that for some $j$ $\deg(h_j^2)>d$, then the leading term of $h_j$ can't cancel out in the sum $\sum_j h_j^2$, hence it should appear also in $p'$. But this is not possible as all monomials in $p'$ have degree not greater than $d$.
+}
+, and not just $\deg(\sum_j h_j^2)\leq d$.
+
+
+Let us consider the linear operator $L:\RR[Y]\rightarrow \RR$ defined as follows: $L(1)=1$ and for each monomial $m$
 \begin{equation*}
-\text{deg}(h_i) \leq d/2 < D/4
-\end{equation*}
-otherwise the equation couldn\rq{}t be true.
-
-
->> CHECk  40
-
-Define an injective linear operator on the space of monomials of degree < D to the reals $L: \Pi_i y_i \mapsto \mathbb{R}$ with the following properties:
-\begin{enumerate}
-\item $L(1) = 1,$
-\item If $\alpha_i m_i = \alpha_i\rq{}m_i\rq{}$, then according to binomial calculus of degree < D, then $\alpha_i L(m_i) = \alpha_i\rq{}L(m_i\rq{})$,
-\item Define the linear extension of $L$ to polynomials as $L(\sum_i \alpha_i m_i) = \sum \alpha_i L(m_i)$, then for any polynomial $p$, we have $L(p^2) \geq 0$.
-\end{enumerate}
-This means that applying this operator to equation (\ref{linComb}) we get $ 0 = 1 + C$ with $C \geq 0$. Thus, the existence of such operator, means that we cannot prove equation (\ref{linComb}) in small degree, because we get that contradiction.
-
-Consider any monomial $m$ and refer to \stressterm{Fact 2}\footnote{Lecture 7}: If $m=a$, with $a \in \mathbb{R}$  is provable using binomial calculus in degree $d< D/2$, this implies that $a \in \{-1,1\}$, otherwise we would have gotten a refutation. We use this fact to define the operator as follows
-\begin{equation}
-L(m) = \begin{cases}
-      1 & if m=1 \text{ in binomial calculus in } \; d<D/2 \\
-    -1 & if m=-1 \text{ in binomial calculus in } \; d<D/2 \\
-      0 & otherwise
+L(m) := \begin{cases}
+      \alpha & \text{ if $m-\alpha$ with $\alpha\in \RR$ has a BC proof from $P$ of degree $\leq d$,} \\
+      0 & \text{ otherwise.}
    \end{cases}
+\end{equation*}
+
+If we look just at monomials (and polynomials) of degree at most $d$ this operator is well defined and moreover in that case $L(m)\in \{-1,0,1\}$. 
+In fact otherwise we could build the following $BC$ refutation of $P$: start with a BC derivation of $m=a$, for some $a\in \RR\setminus\{-1,1\}$, of degree $d<D/2$.
+ Then take squares: $m^2=a^2$, but as in the encoding $P$ of $\phi$ we have the equations $y_i^2=1$ for each variable $y_i\in Y$ then $m^2=1$. 
+ Hence we would have derived $\alpha^2=1$, ie a BC refutation of $P$ of degree $2d< D$. That is not possible, as $D$ is the minimal degree needed to refute $P$ in BC.
+
+In order to apply $L$ to equation (\ref{eq:p'sum}) we want to prove the followings:
+\begin{enumerate}
+\item if $t-t'$ has a BC derivation of degree at most $d$ from $P$ then $L(t-t')=0$;
+\item for each polynomial $p\in \RR[Y]$ of degree at most $d/2$ $L(p^2)\geq 0$.
+\end{enumerate}
+Then, from equation (\ref{eq:p'sum}), it follows an immediate contradiction 
+$$
+0=L(p')=1+\sum_jL(h_j^2)\geq 1.
+$$
+
+Property 1 is obvious: consider $a m -a' m'=0$. If we can prove in BC that $m=\alpha$, we can always by transitivity do the same for $m'$. 
+
+The rest of the proof is devoted to prove property 2: as $L(y^2m)=L(m)$ we can focus on $p\in \RR[Y]$ over multilinear monomials. Let $p=\sum_{S\subseteq [n]}\alpha_S y_S$, where $y_S:=\prod_{i\in S} y_i$. Then
+
+\begin{equation}\label{eq:p^2sum}
+L(p^2) =  \sum_{S,T} \alpha_S \alpha_T L( y_S y_T)=\sum_{S,T}\alpha_S \alpha_T L(y_{S \Delta T}).
 \end{equation}
 
-The extension of the operator to polynomials is straight forward. Therefore we have just found a well defined operator $L$. In the following, we will show that such definition, satisfy all the three properties above. Hence, we get a contradiction and we complete the proof of the theorem. The first  property of $L$ is obvious. The second property also holds. Since if we can use binomial calculus to decide something about $m_i$, we can always by transitivity do the same for $m_i\rq{}$. The only thing remains now is to show that the last property also holds. If this is true, then the theorem is proved.
-Let us focus on monomials only, since $L$ is linear. 
-\begin{equation*}
-p = \sum_s \alpha_s y_s, \;\;\;\;\;\; s \subseteq [n], \;\;\;\;\;\; y_s = \Pi_i y_i
-\end{equation*}
-then,
-\begin{equation*}
-L(p^2) =  \sum_{s,t} \alpha_s \alpha_t L( y_s, y_t)
-\end{equation*}
-which is just the image of the product of $p$ with itself. To proceed with with the proof, we define a undirected graph $G$ where the vertices of $G$ are ${y_s}$ in $p$. the idea is to understand the action of $L$ on $p$, by studying it\rq{}s behavior on the graph $G$. In $G$, we put an edge between $y_s$ and $y_t$ if $L(y_{s\Delta t}) = \pm 1$, and we weight that edge with the value of the operator (so the weight is $-1$ or $1$).  Furthermore we note that $L(y_{s\Delta s}) =  1$, and $L(1) = \pm 1$, thus we get loops with weights equal to 1. Note that if $y_{s\Delta t} = \pm1$, according to binomial calculus, $y_{t\Delta u} = \pm1$, according to binomial calculus, then using inference we can prove in the same degree that we have $y_{s\Delta u} = \pm1$. This tells us something about the structure of the graph $G$. If we have vertices $s$, $t$ and $u$ with an edge between $s$ and $t$, and an edge between $t$ and $u$, then there is an edge between $s$ and $u$ so that we get a triangle. This means that every connected component in $G$ is actually a clique. Therefore $G$ is composed of several connected components such that each of them is a complete graph, and edges between any two vertices in different connected components has a weight equal to zero. Consequently, to study the $L(p^2)$ it is sufficient to study a single connected component in $G$. Specifically, we need to show that each connected component has a positive contribution so that $L(p^2) \geq 0$.
+Define now an undirected graph $G=(V,E)$ with vertex set the $y_S$ with $S$ appearing in $p$ and $(y_S,y_T)\in E$ iff $L(y_{S\Delta T}) = \pm 1$. 
+Then $L$ induce a natural labeling mapping $E$ into $\{-1,1\}$. 
+Notice that for each $S\subseteq [n]$ $(y_S,y_S)$ is always in $E$ as $L(y_{S\Delta S})=L(1)=1$.
 
-Claim, that each connected component of $G$ has an even number of weights equal to $-1$. To show that this claim is always true, without loss of generality, assume a connected component with three vertices $s$, $t$, and $u$. If we have
+Moreover if BC derives $y_{S\Delta T} = \pm1$ and $y_{T\Delta U}=\pm 1$ in degree $d$ then using inference BC derives in degree $d$ $y_{S\Delta U} = \pm1$: every connected component of $G$ is a clique. 
+Moreover each connected component of $G$ can be split into two vertex sets $A,B$ such that for each $I,J$ in the same vertex set $L(y_{I \Delta J})=1$ and for $I \in A$ $J\in B$ $L(y_{I \Delta J})=-1$.
+
+To prove the last statement it is sufficient to prove that for each triangle the product of the values of the labeling of its edges is $1$. Let $\{y_S,y_T,y_U\}$ be the vertexes of a triangle in $G$, then
+$$
+L(y_{S\Delta T})L(y_{T\Delta U})L(y_{S\Delta U})=L(y_{\emptyset})=L(1)=1.
+$$
+
+We prove a stronger result than $L(p^2)\geq 0$: we prove that this is true wrt every connected component of $G$. More precisely let $\mathcal{S}$ be a sub-polinomial of the RHS of equation (\ref{eq:p^2sum}) giving rise in $G$ to a connected component and let $A$ and $B$ as above. We show that $\mathcal{S}\geq 0$. From this will follow immediately that $L(p^2)\geq 0$.
+
 \begin{equation*}
-\begin{aligned}
-L(y_{s\Delta t}) =a, \\
-L(y_{s\Delta u}) =b, \\
-L(y_{t\Delta u}) =c,
-\end{aligned}
+\begin{split}
+\mathcal{S}=
+\sum_{I, J\in A} \alpha_I \alpha_J L(y_{I\Delta J})+ \sum_{I, J\in B} \alpha_I \alpha_J L(y_{I\Delta J}) +\sum_{I\in A, J \in B} 2\alpha_I \alpha_J L(y_{I\Delta J})=
+\\
+=\sum_{I, J\in A} \alpha_I\alpha_J + \sum_{I, J\in B} \alpha_I \alpha_J -\sum_{I\in A, J \in B} 2\alpha_I \alpha_J=
+\\
+=\left(\sum_{I\in A} \alpha_I\right)^2 + \left(\sum_{J\in B} \alpha_J\right)^2 -\sum_{I\in A, J \in B} 2\alpha_I \alpha_J=
+\\
+=\left(\sum_{I\in A} \alpha_I -\sum_{J\in B}\alpha_J\right)^2\geq 0.
+\end{split}
 \end{equation*}
- then this implies by binomial calculus that $L(\phi) = abc = 1$. This means that either $a, b,$ and $c$ are each equal to $1$ or two of them must be equal to $-1$. Therefore, we can decompose any connected component of $G$ into a partition of two parts where all edges in each part has weight equal to $1$, and such that the two parts connected with  edges that has a weight equal to $-1$.
-So, for one connected component, we have a partition of vertices A, and B such that it represents the sum
-\begin{equation*}
-\begin{aligned}
-\sum_{I\in A} (\alpha_I)^2 L(y_I^2) &+ \sum_{I\in B} (\alpha_J)^2 L(y_J^2) + \sum_{I, I\rq{}\in A, I=I\rq{}} 2(\alpha_I)(\alpha_I\rq{}) L(y_{I\Delta I\rq{}})\\ &+ \sum_{J, J\rq{}\in A, J=J\rq{}} 2(\alpha_J)(\alpha_J\rq{}) L(y_{J\Delta J\rq{}}) - \sum_{I\in A, J \in B} 2(\alpha_I)(\alpha_J) L(y_{I\Delta J}).
-\end{aligned}
-\end{equation*}
-Therefore
-\begin{equation*}
-(\sum_{I \in A} \alpha_I )^2 + ( \sum_{J \in B} \alpha_J)^2 - 2 \sum_{I \in A, \; J \in B} \alpha_I \alpha_J \geq 0
-\end{equation*}
-which implies that 
-\begin{equation*}
-\sum \alpha_I - (\sum \alpha_J)^2 \geq 0
-\end{equation*}
-This shows that all the contributions from each clique of $G$ is nonnegative. This in turn shows that the third property of $L$ holds, namely $L(p^2)\geq 0$.
-Therefore we proved the theorem.
 \end{proof}
 
 
