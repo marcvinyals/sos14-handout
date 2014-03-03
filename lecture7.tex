@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-02-24, 15:21 (CET) Massimo Lauria"
+% Time-stamp: "2014-03-03, 16:02 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -30,11 +30,11 @@ This lecture is about Positivstellensatz Calculus and a lower bound for the degr
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
 
-\section{Positivstellesatz Calculus (PC$_<$)}
+\section{Positivstellesatz Calculus ($\mathsf{PC}_>$)}
 
 Let us consider the ordered field of the reals $\RR$, a finite set of variables $X$ and a finite set $P$ of polynomial equations in the ring $\RR[X]$. 
 
-A \emph{derivation of  $p\geq 0$ from $P$ in PC$_<$} is a sequence of polynomial equations ending with $p'=0$ such that $p=p'+\sum_i h_i^2$, where $h_i$ are polynomials in $\RR[X]$.  
+A \emph{derivation of  $p\geq 0$ from $P$ in $\mathsf{PC}_>$} is a sequence of polynomial equations ending with $p'=0$ such that $p=p'+\sum_i h_i^2$, where $h_i$ are polynomials in $\RR[X]$.  
 Each polynomial equation in the sequence is either from $P$ or is the result of an inference from polynomial equations appearing previously in the sequence according to the following inference rules:
 \begin{equation}
 \label{eq:positivstellesatz-inference}
@@ -43,19 +43,19 @@ Each polynomial equation in the sequence is either from $P$ or is the result of 
 %
 % Ilario: I stated the rules using equations just to have a visual reminder of the fact that all the things we can derive are actually to be intended equal to 0.
 %
-A \emph{refutation of $P$ in PC$_<$} is a derivation of $-1\geq 0$ starting from $P$. 
-The \emph{degree} of a derivation of $p\geq 0$ is the maximum degree of the intermediate polynomials appearing in the derivation of $p'$ and the degree of $\sum_i h_i^2$.
+A \emph{refutation of $P$ in $\mathsf{PC}_>$} is a derivation of $-1\geq 0$ starting from $P$. 
+The \emph{degree} of a derivation of $p\geq 0$ is the maximum degree of the intermediate polynomials appearing in the derivation of $p'$ and the maximum degree of the $h_i^2$'s.
  
  
  %
  % Ilario: I'm trying to avoid any unnecessary new notation for Binomial Calculus.
  %
 The \emph{Binomial Calculus} (BC) is a particular case of the previous proof system. A \emph{BC derivation} of some binomial equation $p=0$\footnote{
-We recall that a binomial is sum of two terms, each of them of the form $\alpha\prod x_i$ for some $\alpha\in \RR$ and for some variables $x_i$ from $X$.
+We recall that a binomial is sum of two terms, each of them of the form $\alpha\prod x_i$ for some $\alpha\in \RR$ and for some subset of variables $x_i$ from $X$.
 } from some set of binomial equations $Q$
 is a $PC_<$ derivation of $p\geq 0$ from $Q$ where each intermediate polynomial equation is actually a binomial equation and the $\sum_ih_i^2$ part is $0$.
 
-A \emph{refutation of $Q$} in BC is a derivation in BC of $\alpha -1=0$ for some $\alpha\in \RR$, $\alpha\neq 1$. The very same notion of degree of PC$_<$ apply here.
+A \emph{refutation of $Q$} in BC is a derivation in BC of $\alpha -1=0$ for some $\alpha\in \RR$, $\alpha\neq 1$. The very same notion of degree of $\mathsf{PC}_>$ apply here.
 
 %
 % Ilario: I have not put the observation about $\alpha m=1$ and the degree because that is needed only in next lecture. If the scribe of next lecture have not written it I'm going to put it, here or there.
@@ -64,12 +64,12 @@ A \emph{refutation of $Q$} in BC is a derivation in BC of $\alpha -1=0$ for some
 \section{Random $k$-XOR formulas}
 
 Let $X=\{x_1,\ldots,x_n\}$ be a set of variables and $m,k\in \NN$. Sample uniformly at random $b\in \{0,1\}$ and $S\subset [n]$ of size $k$ and from them build the parity constraint $\sum_{i\in S}x_i \equiv b \pmod{2}$.
-Repeat independently at random this process $m$ times to obtain a \emph{random $k$-XOR formula} in the variables $X$ and having $m$ \emph{parity constraints}\footnote{A very similar process is used to build \emph{random} $k$SAT formulas: pick uniformly at random a set $S\subset [n]$ of size $k$ and a random mapping $b:S\rightarrow \{0,1\}$. From those build the clause $\bigvee_{i\in S} x_i^{b(i)}$, where $x^1:=x$ and $x^0:=\neg x$. Repeat independently at random this process $m$ times and take the conjunction of the clauses you get.}. 
+Repeat independently at random this process $m$ times to obtain a \emph{random $k$-XOR formula} on variables in $X$ with $m$ \emph{parity constraints}\footnote{A very similar process is used to build \emph{random} $k$-SAT formulas: pick uniformly at random a set $S\subset [n]$ of size $k$ and a random mapping $b:S\rightarrow \{0,1\}$. From those build the clause $\bigvee_{i\in S} x_i^{b(i)}$, where $x^1:=x$ and $x^0:=\neg x$. Repeat independently at random this process $m$ times and take the conjunction of the clauses you get.}. 
 
 We can associate to a random $k$-XOR formula a set of polynomial equations such that the formula has a boolean solution iff the set of polynomial equations has a solution. 
 The encoding of a single parity constraint $\sum_{i\in S}x_i \equiv b \pmod{2}$ as a set of polynomial equations in $\RR[X]$ is the following:
 \begin{equation}\label{eq:kXORx}
-\{\prod_{i\in S}(1-2x_i) = (-1)^b \}\cup \{x_i^2=x_i\}_{i\in S}.
+\left\{\prod_{i\in S}(1-2x_i) = (-1)^b \right\}_S \cup \{x_i^2=x_i\}_{i \in X}.
 \end{equation} 
 
 In what follow we will use another encoding using a different set of variables $Y=\{y_1,\ldots,y_n\}$.
@@ -80,19 +80,19 @@ In what follow we will use another encoding using a different set of variables $
 
 Obviously there is a linear transformation from $\RR[X]$ to $\RR[Y]$ mapping the first set into the second: $x_i\mapsto (y_i-1)/2$.
 
-Notice that the degree of PC$_<$ refutations of an unsatisfiable set of parity constraints does not depend if the encoding as polynomial equations is the one in (\ref{eq:kXORx}) or (\ref{eq:kXORy}). 
-As already observed there is a linear mapping from one set to the other so we can apply that mapping to a PC$_<$ refutation over $\RR[Y]$ to obtain a valid PC$_<$ refutation over $\RR[X]$ (and vice versa) both having the same degree.
+Notice that the degree of $\mathsf{PC}_>$ refutations of an unsatisfiable set of parity constraints does not depend on whether the encoding as polynomial equations is the one in (\ref{eq:kXORx}) or (\ref{eq:kXORy}). 
+As already observed there is a linear mapping from one set to the other so we can apply that mapping to a $\mathsf{PC}_>$ refutation over $\RR[Y]$ to obtain a valid $\mathsf{PC}_>$ refutation over $\RR[X]$ (and vice versa) both having the same degree.
 
 \begin{theorem}\label{thm:kXOR}
-For each $k\geq 3$ and $\delta>0$ there exists $\alpha$ st a random $k$-XOR formula $\phi$ in $n$ variables and $\Delta n$ clauses, where $\Delta \geq (1+\ln 2)\frac{1}{2\delta^2}$, whp has the following properties:
+For each $k\geq 3$ and $\delta>0$ there exists $\alpha$, such that a random $k$-XOR formula $\phi$ in $n$ variables and $\Delta n$ clauses, where $\Delta \geq (1+\ln 2)\frac{1}{2\delta^2}$, with high probability has the following properties:
 \begin{enumerate}
-\item at most $\left( \frac{1}{2}+\delta\right)\Delta n$ parity constraints of $\phi$ can be simultaneously satisfied,
-\item any PC$_<$ refutation of $\phi$ requires degree $\alpha n$.
+\item At most $\left( \frac{1}{2}+\delta\right)\Delta n$ parity constraints of $\phi$ can be simultaneously satisfied,
+\item Any $\mathsf{PC}_>$ refutation of $\phi$ requires degree $\alpha n$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}[Proof of part 1 of the Theorem.]
-Given $\phi$ we proceed applying Chernoff Bound and then Union Bound. Lets fix an assignment $x\in \{0,1\}^n$ and let $C_i(x)$ be the random variable that is $1$ if $x$ satisfy the $i$-th parity constraint in $\phi$ and $0$ otherwise. Hence $\sum_i C_i(x)$ is the number of linear constraints of $\phi$ satisfied by $x$. Then $\mathbb{E}[C_i(x)]=\frac{1}{2}$ and by linearity $
+Given $\phi$ we proceed by applying Chernoff Bound and then union bound. Lets fix an assignment $x\in \{0,1\}^n$ and let $C_i(x)$ be the random variable that is $1$ if $x$ satisfy the $i$-th parity constraint in $\phi$ and $0$ otherwise. Hence $\sum_i C_i(x)$ is the number of linear constraints of $\phi$ satisfied by $x$. Then $\mathbb{E}[C_i(x)]=\frac{1}{2}$ and by linearity $
 \mathbb{E}[\sum_i C_i(x)]=\frac{1}{2}\Delta n$.
 Hence, by Chernoff Bound\footnote{
 We use the (standard) following form of Chernoff Bound: let $X_1,\ldots, X_m$ be independent 0-1 random variables and $X=\sum_{i\in [m]} X_i$ then for every $\lambda >0$ 
@@ -104,7 +104,7 @@ We use the (standard) following form of Chernoff Bound: let $X_1,\ldots, X_m$ be
 \begin{equation*}
 \mathbb{P}\left[\sum_i C_i(x)\geq (\frac{1}{2}+\delta)\Delta n\right]\leq e^{-2\delta^2\Delta n}.
 \end{equation*}
-Hence by Union Bound 
+Hence by union bound 
 \begin{equation*}
 \mathbb{P}\left[\exists x\in \{0,1\}^n\ \left(\sum_i C_i(x)\geq (\frac{1}{2}+\delta)\Delta n\right)\right]\leq 2^n \cdot e^{-2\delta^2\Delta n}\leq e^{-n}.
 \end{equation*}
@@ -113,19 +113,22 @@ The last inequality comes from the assumption that $\Delta\geq (1+\ln 2)\frac{1}
 Before going deep into the proof of part 2. of Theorem \ref{thm:kXOR} we just state and prove an interesting corollary.
 
 \begin{corollary}\label{cor:randomCNF}
-For each $k\geq 3$ and $\delta>0$ there exists an $\alpha$ st a random $k$-CNF formula $\phi$ with $\Delta n$ clauses and $\Delta\geq (1+\ln 2)\frac{1}{2\delta^2}$ st whp
+For each $k\geq 3$ and $\delta>0$, 
+there exists an $\alpha$, 
+such that with high probability
+for a random $k$-SAT formula $\phi$ with $\Delta n$ clauses and $\Delta\geq (1+\ln 2)\frac{1}{2\delta^2}$:
 \begin{enumerate}
-\item at most $\left(\frac{2^k-1}{2^k}+\delta\right)\Delta n$ clauses of $\phi$ can be satisfied at the same time and
-\item any PC$_<$ refutation of $\phi$ requires degree at least $\alpha n$.
+\item At most $\left(\frac{2^k-1}{2^k}+\delta\right)\Delta n$ clauses of $\phi$ can be satisfied at the same time and
+\item Any $\mathsf{PC}_>$ refutation of $\phi$ requires degree at least $\alpha n$.
 \end{enumerate}
 \end{corollary}
 
 \begin{proof}
-The proof of point 1. is exactly the same of the analogous point of Theorem \ref{thm:kXOR}. 
+The proof of point 1 is exactly the same of the analogous point of Theorem \ref{thm:kXOR}. 
 The only difference is that the expected value of the random variable representing the number of clauses satisfied changes to $\frac{2^k-1}{2^k}\Delta n$. 
 The rest of the calculations are exactly the same.
 
-Regarding the second part we just observe that from random $k$-XOR we can derive in degree $(k+1)$ random $k$-SAT.
+Regarding the second point we just observe that from random $k$-XOR we can derive in degree $(k+1)$ random $k$-SAT.
 
 For each parity constraint $\sum_{i\in S}x_i\equiv b \pmod{2}$ in random $k$-XOR we choose uniformly at random one of the clauses derivable from that constraint\footnote{
 For example consider the parity constraint $x_1+x_2+x_3\equiv 0 \pmod{2}$, that has polynomial encoding as $(1-2x_1)(1-2x_2)(1-2x_3)=1$, that is the same of 
@@ -141,26 +144,27 @@ x_3 -x_3x_2-x_1x_3+2x_1x_2x_3=0.
 Summing all those and subtracting the initial one we get $x_1x_2x_3=0$, that is the encoding of $\neg x_1\vee \neg x_2 \vee \neg x_3$.
 }.
 That is half of the possible $k$ clauses in the variables $\{x_i\}_{i\in S}$ are cut away and the other half is derivable in degree $k+1$ from $\prod_{i\in S}(1-2x_i)=(-1)^b$. 
-The $k$CNFs we can obtain in this way have a distribution that makes them indistinguishable from the random $k$SAT. Hence for sufficiently large $n$ it is not possible to derive in small degree random $k$SAT, otherwise random $k$-XOR would have small degree refutations too but this is excluded by Theorem \ref{thm:kXOR}.
+The $k$-SAT formulas we obtain in this way have a distribution indistinguishable from that of random $k$-SAT. Hence for sufficiently large $n$ it is not possible to derive in small degree random $k$-SAT, otherwise random $k$-XOR would have small degree refutations too but this is excluded by Theorem \ref{thm:kXOR}.
 \end{proof}
 
-The previous Theorem and the Corollary show in particular that after $\alpha n$ steps in the Lasserre hierarchy the integrality gap is $1/2 +\delta$ for MAX $k$-XOR and $\frac{2^k-1}{2^k}+\delta$ for MAX $k$-SAT. 
+The previous Theorem and the Corollary show in particular that after $\alpha n$ steps in the Lasserre hierarchy the integrality gap 
+is $1/2 +\delta$ for Max $k$-XOR and $\frac{2^k-1}{2^k}+\delta$ for Max $k$-SAT. 
 This means that for both of those problems the integrality gap cannot be much better than $1/2$ or $\frac{2^k-1}{2^k}$ respectively.
 
-\section{Proof of Theorem \ref{thm:kXOR} (point 2.)}
+\section{Proof of Theorem \ref{thm:kXOR} (Part 2)}
 
-As the proof is quite long, we recap briefly what is its high level structure:
+As the proof is quite long, we recap briefly its high level structure:
 \begin{itemize}
 \item Observe that to prove a degree lower bound for $k$-XOR formulas, it is irrelevant if we choose the encoding in (\ref{eq:kXORx}) or (\ref{eq:kXORy}). 
 So, to make our life easier, we choose the encoding in (\ref{eq:kXORy}).
-\item Up to a constant factor of $2$, it is the same to prove a degree lower bound for the binomial encoding of a random $k$-XOR over $\RR[Y]$ in BC or for the other encoding in PC$_<$. See next Lecture.
+\item Up to a constant factor of $2$, it is the same to prove a degree lower bound for the binomial encoding of a random $k$-XOR over $\RR[Y]$ in BC or for the other encoding in $\mathsf{PC}_>$. See next Lecture.
 \item Actually prove a degree lower bound in BC for the encoding (\ref{eq:kXORy}) of a random $k$-XOR over $\RR[Y]$.
 \end{itemize}
 
-The remaining part of this lecture is devoted to prove the last point above. We premise a Lemma (without proof) about the structure of random $k$-XOR formulas.
+The remaining part of this lecture is devoted to proving the last point above. We premise a Lemma (without proof) about the structure of random $k$-XOR formulas.
 
 \begin{lemma}\label{lem:kXORsat}
-Given constants $k\geq 3$, $\Delta>0$ and $\gamma\in (0,k/2)$ then there exists a $\beta$ st for a random $k$-XOR formula with $n$ variables and $\Delta n$ parity constraints whp the following hold
+Given constants $k\geq 3$, $\Delta>0$ and $\gamma\in (0,k/2)$, there exists a $\beta$, such that for a random $k$-XOR formula with $n$ variables and $\Delta n$ parity constraints with high probability the following hold
 \begin{enumerate}
 \item for each $\phi'\subseteq \phi$ if $|\phi'|\leq \beta n$ then $\phi'$ is satisfiable,
 \item for each $\phi'\subseteq \phi$ if $|\phi'|\leq \frac{2}{3}\beta n$ then there are at least $\gamma |\phi'|$ variables appearing once in $\phi'$.
@@ -169,9 +173,10 @@ Given constants $k\geq 3$, $\Delta>0$ and $\gamma\in (0,k/2)$ then there exists 
 \end{lemma}
 For the proof of the Lemma see [???].
 
-
 \begin{theorem}
-Given constants $k\geq 3$, $\Delta>0$ and $\gamma \in (0,k/2)$ there exists $\alpha$ such that a random $k$-XOR formula $\phi$ in $n$ variables and $\Delta n$ constraints with high probability every BC refutation of $\phi$ over $\RR[Y]$\footnote{
+Given constants $k\geq 3$, $\Delta>0$ and $\gamma \in (0,k/2)$, there exists $\alpha$, such that 
+with high probability, for a random $k$-XOR formula $\phi$ in $n$ variables and $\Delta n$ constraints,
+every BC refutation of $\phi$ over $\RR[Y]$\footnote{
 That is every BC refutation of the encoding (\ref{eq:kXORy}) of $\phi$ over $\RR[Y]$.
 } 
 require degree at least $\alpha n$.
@@ -181,29 +186,34 @@ require degree at least $\alpha n$.
 Let $B$ the set of all binomial equations we can derive from $\phi$ in Binomial Calculus. 
 We define a measure $\mu:B\rightarrow \RR$ as follows\footnote{
 $\phi'\models p$ means that the set of parity constraints $\phi'$ \emph{imply} the equation $p$, ie the satisfying assignmnets of $\phi'$ are also satisfying assignments of $p$.
+
+Similarly, for an assignment $\beta$ and a formula $\phi$, $\beta \models \phi$ means that the assignment $\beta$ satisfies
+all constraints in $\phi$.
 }
 :
 \begin{equation}\label{eq:mu-kXOR}
 \mu(p):=\min\{|\phi'|\ :\ \phi'\subseteq \phi\ \wedge\ \phi'\models p\}.
 \end{equation}
-Clearly for each binomial $b$ appearing in the encoding of $\phi$ we have that $\mu(b)= 1$ and $\mu$ is sub-additive wrt the inference rules in (\ref{eq:positivstellesatz-inference}) and more in general is immediate from the definition of $\mu$ that if $\{p,q\}\models r$ then $\mu(r)\leq \mu(p)+\mu(q)$. 
+Clearly for each binomial $b$ appearing in the encoding of $\phi$ we have that $\mu(b)= 1$ and $\mu$ is sub-additive wrt the inference rules in (\ref{eq:positivstellesatz-inference}). This is immediate from the definition of $\mu$ that if $\{p,q\}\models r$ then $\mu(r)\leq \mu(p)+\mu(q)$. 
 
-Let consider now a refutation $\pi$ of $\phi$ in BC, say ending with $\eta=1$ for some $\eta\in \RR$, $\eta\neq 1$. By Lemma \ref{lem:kXORsat} we have that $\mu(\eta=1)>\beta n$.
+Let us now consider a refutation $\pi$ of $\phi$ in BC, say ending with $\eta=1$ for some $\eta\in \RR$, $\eta\neq 1$. By Lemma \ref{lem:kXORsat} we have that $\mu(\eta=1)>\beta n$.
 
-Hence we have that there exists some medium complexity binomial equation in $\pi$, more precisely there exists a binomial equation $q$ in $\pi$ such that
+By the sub-additivity of $\mu$, we have that there exists some medium complexity binomial equation in $\pi$. 
+More precisely there exists a binomial equation $q$ in $\pi$ such that
 \begin{equation*}
-\frac{1}{3}\beta n< \mu(q)\leq \frac{2}{3}\beta n.
+\frac{1}{3}\beta n< \mu(q) \le \frac{2}{3}\beta n.
 \end{equation*}
 
 Just take as $q$ the first binomial appearing in $\pi$ such that $\mu(q)>\frac{1}{3}\beta n$. $q$ must have been inferred by previous binomials. 
-By the fact that $q$ is the \emph{first} having big $\mu$ and by sub-additivity of $\mu$ we have also the other inequality.
+By the fact that $q$ is the \emph{first} binomial in $\pi$ having big $\mu$ and by sub-additivity of $\mu$ we have also the other inequality
+$\mu(q) \leq \frac{2}{3} \beta n$.
 
 We want now to prove that $q$ has large degree. Let $\phi'\subseteq \phi$ such that $\phi'\models q$. 
-By the above inequality we have that $\frac{1}{3}\beta n < |\phi'|\leq \frac{2}{3}\beta n$, hence by Lemma \ref{lem:kXORsat} we have at least $\gamma |\phi'|$ single variables in $\phi'$. 
+By the above inequality we have that $\frac{1}{3}\beta n < |\phi'| \leq \frac{2}{3}\beta n$, hence by Lemma \ref{lem:kXORsat} we have at least $\gamma |\phi'|$ single variables in $\phi'$. 
 If we prove that those variables have to appear also in $q$ we are done: as $q$ is a binomial this means that $\deg(q)\geq \gamma |\phi'|/2\geq \frac{1}{6}\beta n$. 
 Then the parameter $\alpha$ of the statement of the Theorem is just $\frac{1}{6}\beta$.
 
-We have to prove that each variable that appear once in $\phi'$ has to appear in $q$ too. 
+We now prove that each variable that appears once in $\phi'$ has to appear in $q$ too. 
 Suppose by contradiction there is some variable $y_i$ appearing once in $\phi'$ and not appearing in $q$. 
 This variable appears only in one parity constraint of $\phi'$, say $l$. Consider $\bar \phi=\phi'\setminus \{l\}$. 
 By minimality of $\phi'$ there exists an assignment $\beta$ such that $\beta \models \bar \phi$ and $\beta(q)=0$\footnote{
@@ -213,7 +223,7 @@ Where we use the standard meaning of $0$=False and $1$=True.
 Then just take $\beta^*$ an assignment that disagree with $\beta$ only on the value given to $y_i$. 
 This imply that $\beta^*(q)=\beta(q)=0$, as $y_i$ does not appear in $q$.
  But also that $\beta^*(l)=1-\beta(l)=1$, as flipping a single value in a parity constraint flip also the truth value of the constraint. 
- Hence $\beta^*\models \phi'$ and $\beta^*(q)=0$ in contradiction with the fact that $\phi'\models q$.
+ Hence $\beta^*\models \phi$ and $\beta^*(q)=0$ in contradiction with the fact that $\phi\models q$.
 \end{proof}
 
 % ------------------------- EPILOGUE ------------------------------
