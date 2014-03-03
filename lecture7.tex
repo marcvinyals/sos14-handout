@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-03-03, 16:02 (CET) Massimo Lauria"
+% Time-stamp: "2014-03-03, 16:07 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -161,7 +161,11 @@ So, to make our life easier, we choose the encoding in (\ref{eq:kXORy}).
 \item Actually prove a degree lower bound in BC for the encoding (\ref{eq:kXORy}) of a random $k$-XOR over $\RR[Y]$.
 \end{itemize}
 
-The remaining part of this lecture is devoted to proving the last point above. We premise a Lemma (without proof) about the structure of random $k$-XOR formulas.
+The remaining part of this lecture is devoted to proving the last
+point above. We premise a Lemma about the structure of random $k$-XOR
+formulas. The proof is omitted but follows immediately from
+Proposition 22 in (Schoenebeck, 2008)\cite{schoenebeck2008linear}.
+ 
 
 \begin{lemma}\label{lem:kXORsat}
 Given constants $k\geq 3$, $\Delta>0$ and $\gamma\in (0,k/2)$, there exists a $\beta$, such that for a random $k$-XOR formula with $n$ variables and $\Delta n$ parity constraints with high probability the following hold
@@ -171,7 +175,6 @@ Given constants $k\geq 3$, $\Delta>0$ and $\gamma\in (0,k/2)$, there exists a $\
 \end{enumerate}
 
 \end{lemma}
-For the proof of the Lemma see [???].
 
 \begin{theorem}
 Given constants $k\geq 3$, $\Delta>0$ and $\gamma \in (0,k/2)$, there exists $\alpha$, such that 
