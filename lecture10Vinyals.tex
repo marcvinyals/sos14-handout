@@ -1,0 +1,176 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: ""
+% Encoding  : UTF-8
+
+% ---------------------------- USER DATA ------------------------------
+\def\DataTitle{10. Graph Isomorphism and the Lasserre Hierarchy}
+\def\DataTitleShort{Graph Isomorphism}
+\def\DataDate{4 March, 2014}
+\def\DataDocname{Lecture 10 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Marc Vinyals}
+\def\DataKeywords{graph isomorphism, positivstellensatz}
+\def\DataAbstract{We complete the technical part of the proof that refuting Graph Isomorphism requires linear degree in the Positivstellensatz proof system even for graphs that are far from isomorphic.}
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+
+\newcommand{\PS}{\proofsystem{PC$_>$}}
+\newcommand{\Glin}[1]{G_{Ax=#1}}
+
+\begin{document} 
+% --------------------------- DOCUMENT --------------------------------
+
+\section{Recap}
+
+Recall that in the last lecture we started proving that refuting Graph Isomorphism is hard for SOS proof systems.
+
+\begin{theorem}\cite{o2014hardness}
+  \label{th:gi-ps}
+  For infinitely many $n$, there exist graphs $G$, $H$ with $|V(G)|=|V(H)|=n$ and $|E(G)=E(H)=O(n)|$ that are not $10^{-18}$-isomorphic and such that any \PS refutation of $G \cong H$ requires degree $\Omega(n)$.
+\end{theorem}
+
+Our plan was to reduce random 3-XOR to Graph Isomorphism, and it only remained to show one missing piece, namely that the graphs $\Glin{b}$ and $\Glin{0}$ resulting from our construction are far from isomorphic.
+
+\begin{lemma}
+  \label{lem:non-isomorphic}
+  Fix a constant $c \geq 10^8$. Then \whp $\Glin{b}$ and $\Glin{0}$ are not $(1-1/95c^2)$-isomorphic.
+\end{lemma}
+
+We spend the rest of the lecture proving this lemma.
+
+\section{Auxiliary results}
+
+First we need to introduce the some definitions and properties. The concept of almost-asymmetry is a generalization of asymmetry. Recall that an object is asymmetric if its group of automorphisms is trivial.
+
+\begin{definition}
+  \label{def:asymmetry} A (hyper)graph $G$ is \introduceterm{$(\beta,\gamma)$-asymmetric} if any $(1-\gamma)$-automorphism has at least a $(1-\beta)$ fraction of fixed points.
+\end{definition}
+
+Observe that, in particular, a $(0,0)$-asymmetric graph is the same as an asymmetric graph and that every graph is $(\beta,1)$-asymmetric.
+
+In other words, this definition means that if an almost-automorphism permutes many vertices then it has large error, or that the graph may have local but not global symmetries.
+
+\begin{theorem}
+  \label{th:random-graphs-are-asymmetric}
+  Let $H$ be a random $3$-uniform hypergraph with $n$ variables and $cn$ edges for some constant $c \geq 10^4$. Fix a constant $e^{-c/6} < \beta < 1$. Then \whp $H$ is $(\beta,\beta/240)$-asymmetric.
+\end{theorem}
+
+Observe that the parameter loss in Theorem~\ref{th:random-graphs-are-asymmetric} is only constant.
+
+Now we bound the average degree of large sets of random graphs.
+
+\begin{definition}
+  \label{def:degree-bounded}
+  A (hyper)graph $G$ is \introduceterm{$(\epsilon,D)$-degree-bounded} if every set of $\epsilon|V(G)|$ vertices has average degree less than $D$.
+\end{definition}
+
+Definition~\ref{def:degree-bounded} is equivalent to imposing that every fraction of \emph{at least} $\epsilon$ vertices has average degree less than $D$. Observe that for $\epsilon=1$ the definition is equivalent to average degree, and that for $\epsilon = 1/n$ the definition is equivalent to (maximum) degree.
+
+\begin{lemma}
+  \label{lem:degree-bounded-few-edges}
+  If a (hyper)graph $G$ is $(\epsilon,D)$-degree-bounded then every set of $\beta n$ vertices is incident to at most $(\beta + \epsilon)Dn$ edges.
+\end{lemma}
+\begin{proof}
+  Add $\epsilon n$ vertices to the original set.
+\end{proof}
+
+We can extract the underlying 3-uniform hypergraph from a 3-XOR by identifying vertices with variables and constraints by sets of variables, disregarding any information about signs. In particular, $Ax=b$ and $Ax=0$ have the same underlying hypergraph, and the distribution of hypergraphs over random 3-XOR is very close to the distribution of random 3-uniform hypergraphs of the appropriate parameters.
+
+\begin{lemma}
+  \label{lem:random-graphs-are-degree-bounded}
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c \geq 3$. Then \whp the hypergraph of $A$ is $(1/c,100c)$-degree-bounded.
+\end{lemma}
+
+The following is an instantiation of a theorem we discussed in the lecture proving lower bounds for random 3-SAT with concrete parameters.
+
+\begin{lemma}
+  \label{lem:simultaneously-sat}
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c > 10^5$. Then at most a $0.51$ fraction of constraints can be satisfied simultaneously.
+\end{lemma}
+
+We have all the concepts needed to state our main technical lemma, which we will prove in the next section.
+
+\begin{lemma}
+  \label{lem:technical-lemma}
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR such that its underlying hypergraph $H$ satisfies that:
+  \begin{itemize}
+  \item $H$ is $(\epsilon, 100c)$-degree-bounded,
+  \item $H$ is $(\beta, \gamma)$-assymetric,
+  \end{itemize}
+  with $200 \epsilon \leq \gamma$, and let $\delta = \min\{1/200, \gamma/48, \epsilon / 95c\}$. If there is a $(1-\delta)$-isomorphism between $\Glin{b}$ and $\Glin{0}$, then it is possible to satisfy a $0.9 - 100(\epsilon + \beta)$ fraction of constraints of $Ax=b$ simultaneously.
+\end{lemma}
+
+We now set the appropriate parameters to Lemma~\ref{lem:technical-lemma} and complete the proof.
+
+\begin{proof}[Proof of Lemma~\ref{lem:non-isomorphic}]
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR and let $H$ be its underlying hypergraph. We choose the parameters $\epsilon = 1/c$, $\gamma = 200\epsilon = 200/c$, and $\beta = 240 \gamma = 48000/c$. By Theorem~\ref{th:random-graphs-are-asymmetric}, $H$ is $(\beta,\gamma)$-asymmetric \whp. By Lemma~\ref{lem:random-graphs-are-degree-bounded}, $H$ is $(\epsilon,100c)$-degree-bounded \whp. Let $\delta = \epsilon / 95c = 1/95c^2$. Assume for the sake of contradiction that there is a $(1-\delta)$-isomorphism between $\Glin{b}$ and $\Glin{0}$. Then by Lemma~\ref{lem:technical-lemma} we can satisfy a fraction $0.9-100(1/c+48000/c) \geq 0.8$ of the constraints of $Ax=b$ simultaneously. But this contradicts Lemma~\ref{lem:simultaneously-sat}, therefore such quasi-isomorphism does not exist.
+\end{proof}
+
+\section{Proof of technical lemma}
+
+Let us assume that there is a $(1-\delta)$-isomorhpism $\pi$ between $\Glin{b}$ and $\Glin{0}$. We will show that this isomorphism must be close to the almost-isomorphism induced by some assignment $\tau$ using the construction we saw in the last lecture and that the assignment $\tau$ satisfies a large fraction of constraints.
+
+First we show that the almost-isomorphism $\pi$ respects the structure in constraints versus variables of the graph.
+Let $\mathcal{A}$ be the set of constraint indices $j\in[cn]$ such that the four vertices of $C_j$ are mapped to the four vertices of some other constraint $C_{j'}^0$. Intuitively, 4-cliques are mapped to 4-cliques or commit an error, so most constraints are be mapped to constraints.
+
+\begin{claim}
+  \label{claim:constraints-map-to-constraints}
+  $|\mathcal{A}| \geq (1-19\delta) m$.
+\end{claim}
+
+Let $\mathcal{B}$ be the set of variable indices $i\in [n]$ such that the two vertices of $x_i$ are mapped to the two vertices of some other variable $x_{i'}$. Since most constraint nodes are already mapped to, most variable nodes are mapped to variable nodes and most pairs with an edge are mapped to pairs with an edge to avoid errors, thus most variables are mapped to variables.
+
+\begin{claim}
+  \label{claim:variables-map-to-variables}
+  $|\mathcal{B}| \geq (1-95c\delta) n$.
+\end{claim}
+
+We now study how variables are mapped among themselves. Let $\functionsignature{\sigma}{[n]}{[n]}$ be the automorphism of variables induced by $\pi$ in the following way. If $i\in\mathcal{B}$ and $\pi(x_i\to0)=x_{i'}\to b$, then $\sigma(i)=i'$. Extend it arbitrarily to $[n]\setminus \mathcal{B}$. Again, in order to avoid errors, if $(i_1,i_2,i_3)$ are a constraint then the edges joining constraints and variables are mapped to edges, which means that $(\sigma i_1, \sigma i_2, \sigma i_3)$ is also a constraint.
+
+\begin{claim}
+  \label{claim:sigma-almost-automorphism}
+  $\sigma$ is a $(1-100\epsilon-24\delta)$-automorphism of $H$, the underlying hypergraph of $Ax=b$.
+\end{claim}
+
+But we assumed that $H$ is assymetric, so by Definition~\ref{def:asymmetry} most of the domain of $\sigma$ are fixed points. There is one degree of freedom left for each variable, though: whether we mapped the two nodes identically of we flipped them. We define an assignment using this information.
+
+\begin{equation}
+  \label{eq:define-tau}
+  \tau(x_i)=
+\begin{cases}
+  b &\text{if $\sigma(i)=i$ and $\pi(x_i\to 0)=x_i\to b$}\\
+  \text{arbitrary} &\text{otherwise}
+\end{cases}
+\end{equation}
+
+The following claim finishes the proof of Lemma~\ref{lem:technical-lemma}.
+
+\begin{claim}
+  \label{claim:tau-satisfies-most}
+  $A\tau = b$ is correct in at least a $0.9-100(\epsilon + \beta)$ fraction of the entries.
+\end{claim}
+\begin{proof}[Proof sketch of Claim~\ref{claim:tau-satisfies-most}]
+
+We already argued that most variables are fixed points. It follows that most constraint nodes connected to fixed variables are either fixed or map to a constraint node in the same clique. In any case, most constraints are fixed points too.
+
+This implies that $\pi$ respects most constraints in the following sense: assume that $C_j$ is a constraint over the variables $x_1,x_2,x_3$ and that they are fixed with respect to $\pi$. Let $(b_1,b_2,b_3)$ be a constraint node of $C_j$ in $\Glin{b}$, therefore adjacent to the vertex nodes $x_1\to b_1$, $x_2\to b_2$, $x_3 \to b_3$. Since we assume that $\pi$ fixes the involved variables and constraints, it maps the variable nodes $x_i\to b_i$ to $x_i \to b'_i$, and the constraint node to $(b_1',b_2',b_3')$.
+
+By construction of $\Glin{0}$, $b_1'+b_2'+b_3'=0$, and by construction of $\tau$, $\tau(x_i)=(b_i + b_i')$. Finally, $\tau(x_1)+\tau(x_2)+\tau(x_3) = b_1 + b_1' + b_2 + b_2' + b_3 + b_3' = b_1 + b_2 + b_3$ so $\tau$ satisfies the constraint $C_j$.
+
+\end{proof}
+
+% ------------------------- EPILOGUE ------------------------------
+\bibliography{bib10}
+\bibliographystyle{alpha}
+
+\end{document} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
