@@ -23,16 +23,15 @@
 \usepackage{soscourse} % this is a non standard package
 \usepackage{mathrsfs}
 \usepackage{MnSymbol}
+\usepackage{multicol}
 \begin{document} 
 % --------------------------- DOCUMENT --------------------------------
-
-% TODO introduce term, stress term
 
 Let $G$ and $H$ be two graphs, we say that two graphs are \introduceterm{isomorphic},
 denoted as $G \cong H$,
 if there is a bijection $\pi: V(G) \to V(H)$, such that $\{u,v\} \in E(G)$
 if and only if $\{\pi(u),\pi(v)\} \in E(H)$. In this lecture, we discuss
-a recent paper by O'Donnell, Wright, Wu and Zhou \cite{} which proved the following
+a recent paper by O'Donnell, Wright, Wu and Zhou \cite{robustgraphiso} which proved the following
 theorem.
 
 \begin{theorem}\label{thm:main}
@@ -55,19 +54,46 @@ can convert this refutation to a refutation for the satisfiability of the 3XOR f
 
 \section{Background}
 Before we describe the reduction, let us start with some practical algorithm for solving graph isomorphism. 
-One class of algorithms is known as ``color refinement algorithm'', studied by Mckay '81 and Mckay-Piperno '13 \cite{}
+One class of algorithms is known as ``color refinement algorithm'', studied by Mckay \cite{mckay} and Mckay-Piperno \cite{mckay14}
 The basic algorithm starts by giving all vertices in the two graphs with the same color. 
 Then, in each step, replace the colors of the vertices with the multiset containing the colors of their neighbors.
 Repeat until the coloring in both graphs converge, or for some coloring, the numbers of vertices with that color
 in the two graphs are different, in which case return that the two graphs are not isomorphic.
+An example of a run of the algorithm is given in Figure \ref{fig:colorrefinementstep1} and Figure
+\ref{fig:colorrefinementstep2}.
 
-Example.
+\begin{figure}[t]
+  \begin{multicols}{2}
+    \begin{center}
+      \includegraphics[height=.3\textwidth]{color1}
+    \end{center}
+    \columnbreak
+    \begin{center}
+      \includegraphics[height=.35\textwidth]{color3}
+    \end{center}
+  \end{multicols}
+  \caption{The first step of the color refinement algorithm, where vertices are labeled essentially with their degres.}
+  \label{fig:colorrefinementstep1}
+\end{figure}
+
+\begin{figure}[t]
+  \begin{multicols}{2}
+    \begin{center}
+      \includegraphics[height=.32\textwidth]{color2}
+    \end{center}
+    \columnbreak
+    \begin{center}
+      \includegraphics[height=.38\textwidth]{color4}
+    \end{center}
+  \end{multicols}
+  \caption{The second step of the color refinement algorithm. Observe that the number of vertices labeled $(3,3)$
+  is different, and therefore the two graphs are not isomorphic.}
+  \label{fig:colorrefinementstep2}
+\end{figure}
 
 There are easy examples where the above color refinement algorithm does not work. In particular, 
 consider any pair of $d$-regular graphs, that is, graphs where all vertices have exactly $d$ neighbors.
 The coloring will essentially converge to the degree of the vertices.
-
-Example
 
 The Weisfeiler-Lehman algorithm is an improvement of the basic color refinement algorithm.
 The algorithm takes a parameter $k$, and we denote the algorithm as $\textsf{WL}^k$.
@@ -82,10 +108,11 @@ coloring subsets of $k$ vertices.
 
 For any $k$, $\textsf{WL}^k$ runs in time $n^{k+O(1)}$.
 It is known that for some constant $k$, $\textsf{WL}^k$ can distinguish random non-isomorphic graphs
-with high probability. Also, Grohe 2012 \cite{} proved that $\textsf{WL}^k$ works for 
-any graphs with forbidden minor \ldots (parameter k)
+with high probability. Also, Grohe \cite{groheisomorphism} proved that 
+for every class of graphs with excluded minors, there is a $k$ such that 
+$\textsf{WL}^k$ decides isomorphism of graphs in the class in polynomial time.
 
-On the other hand, Atserias and Maneva '13 proved that
+On the other hand, Atserias and Maneva \cite{sheraliadamsisomorphism} proved that
 \[
 SA_k \le \textsf{WL}^k \le SA_{k+1}.
 \]
@@ -282,6 +309,10 @@ Now we verify that the graph isomorphism axioms after substitution are derivable
       = ~&~ \sum_{u'v'} \pi_{u'v'} = 1.
     \end{alignat*}
 \end{description}
+
+\bibliography{soscourse}
+\bibliographystyle{alpha}
+
 
 \end{document} 
 
