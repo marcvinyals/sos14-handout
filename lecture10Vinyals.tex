@@ -44,7 +44,7 @@ We spend the rest of the lecture proving this lemma.
 
 \section{Auxiliary results}
 
-First we need to introduce the some definitions and properties. The concept of almost-asymmetry is a generalization of asymmetry. Recall that an object is asymmetric if its group of automorphisms is trivial.
+First we need to introduce some definitions and properties. The concept of almost-asymmetry is a generalization of asymmetry. Recall that an object is asymmetric if its group of automorphisms is trivial.
 
 \begin{definition}
   \label{def:asymmetry} A (hyper)graph $G$ is \introduceterm{$(\beta,\gamma)$-asymmetric} if any $(1-\gamma)$-automorphism has at least a $(1-\beta)$ fraction of fixed points.
@@ -92,14 +92,14 @@ The following is an instantiation of a theorem we discussed in the lecture provi
   Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c > 10^5$. Then at most a $0.51$ fraction of constraints can be satisfied simultaneously.
 \end{lemma}
 
-We have all the concepts needed to state our main technical lemma, which we will prove in the next section.
+We have all the ingredients needed to state our main technical lemma, which we will prove in the next section.
 
 \begin{lemma}
   \label{lem:technical-lemma}
   Let $Ax=b$ be a random $(n,cn)$-3-XOR such that its underlying hypergraph $H$ satisfies that:
   \begin{itemize}
   \item $H$ is $(\epsilon, 100c)$-degree-bounded,
-  \item $H$ is $(\beta, \gamma)$-assymetric,
+  \item $H$ is $(\beta, \gamma)$-asymmetric,
   \end{itemize}
   with $200 \epsilon \leq \gamma$, and let $\delta = \min\{1/200, \gamma/48, \epsilon / 95c\}$. If there is a $(1-\delta)$-isomorphism between $\Glin{b}$ and $\Glin{0}$, then it is possible to satisfy a $0.9 - 100(\epsilon + \beta)$ fraction of constraints of $Ax=b$ simultaneously.
 \end{lemma}
@@ -107,15 +107,17 @@ We have all the concepts needed to state our main technical lemma, which we will
 We now set the appropriate parameters to Lemma~\ref{lem:technical-lemma} and complete the proof.
 
 \begin{proof}[Proof of Lemma~\ref{lem:non-isomorphic}]
-  Let $Ax=b$ be a random $(n,cn)$-3-XOR and let $H$ be its underlying hypergraph. We choose the parameters $\epsilon = 1/c$, $\gamma = 200\epsilon = 200/c$, and $\beta = 240 \gamma = 48000/c$. By Theorem~\ref{th:random-graphs-are-asymmetric}, $H$ is $(\beta,\gamma)$-asymmetric \whp. By Lemma~\ref{lem:random-graphs-are-degree-bounded}, $H$ is $(\epsilon,100c)$-degree-bounded \whp. Let $\delta = \epsilon / 95c = 1/95c^2$. Assume for the sake of contradiction that there is a $(1-\delta)$-isomorphism between $\Glin{b}$ and $\Glin{0}$. Then by Lemma~\ref{lem:technical-lemma} we can satisfy a fraction $0.9-100(1/c+48000/c) \geq 0.8$ of the constraints of $Ax=b$ simultaneously. But this contradicts Lemma~\ref{lem:simultaneously-sat}, therefore such quasi-isomorphism does not exist.
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR and let $H$ be its underlying hypergraph. We choose the parameters $\epsilon = 1/c$, $\gamma = 200\epsilon = 200/c$, and $\beta = 240 \gamma = 48000/c$. By Theorem~\ref{th:random-graphs-are-asymmetric}, $H$ is $(\beta,\gamma)$-asymmetric \whp. By Lemma~\ref{lem:random-graphs-are-degree-bounded}, $H$ is $(\epsilon,100c)$-degree-bounded \whp. Let $\delta = \epsilon / 95c = 1/95c^2$. Assume for the sake of contradiction that there is a $(1-\delta)$-isomorphism between $\Glin{b}$ and $\Glin{0}$. Then by Lemma~\ref{lem:technical-lemma} we can satisfy a fraction $0.9-100(1/c+48000/c) \geq 0.8$ of the constraints of $Ax=b$ simultaneously. But this contradicts Lemma~\ref{lem:simultaneously-sat}, therefore such almost-isomorphism does not exist.
 \end{proof}
 
 \section{Proof of technical lemma}
 
+We next sketch the proof of Lemma~\ref{lem:technical-lemma}, giving the intuition behind the claims but not making the calculations to establish them.
+
 Let us assume that there is a $(1-\delta)$-isomorhpism $\pi$ between $\Glin{b}$ and $\Glin{0}$. We will show that this isomorphism must be close to the almost-isomorphism induced by some assignment $\tau$ using the construction we saw in the last lecture and that the assignment $\tau$ satisfies a large fraction of constraints.
 
 First we show that the almost-isomorphism $\pi$ respects the structure in constraints versus variables of the graph.
-Let $\mathcal{A}$ be the set of constraint indices $j\in[cn]$ such that the four vertices of $C_j$ are mapped to the four vertices of some other constraint $C_{j'}^0$. Intuitively, 4-cliques are mapped to 4-cliques or commit an error, so most constraints are be mapped to constraints.
+Let $\mathcal{A}$ be the set of constraint indices $j\in[cn]$ such that the four vertices of $C_j$ are mapped to the four vertices of some other constraint $C_{j'}^0$. Intuitively, 4-cliques are mapped to 4-cliques or commit an error, so most constraints are mapped to constraints.
 
 \begin{claim}
   \label{claim:constraints-map-to-constraints}
@@ -136,7 +138,7 @@ We now study how variables are mapped among themselves. Let $\functionsignature{
   $\sigma$ is a $(1-100\epsilon-24\delta)$-automorphism of $H$, the underlying hypergraph of $Ax=b$.
 \end{claim}
 
-But we assumed that $H$ is assymetric, so by Definition~\ref{def:asymmetry} most of the domain of $\sigma$ are fixed points. There is one degree of freedom left for each variable, though: whether we mapped the two nodes identically of we flipped them. We define an assignment using this information.
+But we assumed that $H$ is asymmetric, so by Definition~\ref{def:asymmetry} most of the domain of $\sigma$ are fixed points. There is one degree of freedom left for each variable, though: whether we mapped the two nodes identically of we flipped them. We define an assignment using this information.
 
 \begin{equation}
   \label{eq:define-tau}
