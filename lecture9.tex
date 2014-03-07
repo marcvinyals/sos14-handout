@@ -98,8 +98,8 @@ The coloring will essentially converge to the degree of the vertices.
 The Weisfeiler-Lehman algorithm is an improvement of the basic color refinement algorithm.
 The algorithm takes a parameter $k$, and we denote the algorithm as $\textsf{WL}^k$.
 We could view it as running the color refinement algorithm on graph $G^{(k)}$ and $H^{(k)}$, where
-for any graph $G$, $V(G^{(k)})=V^k$, and for all $\{u,w\} \in E(G)$ and $v_1,\cdots,v_{i-1},v_{i+1},\cdots,v_k \in V(G)$, 
-we add edges
+for any graph $G$, define $V(G^{(k)})=V^k$, and for all $\{u,w\} \in E(G)$ and $v_1,\cdots,v_{i-1},v_{i+1},\cdots,v_k \in V(G)$, 
+we add the following edge to $E(G^{(k)})$
 \[
 \{(v_1,\cdots,v_{i-1},u,v_{i+1},\cdots,v_k),(v_1,\cdots,v_{i-1},w,v_{i+1},\cdots,v_k)\}.
 \]
@@ -114,21 +114,22 @@ $\textsf{WL}^k$ decides isomorphism of graphs in the class in polynomial time.
 
 On the other hand, Atserias and Maneva \cite{sheraliadamsisomorphism} proved that
 \[
-SA_k \le \textsf{WL}^k \le SA_{k+1}.
+\mathsf{SA}_k \le \textsf{WL}^k \le \mathsf{SA}_{k+1}.
 \]
 That is, the power of the $k$-level Weisfeiler-Lehman algorithm is sandwiched between
 neighboring levels of the canonical Sherali-Adams relaxation. Moreover, when $k=1$, 
 the Weisfeiler-Lehman algorithm is exactly the same power as the linear programming relaxation of
 the graph isomorphism problem.
 
-It was also proved by Cai-Furer-Immerman 1992 that WL k requires linear k %TODO
+It was also proved by Cai, F{\"{u}}rer and Immerman \cite{cai1992optimal} that there are graphs
+for which distinguishing isomorphism with $\textsf{WL}^k$ requires $k=\Omega(n)$.
 
 We now define the meaning of two graphs being ``far from'' isomorphic.
 \begin{definition}\label{def:alpha-iso}
   For any $0 \le \alpha \le 1$, graphs $G$ and $H$ on $n$ vertices, we say that a bijection
   $\pi:V(G) \to V(H)$ is an $\alpha$-isomorphism if
   \[
-  \frac{|\left\{ \{u,v\} \in E(G) | \{\pi(u),\pi(v)\} \in E(H) \right\}|}{\max \{|E(G)|,E(H)|\}} \ge \alpha.
+  \frac{|\left\{ \{u,v\} \in E(G) | \{\pi(u),\pi(v)\} \in E(H) \right\}|}{\max \{|E(G)|,|E(H)|\}} \ge \alpha.
   \]
 
   We say that $G$ and $H$ are $\alpha$-isomorphic if there is a bijection $\pi$ such that
@@ -152,11 +153,15 @@ two variable vertices for each
 variable, labeled ($x_i \leftarrow 0$) and ($x_i \leftarrow 1$),
 and for each clause $x_{j_1}+x_{j_2}+x_{j_3} \equiv b_j \pmod{2}$, 4 vertices corresponding
 to the 4 assignments to $(x_{j_1},x_{j_2},x_{j_3})$ that satisfies the equation,
-labeled $C_j(a_{j_1} a_{j_2} a_{j_3})$.
+labeled 
+\[
+C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3}).
+\]
 There is an edge between each pair of ($x_i \leftarrow 0$) and ($x_i \leftarrow 1$).
-There are edges between clause variables corresponding to the same clause. And for each variable
+There are edges between clause variables corresponding to the same clause, so the 4 vertices corresponding
+to the same clause form a clique. And for each variable
 $x_i$ that appears in clause $j$ and a bit $b \in \{0,1\}$, connect
-($x_i \rightarrow b$) with $C_j(a_{j_1} a_{j_2} a_{j_3})$ such that in clause $j$ variable $x_i$ is assigned
+($x_i \leftarrow b$) with $C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3})$ such that in clause $j$ variable $x_i$ is assigned
 value $b$.
 
 The reduction uses the above process to produce two graphs: one from a random 3XOR formula $Ax=b$,
@@ -202,7 +207,7 @@ To complete the reduction, we use the following two lemmas.
 In the rest of the lecture we prove Lemma \ref{lemma:translation}. We will study Lemma \ref{lemma:nonisomorphic} in
 the next lecture.
 
-Now we formally define refutation, that is, the axiom we start with.
+Now we formally define the axiom from which we derive refutation.
 For 3XOR, we use the following encoding that we are already familiar with.
 \[
 \left.
