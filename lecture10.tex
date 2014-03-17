@@ -30,7 +30,7 @@ Recall that in the last lecture we started proving that refuting Graph Isomorphi
 
 \begin{theorem}\cite{robustgraphiso}
   \label{th:gi-ps}
-  For infinitely many $n$, there exist graphs $G$, $H$ with $|V(G)|=|V(H)|=n$ and $|E(G)=E(H)=O(n)|$ that are not $10^{-18}$-isomorphic and such that any \PS refutation of $G \cong H$ requires degree $\Omega(n)$.
+  For infinitely many $n$, there exist graphs $G$, $H$ with $|V(G)|=|V(H)|=n$ and $|E(G)|=|E(H)|=O(n)$ that are not $10^{-18}$-isomorphic and such that any \PS refutation of $G \cong H$ requires degree $\Omega(n)$.
 \end{theorem}
 
 Our plan was to reduce random 3-XOR to Graph Isomorphism, and it only remained to show one missing piece, namely that the graphs $\Glin{b}$ and $\Glin{0}$ resulting from our construction are far from isomorphic.
@@ -47,10 +47,15 @@ We spend the rest of the lecture proving this lemma.
 First we need to introduce some definitions and properties. The concept of almost-asymmetry is a generalization of asymmetry. Recall that an object is asymmetric if its group of automorphisms is trivial.
 
 \begin{definition}
-  \label{def:asymmetry} A (hyper)graph $G$ is \introduceterm{$(\beta,\gamma)$-asymmetric} if any $(1-\gamma)$-automorphism has at least a $(1-\beta)$ fraction of fixed points.
+  \label{def:asymmetry} A (hyper)graph $G$ is \introduceterm{$(\beta,\gamma)$-asymmetric} if 
+%any 
+every
+$(1-\gamma)$-automorphism has at least a $(1-\beta)$ fraction of fixed points.
 \end{definition}
 
-Observe that, in particular, a $(0,0)$-asymmetric graph is the same as an asymmetric graph and that every graph is $(\beta,1)$-asymmetric.
+Observe that, in particular, a $(0,0)$-asymmetric graph is the same as an asymmetric graph and that every graph is 
+%$(\beta,1)$-asymmetric.
+$(1, 1)$-asymmetric.
 
 In other words, this definition means that if an almost-automorphism permutes many vertices then it has large error, or that the graph may have local but not global symmetries.
 
@@ -85,11 +90,11 @@ We can extract the underlying 3-uniform hypergraph from a 3-XOR by identifying v
   Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c \geq 3$. Then \whp the hypergraph of $A$ is $(1/c,100c)$-degree-bounded.
 \end{lemma}
 
-The following is an instantiation of a theorem we discussed in the lecture proving lower bounds for random 3-SAT with concrete parameters.
+The following is an instance of a theorem we discussed in the lecture proving lower bounds for random 3-SAT with concrete parameters.
 
 \begin{lemma}
   \label{lem:simultaneously-sat}
-  Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c > 10^5$. Then at most a $0.51$ fraction of constraints can be satisfied simultaneously.
+  Let $Ax=b$ be a random $(n,cn)$-3-XOR for some constant $c > 10^5$. Then \whp at most a $0.51$ fraction of constraints can be satisfied simultaneously.
 \end{lemma}
 
 We have all the ingredients needed to state our main technical lemma, which we will prove in the next section.
@@ -114,14 +119,14 @@ We now set the appropriate parameters to Lemma~\ref{lem:technical-lemma} and com
 
 We next sketch the proof of Lemma~\ref{lem:technical-lemma}, giving the intuition behind the claims but not making the calculations to establish them.
 
-Let us assume that there is a $(1-\delta)$-isomorhpism $\pi$ between $\Glin{b}$ and $\Glin{0}$. We will show that this isomorphism must be close to the almost-isomorphism induced by some assignment $\tau$ using the construction we saw in the last lecture and that the assignment $\tau$ satisfies a large fraction of constraints.
+Let us assume that there is a $(1-\delta)$-isomorphism $\pi$ between $\Glin{b}$ and $\Glin{0}$. We will show that this isomorphism must be close to the almost-isomorphism induced by some assignment $\tau$ using the construction we saw in the last lecture and that the assignment $\tau$ satisfies a large fraction of constraints.
 
 First we show that the almost-isomorphism $\pi$ respects the structure in constraints versus variables of the graph.
 Let $\mathcal{A}$ be the set of constraint indices $j\in[cn]$ such that the four vertices of $C_j$ are mapped to the four vertices of some other constraint $C_{j'}^0$. Intuitively, 4-cliques are mapped to 4-cliques or commit an error, so most constraints are mapped to constraints.
 
 \begin{claim}
   \label{claim:constraints-map-to-constraints}
-  $|\mathcal{A}| \geq (1-19\delta) m$.
+  $|\mathcal{A}| \geq (1-19\delta) c n$.
 \end{claim}
 
 Let $\mathcal{B}$ be the set of variable indices $i\in [n]$ such that the two vertices of $x_i$ are mapped to the two vertices of some other variable $x_{i'}$. Since most constraint nodes are already mapped to, most variable nodes are mapped to variable nodes and most pairs with an edge are mapped to pairs with an edge to avoid errors, thus most variables are mapped to variables.
@@ -131,11 +136,13 @@ Let $\mathcal{B}$ be the set of variable indices $i\in [n]$ such that the two ve
   $|\mathcal{B}| \geq (1-95c\delta) n$.
 \end{claim}
 
-We now study how variables are mapped among themselves. Let $\functionsignature{\sigma}{[n]}{[n]}$ be the automorphism of variables induced by $\pi$ in the following way. If $i\in\mathcal{B}$ and $\pi(x_i\to0)=x_{i'}\to b$, then $\sigma(i)=i'$. Extend it arbitrarily to $[n]\setminus \mathcal{B}$. Again, in order to avoid errors, if $(i_1,i_2,i_3)$ are a constraint then the edges joining constraints and variables are mapped to edges, which means that $(\sigma i_1, \sigma i_2, \sigma i_3)$ is also a constraint.
+We now study how variables are mapped among themselves. Let $\functionsignature{\sigma}{[n]}{[n]}$ be the automorphism of variables induced by $\pi$ in the following way. If $i\in\mathcal{B}$ and $\pi(x_i\to0)=x_{i'}\to b$, then $\sigma(i)=i'$. Extend it arbitrarily to $[n]\setminus \mathcal{B}$. Again, in order to avoid errors, if $(i_1,i_2,i_3)$ are a constraint then the edges joining constraints and variables are mapped to edges 
+joining constraints and variables, which means that $(\sigma i_1, \sigma i_2, \sigma i_3)$ is also a constraint.
 
 \begin{claim}
   \label{claim:sigma-almost-automorphism}
-  $\sigma$ is a $(1-100\epsilon-24\delta)$-automorphism of $H$, the underlying hypergraph of $Ax=b$.
+  For the underlying hypergraph $H$ of $Ax=b$, $\sigma$ is a
+  $(1-100\epsilon-24\delta)$-automorphism of $H$.
 \end{claim}
 
 But we assumed that $H$ is asymmetric, so by Definition~\ref{def:asymmetry} most of the domain of $\sigma$ are fixed points. There is one degree of freedom left for each variable, though: whether we mapped the two nodes identically of we flipped them. We define an assignment using this information.
