@@ -1,7 +1,7 @@
 % Copyright (C) 2014 by Massimo Lauria
 % 
 % Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
-% Time-stamp: "2014-03-10, 00:59 (CET) Massimo Lauria"
+% Time-stamp: "2014-03-17, 11:10 (CET) Massimo Lauria"
 % Encoding  : UTF-8
 
 % ---------------------------- USER DATA ------------------------------
@@ -15,7 +15,9 @@
   \Lovasz-\Schrijver, Sherali-Adams}
 
 \def\DataAbstract{%
-  }
+  \stressterm{Disclaimer: this lecture note has not yet been reviewed
+    by the main lecturer. It is released as it is for the convenience
+    of the students.}
 
 
 % ---------------------------- PREAMBLE -------------------------------
@@ -53,9 +55,9 @@ This implies that the $\mathsf{PC}_{>}$ refutation for $G \cong H$ will have deg
 can convert this refutation to a refutation for the satisfiability of the 3XOR formula we started with without blowing up the degree.
 
 \section{Background}
-Before we describe the reduction, let us start with some practical algorithm for solving graph isomorphism. 
-One class of algorithms is known as ``color refinement algorithm'', studied by Mckay \cite{mckay} and Mckay-Piperno \cite{mckay14}
-The basic algorithm starts by giving all vertices in the two graphs with the same color. 
+Before we describe the reduction, let us describe some practical algorithms for solving graph isomorphism. 
+The algorithm comes from the class of algorithms known as ``color refinement algorithm'', studied by Mckay and Mckay-Piperno \cite{mckay,mckay14}.
+The basic algorithm starts by giving assigning the same color to all vertices in the two graphs. 
 Then, in each step, replace the colors of the vertices with the multiset containing the colors of their neighbors.
 Repeat until the coloring in both graphs converge, or for some coloring, the numbers of vertices with that color
 in the two graphs are different, in which case return that the two graphs are not isomorphic.
@@ -72,7 +74,7 @@ An example of a run of the algorithm is given in Figure \ref{fig:colorrefinement
       \includegraphics[height=.35\textwidth]{color3}
     \end{center}
   \end{multicols}
-  \caption{The first step of the color refinement algorithm, where vertices are labeled essentially with their degres.}
+  \caption{The first step of the color refinement algorithm, where vertices are labeled with their degrees.}
   \label{fig:colorrefinementstep1}
 \end{figure}
 
@@ -91,20 +93,20 @@ An example of a run of the algorithm is given in Figure \ref{fig:colorrefinement
   \label{fig:colorrefinementstep2}
 \end{figure}
 
-There are easy examples where the above color refinement algorithm does not work. In particular, 
-consider any pair of $d$-regular graphs, that is, graphs where all vertices have exactly $d$ neighbors.
-The coloring will essentially converge to the degree of the vertices.
+There are simple examples where the above color refinement algorithm does not work. In particular, 
+consider any pair $G$ and $H$ of $d$-regular graphs, that is, graphs where all vertices have exactly $d$ neighbors.
+The coloring will essentially converge to the degree of the vertices and we will not be able to distinguish between $G$ and $H$.
 
 The Weisfeiler-Lehman algorithm is an improvement of the basic color refinement algorithm.
-The algorithm takes a parameter $k$, and we denote the algorithm as $\textsf{WL}^k$.
+The algorithm depends on a parameter $k$, and we denote the algorithm as $\textsf{WL}^k$.
 We could view it as running the color refinement algorithm on graph $G^{(k)}$ and $H^{(k)}$, where
-for any graph $G$, define $V(G^{(k)})=V^k$, and for all $\{u,w\} \in E(G)$ and $v_1,\cdots,v_{i-1},v_{i+1},\cdots,v_k \in V(G)$, 
-we add the following edge to $E(G^{(k)})$
+for any graph $G$, define $V\bigl(G^{(k)}\bigr)=V^k$, and for all $\{u,w\} \in E(G)$ and $v_1,\cdots,v_{i-1},v_{i+1},\cdots,v_k \in V(G)$, 
+we add the following edge to $E\bigl(G^{(k)}\bigr)$
 \[
-\{(v_1,\cdots,v_{i-1},u,v_{i+1},\cdots,v_k),(v_1,\cdots,v_{i-1},w,v_{i+1},\cdots,v_k)\}.
+\left\{(v_1,\cdots,v_{i-1},u,v_{i+1},\cdots,v_k),(v_1,\cdots,v_{i-1},w,v_{i+1},\cdots,v_k)\right\}.
 \]
 Instead of constructing the power graphs $G^{(k)}$ and $H^{(k)}$, we could think of the algorithm as
-coloring subsets of $k$ vertices. 
+coloring subsets of at most $k$ vertices. 
 
 For any $k$, $\textsf{WL}^k$ runs in time $n^{k+O(1)}$.
 It is known that for some constant $k$, $\textsf{WL}^k$ can distinguish random non-isomorphic graphs
@@ -118,16 +120,18 @@ On the other hand, Atserias and Maneva \cite{sheraliadamsisomorphism} proved tha
 \]
 That is, the power of the $k$-level Weisfeiler-Lehman algorithm is sandwiched between
 neighboring levels of the canonical Sherali-Adams relaxation. Moreover, when $k=1$, 
-the Weisfeiler-Lehman algorithm is exactly the same power as the linear programming relaxation of
+the Weisfeiler-Lehman algorithm has exactly the same power as the linear programming relaxation of
 the graph isomorphism problem.
 
 It was also proved by Cai, F{\"{u}}rer and Immerman \cite{cai1992optimal} that there are graphs
 for which distinguishing isomorphism with $\textsf{WL}^k$ requires $k=\Omega(n)$.
 
-We now define the meaning of two graphs being ``far from'' isomorphic.
+Now, we give a formal definition of what does it mean when we say that
+two graphs are ``far from'' isomorphic.
 \begin{definition}\label{def:alpha-iso}
-  For any $0 \le \alpha \le 1$, graphs $G$ and $H$ on $n$ vertices, we say that a bijection
-  $\pi:V(G) \to V(H)$ is an $\alpha$-isomorphism if
+  For any $\alpha \in [0, 1]$ and graphs $G$ and $H$ on $n$ vertices,
+  we say that a bijection $\pi \colon V(G) \to V(H)$ is an
+  $\alpha$-isomorphism if
   \[
   \frac{|\left\{ \{u,v\} \in E(G) | \{\pi(u),\pi(v)\} \in E(H) \right\}|}{\max \{|E(G)|,|E(H)|\}} \ge \alpha.
   \]
@@ -136,7 +140,7 @@ We now define the meaning of two graphs being ``far from'' isomorphic.
   $\pi$ is an $\alpha$-isomorphism.
 \end{definition}
 \begin{remark}
-  Note that since $\pi$ is a bijection, the notion of $\alpha$-isomorphism of $G$ and $H$ 
+  Note that since $\pi$ is a bijection, the notion of an $\alpha$-isomorphism of $G$ and $H$ 
   is well defined.
 \end{remark}
 For Theorem \ref{thm:main}, we set $\alpha=1-10^{-18}$, that is, we say that $G$ and $H$ are far from being
@@ -147,22 +151,26 @@ must violate at least a fraction $10^{-18}$ of the edges.
 We now define the reduction. We consider a random formula from 3XOR($n$,$m$) where we take $m:=cn$,
 that is, a random 3XOR formula with $n$ variables and $m$ equations.
 
-For a given system of $m$ 3XOR equations over $n$ variables, the following process produces a graph
+For a given 3XOR system of $m$ equations over $n$ variables, the following process produces a graph
 on $4m+2n$ vertices with $18m+n$ edges. The vertex set of the graph consists of two types of vertices:
 two variable vertices for each
-variable, labeled ($x_i \leftarrow 0$) and ($x_i \leftarrow 1$),
-and for each clause $x_{j_1}+x_{j_2}+x_{j_3} \equiv b_j \pmod{2}$, 4 vertices corresponding
-to the 4 assignments to $(x_{j_1},x_{j_2},x_{j_3})$ that satisfies the equation,
-labeled 
+variable, labeled $(x_i \leftarrow 0)$ and $(x_i \leftarrow 1)$,
+and for each equation $C_j$ of the form $x_{j_1}+x_{j_2}+x_{j_3} \equiv b_j \pmod{2}$, we add $4$ vertices corresponding
+to $4$ assignments $\bigl(a_{j_1}, a_{j_2}, a_{j_3}\bigr)$ to $\bigl(x_{j_1},x_{j_2},x_{j_3}\bigr)$ that satisfy $C_j$ and 
+label them by
 \[
-C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3}).
+C_j\left(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3}\right).
 \]
-There is an edge between each pair of ($x_i \leftarrow 0$) and ($x_i \leftarrow 1$).
-There are edges between clause variables corresponding to the same clause, so the 4 vertices corresponding
-to the same clause form a clique. And for each variable
-$x_i$ that appears in clause $j$ and a bit $b \in \{0,1\}$, connect
-($x_i \leftarrow b$) with $C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3})$ such that in clause $j$ variable $x_i$ is assigned
-value $b$.
+This adds up to $4 m + 2 n$ vertices.
+There is an edge between each pair of ($x_i \leftarrow 0$) and ($x_i \leftarrow 1$), which accounts for $n$ edges.
+Also, we add edges between equation vertices that correspond to the same equation.
+Hence, the 4 vertices corresponding
+to the same equation $C_j$ form a clique, having in total $6 m$ edges. For each variable
+$x_i$ that appears in equation $C_j$ and a bit $b \in \{0,1\}$, connect
+$(x_i \leftarrow b)$ with $C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3})$ such that in equation vertex $j$ variable $x_i$ is assigned
+value $b$, i.e., there is $j_k$ equal to $i$ such that $a_{j_k} = b$. Hence, for each 
+$C_j(x_{j_1}=a_{j_1}, x_{j_2}=a_{j_2}, x_{j_3}=a_{j_3})$ we get $3$ edges and as there are $4 m$ of 
+these, we have $12 m$ edges between variable and equation vertices. Thus, in total there are $18 m + n$ edges.
 
 The reduction uses the above process to produce two graphs: one from a random 3XOR formula $Ax=b$,
 denoted as $G_{Ax=b}$, and another from the homogeneous version of it, $Ax=0$, denoted as $G_{Ax=0}$.
@@ -170,35 +178,39 @@ denoted as $G_{Ax=b}$, and another from the homogeneous version of it, $Ax=0$, d
 The completeness of the reduction is given by the following lemma.
 \begin{lemma}\label{lemma:completeness}
   If $Ax=b$ has an assignment that satisfies $(1-\varepsilon)$-fraction of the equations,
-  then ther exists a bijection $\pi$ that is a $(1-\frac{2}{3}\varepsilon)$-isomorphism between 
+  then there exists a bijection $\pi$ that is an $(1-\frac{2}{3}\varepsilon)$-isomorphism between 
   $G_{Ax=b}$ and $G_{Ax=0}$.
 \end{lemma}
 \begin{proof}
   Let $y$ be an assignment that satisfies $(1-\varepsilon)$-fraction of the equations in $Ax=b$. We define
   a bijection $\pi$ as follows.
-  For variable vertex ($x_i \leftarrow b$) in $Ax=b$, $\pi$ maps it to ($x \leftarrow b \oplus y_i$)
-  in $Ax=0$. For a clause $C_j(x_{i_1}+x_{i_2}+x_{i_3}=b)$ satisfied by assignment $y$, $\pi$ maps
-  $C_j(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3)$ to $C_j(x_{i_1}=b_1 \oplus y_{i_1}, x_{i_2}=b_2 \oplus y_{i_2}, x_{i_3}=b_3 \oplus y_{i_3})$.
-  Note that since $(b_1,b_2,b_3)$ is a satisfying assignment for $C_j$, we have that
-  $b_1+b_2+b_3 = b = y_{i_1}+y_{i_2}+y_{i_3}$, therefore this part of the mapping is well-defined.
-  For an unsatisfied clause $C_j$, we map the 4 vertices corresponding to $C_j$ in $G_{Ax=b}$
+  Each variable vertex $(x_i \leftarrow b)$ in $G_{Ax=b}$, is mapped to 
+  a variable vertex $(x_i \leftarrow b \oplus y_i)$
+  in $G_{Ax=0}$. For an equation $C_i$ expressed as $x_{i_1}+x_{i_2}+x_{i_3}=b_i$ and
+  satisfied by the assignment $y$, $\pi$ maps
+  $C_j \bigl( x_{i_1} = a_1, x_{i_2} = a_2, x_{i_3} = a_3 \bigr)$ to $C_j \bigl( x_{i_1} = a_1 \oplus y_{i_1}, x_{i_2} = a_2 \oplus y_{i_2}, x_{i_3} = a_3 \oplus y_{i_3} \bigr)$.
+  Note that since $(a_1, a_2, a_3)$ is a satisfying assignment for $C_j$, we have that
+  $a_1 + a_2 + a_3 = b_i = y_{i_1} + y_{i_2} + y_{i_3}$, therefore this part of the mapping is well-defined.
+  For an unsatisfied clause $C_j$, we map the $4$ vertices corresponding to $C_j$ in $G_{Ax=b}$
   to those corresponding to $C_j$ in $G_{Ax=0}$ in an arbitrary way.
 
   Now we calculate the number of edges that are violated. The edges between variable vertices and the edges between
-  clause vertices of a same clause is always preserved. The edges between variable vertices and clause vertices
-  of satisfied clauses are also preserved. Therefore, at least $n+6m+(1-\varepsilon)m \cdot 12=n+18m-12\varepsilon m$ edges
-  are satisfied by $\pi$.
+  clause vertices of a same clause are always preserved, hence we have $n + 6 m$ edges preserved. The edges between variable vertices and clause vertices
+  of satisfied clauses are also preserved, which accounts for $(1 - \varepsilon) 12 m$ edges.
+  Therefore, at least $n+6m+(1-\varepsilon)m \cdot 12=n+18m-12\varepsilon m$ edges
+  are satisfied by $\pi$, which when divided by total number of edges $n + 18m$ is at least
+  $1 - 2\varepsilon / 3$.
 \end{proof}
 
 \section{Soundness of the Reduction}
 Recall that in previous lectures we studied the following $\mathsf{PC}_{>}$ refutation lower-bound.
 \begin{lemma}
   For any $c>1$, there exists $\alpha>0$, such that with high probability
-  3XOR($n,cn$) requires $\alpha n$-degree $\mathsf{PC}_{>}$ refutation.
+  3XOR($n,cn$) requires an $\alpha n$-degree $\mathsf{PC}_{>}$ refutation.
 \end{lemma}
 To complete the reduction, we use the following two lemmas.
 \begin{lemma}\label{lemma:translation}
-  Let $Ax=b$ be random formula from 3XOR($n,cn$). If there is a refutation of $G_{Ax=b} \cong G_{Ax=0}$
+  Let $Ax=b$ be a random formula from 3XOR($n,cn$). If there is a refutation of $G_{Ax=b} \cong G_{Ax=0}$
   in degree $r$, then we can refute $Ax=b$ in degree $3r$.
 \end{lemma}
 \begin{lemma}\label{lemma:nonisomorphic}
@@ -207,33 +219,29 @@ To complete the reduction, we use the following two lemmas.
 In the rest of the lecture we prove Lemma \ref{lemma:translation}. We will study Lemma \ref{lemma:nonisomorphic} in
 the next lecture.
 
-Now we formally define the axiom from which we derive refutation.
+Now we formally define the axioms that encode the graph isomorphism
+and 3XOR constraints.
 For 3XOR, we use the following encoding that we are already familiar with.
-\[
-\left.
-\begin{array}{l l}
-  \forall i \in [n] &\quad x_i^2-x_i = 0 \\
-  \textrm{for constraint } x_{i_1}+x_{i_2}+x_{i_3}=b &\quad \prod_{k=1}^{3}(1-2x_{i_k})=(-1)^b.
-\end{array}
-\right.
-\]
+\begin{align*}
+ & \forall i \in [n]                               &  & x_i^2-x_i = 0               \\
+ & \text{for constraint $x_{i_1}+x_{i_2}+x_{i_3}=b_i$} &  & \prod_{k=1}^{3}(1-2x_{i_k})=(-1)^{b_i}.
+\end{align*}
 We use the following natural encoding for graph isomorphism. The variables are
 $\pi_{uv}$ for $u \in V(G)$, $v \in V(H)$. The axioms are the following.
-\[
-\left.
-\begin{array}{l l}
-  \forall u, v &\quad \pi_{uv}^2-\pi_{uv}=0 \\
-  \forall u \in V(G) &\quad \sum_{v \in V(H)}\pi_{uv}=1 \\
-  \forall v \in V(H) &\quad \sum_{u \in V(G)}\pi_{uv}=1 \\
-  \forall \{u,u'\} \in E(G) &\quad \sum_{\{u,v\} \in E(H)} \pi_{uv}\pi_{u'v'}=1
-\end{array}
-\right.
-\]
+\begin{align*}
+ & \forall u, v                  &  & \pi_{uv}^2-\pi_{uv}=0       \\
+ & \forall u \in V(G)            &  & \sum_{v \in V(H)}\pi_{uv}=1 \\
+ & \forall v \in V(H)            &  & \sum_{u \in V(G)}\pi_{uv}=1 \\
+ & \forall \{u,u'\} \in E(G)     &  & \sum_{\{v,v'\} \in E(H)} (\pi_{uv}\pi_{u'v'} + \pi_{u v'} \pi_{u' v})=1
+\end{align*}
 
 Suppose now that we have a degree $r$ refutation for ``$G_{Ax=b} \cong G_{Ax=0}$''.
-To get a refutation for $Ax=b$, the main idea is to substitute $\pi_{uv}$ with
-polynomials of $x_i$'s of degree 3. We then argue that we can derive the axioms of
-graph isomorphism after substitution from the axioms of 3XOR. This proves Lemma \ref{lemma:translation}
+To get a refutation for $Ax=b$, the main idea is to take the refutation
+of ``$G_{Ax=b} \cong G_{Ax=0}$'' and substitute $\pi_{uv}$ with
+degree $3$
+polynomials over $x_i$'s. We then argue that we can derive the axioms of
+graph isomorphism, expressed as polynomials over $x_i$, 
+from the axioms of 3XOR. This proves Lemma \ref{lemma:translation}
 because we can take the refutation for ``$G_{Ax=b} \cong G_{Ax=0}$'', substitute the $\pi_{uv}$'s in each
 line with $x_i$'s and get a proof starting from the 3XOR axioms, and since in the end we have $-1 \ge 0$
 which remains the same after substitution, this gives a refutation for $Ax=b$. And because we are substituting
@@ -242,77 +250,110 @@ $3r$.
 
 The substitution is in fact rather straightforward and intuitively similar to that in Lemma \ref{lemma:completeness}. 
 We consider mappings between different types of vertices. 
-For simplicity of notation, for any bits $b,b' \in \{0,1\}$ and 3XOR variable $x$, define $I[b,b',x]$ as
+For simplicity of notation, for any bits $b,b' \in \{0,1\}$ and 3XOR variable $x$, define $I\bigl[b,b',x\bigr]$ as
 \[
-I[b,b',x] = 
-\left\{
-\begin{array}{l l}
-  x &\quad \textrm{if } b \ne b' \\
-  1-x &\quad \textrm{if } b = b'
-\end{array}
-\right.
+I\left[b,b',x\right] = 
+\begin{cases}
+  x &\text{if $b \neq b'$} \\
+  1-x &\text{if $b = b'$}
+\end{cases}
 \]
+Note that we have the following equality $I\bigl[b, b', x\bigr] = I\bigl[b \oplus b', 0, x\bigr]$ and $I\bigl[b, 0, x\bigr] = 1$ if $x = b$.
 
 For two variable vertices
-$(x_i \leftarrow b)$ and $(x_i \leftarrow b')$, we define
+$\bigl(x_i \leftarrow b\bigr) \in V(G_{Ax=b})$ and 
+$\bigl(x_i \leftarrow b'\bigr) \in V(G_{Ax=0})$, we define
 \[
-\pi_{(x_i \leftarrow b)(x_i \leftarrow b')} = I[b,b',x_i].
+\pi_{(x_i \leftarrow b)(x_i \leftarrow b')} = I \left[ b, b', x_i \right].
 \]
-For clause variables $u=C_j(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3)$,
-$v=C_j(x_{i_1}=b_1',x_{i_2}=b_2',x_{i_3}=b_3')$, define
+For clause vertices $u=C_j\left(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3\right) \in V(G_{Ax=b})$ and
+$v=C_j(x_{i_1}=b_1',x_{i_2}=b_2',x_{i_3}=b_3') \in V(G_{Ax=0})$, we define
 \[
 \pi_{uv} = I[b_1,b_1',x_{i_1}] \cdot I[b_2,b_2',x_{i_2}] \cdot I[b_3,b_3',x_{i_3}].
 \]
 All other variables are substituted with $0$.
 
 Now we verify that the graph isomorphism axioms after substitution are derivable from the 3XOR axioms.
+We do this by showing that all axioms of graph isomorphism are implied by 3XOR axioms and from
+this we can show there must exist a derivation of them from the 3XOR axioms.
 
 \begin{description}
   \item[$\pi_{uv}^2-\pi_{uv}=0$.] This is easy since either $\pi_{uv}$ is substituted by $0$, or
-    by a product of $I[b,b',x]$'s, which is $0/1$-valued.
+    by a product of $I[b,b',x]$'s. As $x_i$'s are $0/1$-valued by 3XOR axioms $x_i^2 - x_i = 0$,
+    $\pi_{uv}^2 = \pi_{uv}$ and hence the equation $\pi_{uv}^2-\pi_{uv}=0$ is implied.
   \item[$\sum_{v \in V(H)} \pi_{uv}=1$ for any $u \in V(G)$.] We consider two cases, when $u$ is a variable vertex,
     and when $u$ is a clause vertex.
 
     Suppose that $u=(x_i \leftarrow b)$. Then only $\pi_{(x_i \leftarrow b)(x_i \leftarrow b)}$
-    and $\pi_{(x_i \leftarrow b)(x_i \leftarrow 1-b)}$ is not substituted by $0$, and it is clear that they sum to 1.
+    and $\pi_{(x_i \leftarrow b)(x_i \leftarrow 1-b)}$ are not substituted by $0$, and it is clear that they sum to $1$, making the equation equal $0$ and hence trivially implied.
 
-    Suppose now that $u=C_j(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3)$.
-    For $\pi_{uv}$ to be nonzero, it must be that $v$ is also a clause variable of $C_j$.
-    Observe that if we expand the following
-    \[
-    ~\sum_{b_1' \oplus b_2' \oplus b_3' = b_1 \oplus b_2 \oplus b_3} \pi_{uv} = 1,
-    \]
-    we get exactly the XOR constraint (multiplied by a constant factor).
+    Suppose now that $u=C_j(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3)$,
+    where $C_j$ is the equation $x_{i_1} + x_{i_2} + x_{i_3} = b$ 
+    and, hence, $b_1 + b_2 + b_3 = b$. 
+    For $\pi_{uv}$ to be nonzero, it
+    must be that $v$ is also a clause variable of $C_j$ in $G_{A x = 0}$.  Observe that
+    if we expand $\sum_{v \in V(H)} \pi_{u v} = 1$ we get
+    \begin{align*}
+      \sum_{b_1' \oplus b_2' \oplus b_3' = 0} I\left[b_1, b_1', x_{i_1}\right] I\left[b_2, b_2', x_{i_2}\right] I\left[b_3, b_3', x_{i_3}\right] &= 1 \\
+      \sum_{b_1' \oplus b_2' \oplus b_3' = 0} I\left[b_1 \oplus b_1', 0, x_{i_1}\right] I\left[b_2 \oplus b_2', 0, x_{i_2}\right] I\left[b_3 \oplus b_3', 0, x_{i_3}\right] &= 1 \\
+      \sum_{b_1' \oplus b_2' \oplus b_3' = b} I\left[b_1', 0, x_{i_1}\right] I\left[b_2', 0, x_{i_2}\right] I\left[b_3', 0, x_{i_3}\right] &= 1
+    \end{align*}
+    where the first line follows from the definitions of $\pi_{uv}$,
+    the second one from the observation that $I\bigl[b, b', x\bigr] =
+    I\bigl[b \oplus b', 0, x\bigr]$, and the third from rearranging
+    the terms. Now, the last equation is easily seen to be satisfied
+    whenever $x_{i_1} \oplus x_{i_2} \oplus x_{i_3} = b$, as
+    $I\bigl[b, 0, x\bigr] = 1$ when $x = b$. But this is one of the
+    axioms of 3XOR, in a slightly different encoding, so the sum 
+    $\sum_{v \in V(H)} \pi_{uv}=1$ is implied by 3XOR axioms.
+    Actually, it is exactly the XOR constraint (multiplied by a constant factor).
+
   \item[$\sum_{u \in V(G)} \pi_{uv}=1$ for any $v \in V(H)$.] Similar to the case above.
-  \item[For any $\{u,u'\} \in E(G)$, $\sum_{\{v,v'\} \in E(H)} \pi_{uv}\pi_{u'v'} = 1$.]
+  \item[For any $\{u,u'\} \in E(G)$, $\sum_{\{v,v'\} \in E(H)} (\pi_{uv}\pi_{u'v'} + \pi_{uv'}\pi_{u'v})= 1$.]
     We need to consider different types of edges in $E(G)$.
 
     The edges between variable vertices are easy and the details are left as an exercise.
 
-    If $\left\{ u,u' \right\}$ is an edge between clause variables of the same clause 
-    $C_j$ on variable $x_{i_1}$,$x_{i_2}$,$x_{i_3}$, then the only $v,v'$'s for which $\pi_{uv}\pi_{u'v'}$
-    is nonzero are those corresponding to clause $C_j$ in $Ax=0$.
+    If $\left\{ u,u' \right\}$ is an edge between equation variables of the same equation 
+    $C_j$ on variables $x_{i_1}$,$x_{i_2}$,$x_{i_3}$, then the only $v,v'$'s for which $\pi_{uv}\pi_{u'v'}$
+    is nonzero are those corresponding to the equation $C_j$ in $Ax=0$.
     Suppose $u$ assigns $(a_1,a_2,a_3)$ to $(x_{i_1},x_{i_2},x_{i_3})$, and $u'$ assigns $(a_1',a_2',a_3')$.
     Similarly, suppose that $v$ assigns $(b_1,b_2,b_3)$ and $v'$ assigns $(b_1',b_2',b_3')$.
-    We must have that $a_j \oplus b_j = a_j' \oplus b_j'$, otherwise $\pi_{uv}\pi_{u'v'}$ contains
-    the factor $x_{i_j}(1-x_{i_j})$ which can be proved to be zero from the basic axioms.
-    Otherwise, we will just get $\pi_{uv}\pi_{u'v'}=\pi_{uv}^2=\pi_{uv}$ and we just use the conclusion from 
-    above.
-
+    If $a_j \oplus b_j \neq a_j' \oplus b_j'$, for some $j$, then $\pi_{uv} \pi_{u'v'}$ contains
+    as a factor $I\bigl[a_j, b_j, x_{i_j}\bigr] I\bigl[a_j', b_j', x_{i_j}\bigr]$, which by
+    previous observation is 
+    $I\bigl[a_j \oplus b_j, 0, x_{i_j}\bigr] I\bigl[a_j' \oplus b_j', 0, x_{i_j}\bigr]$ and, as $a_j \oplus b_j \neq a_j' \oplus b_j'$,
+    it is equal to $x_{i_j}(1-x_{i_j})$. As $x_{i_j}(1-x_{i_j})$ is one of the axioms 
+    in 3XOR,  $\pi_{u, v} \pi_{u', v'}$ is implied by the 3XOR axioms.
+    If $a_j \oplus b_j = a_j' \oplus b_j'$ for all $j$, we get
+    $\pi_{uv}\pi_{u'v'}=\pi_{uv}^2$. As this happens for two edges (over distinct vertices) 
+    in the clique representing the equation $C_j$, this part of equation is equal to
+    $\sum_{v \in V(H)} \pi_{uv}^2 = 1$, which is implied by axioms as noted before.
+    
     Finally we need to consider when $u$ is a variable vertex $(x_i \leftarrow a)$,
     and $u'$ is a clause vertex in $Ax=b$, denoted as $C_j(x_{i_1}=a_1,x_{i_2}=a_2,x_{i_3}=a_3)$
     and without loss of generality assume that $i=i_1$.
     Then in the summation, the only non-zero terms are those where $v$ is a variable vertex $(x_i \leftarrow b)$,
     and $v'$ is a clause variable in $Ax=0$, denoted as $C_j(x_{i_1}=b_1,x_{i_2}=b_2,x_{i_3}=b_3)$.
-    Similar as in the previous case, we need to have $a \oplus b=a_1 \oplus b_1$,
-    and therefore we can think of the summation as over the assignments that satisfies $x_{i_1}+x_{i_2}+x_{i_3}=0$,
-    and we have
+    Similar as in the previous case, if $a \oplus b \neq a_1 \oplus b_1$ then $x_i (1 - x_i)$ is
+    part of that term $\pi_{u v} \pi_{u' v'}$ and is immediately implied by axioms.
+    Otherwise, we have $a \oplus b=a_1 \oplus b_1$ and determining $a$, $a_1$, and $b_1$
+    fixes the value of $b$ for which we have a non-trivial term. Hence, we can think of the 
+    summation as summing over $b_1 \oplus b_2 \oplus b_3 = 0$ with $b$ fixed to 
+    $b = a \oplus a_1 \oplus b_1$
     \begin{alignat*}{2}
       &~ \sum_{\{v,v'\} \in E(H)} \pi_{uv} \pi_{u'v'} \\
-      = ~&~ \sum_{b_1,b_2,b_3} I[a,a \oplus a_1 \oplus b_1,x_{i_1}] I[a_1,b_1,x_{i_1}] I[a_2,b_2,x_{i_2}] I[a_3,b_3,x_{i_3}] \\
-      = ~&~ \sum_{b_1,b_2,b_3} I[a_1,b_1,x_{i_1}] I[a_2,b_2,x_{i_2}] I[a_3,b_3,x_{i_3}] \\
-      = ~&~ \sum_{u'v'} \pi_{u'v'} = 1.
+      = ~&~ \sum_{b_1 \oplus b_2 \oplus b_3 = 0} I[a,a \oplus a_1 \oplus b_1,x_{i_1}] I[a_1,b_1,x_{i_1}] I[a_2,b_2,x_{i_2}] I[a_3,b_3,x_{i_3}] \\
+      = ~&~ \sum_{b_1 \oplus b_2 \oplus b_3 = 0} I[a_1,b_1,x_{i_1}]^2 I[a_2,b_2,x_{i_2}] I[a_3,b_3,x_{i_3}] 
     \end{alignat*}
+    where the third line follows from the second because we have 
+    \begin{align*}
+      I[a,a \oplus a_1 \oplus b_1,x_{i_1}] &= I[a \oplus a \oplus a_1 \oplus b_1, 0, x_{i_1}] \\
+      &= I[a_1 \oplus b_1, 0,x_{i_1}] \\
+      &= I[a_1,b_1,x_{i_1}],
+    \end{align*}
+    and the last line is over 0/1 assignments equivalent to $\sum_{v \in V(H)} \pi_{u' v}$ for
+    clause vertex $u'$ and, hence, by previous argument follows from axioms of 3XOR.
 \end{description}
 
 \bibliography{soscourse}
