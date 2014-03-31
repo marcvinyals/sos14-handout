@@ -1,0 +1,318 @@
+% Copyright (C) 2014 by Massimo Lauria
+% 
+% Created   : "2014-01-07, Tuesday 17:01 (CET) Massimo Lauria"
+% Time-stamp: "2014-03-31, 14:54 (CEST) Massimo Lauria"
+% Encoding  : UTF-8
+
+% ---------------------------- USER DATA ------------------------------
+\def\DataTitle{
+12. $Q$ is positive semi-definite.
+}
+\def\DataTitleShort{
+Linear programming
+}
+\def\DataDate{25 March, 2014}
+\def\DataDocname{Lecture 12 --- \DataDate}
+\def\DataLecturer{Massimo Lauria}
+\def\DataScribe{Ilario Bonacina}
+\def\DataKeywords{
+%integer programming, linear programming, \Lovasz-\Schrijver, Sherali-Adams
+  }
+
+\def\DataAbstract{%
+In this lecture we finish the proof initiated in Lecture 11. In particular we prove that if $\ell -1 < r < n-\ell +1$ and $\ell \leq \lfloor n/2 \rfloor$ then the quadratic form $Q$ defined in Lecture 11 is positive semi-definite over the space of polynomials of degree at most $\ell$.
+  }
+
+
+% ---------------------------- PREAMBLE -------------------------------
+\documentclass[a4paper,twoside,justified]{tufte-handout}
+\usepackage{soscourse} % this is a non standard package
+
+\DeclareMathOperator{\Ker}{Ker}
+\renewcommand{\Im}{\mathrm{Im}}
+\newcommand{\sgn}{\mathrm{sgn}}
+
+\begin{document} 
+% --------------------------- DOCUMENT --------------------------------
+Let $P_{\leq \ell}$ the space of multilinearized polynomials in $n$ variables over $\mathbb{K}$ of degree at most $\ell$ and with $P_t\subseteq P_{\leq \ell}$ the space of \emph{homogeneous} polynomials of degree $t$. 
+We have that each $P_t$ is a vector space: given a polynomial $p \in P_t$ the $I$-th coordinate $p_I$ of that polynomial is just the coefficient of the term $\prod_{i\in I}x_i$ as it appears in $p$.
+
+We recall the definition of $Q$ from the previous lecture: let
+$$
+B_k:=\frac{r(r-1)\cdots (r-k+1)}{n(n-1)\cdots (n-k+1)},
+$$
+then
+$$
+Q(x_I,x_J)=B(X_{I \cup J})=B_{|I \cup J|}.
+
+\begin{theorem}
+If $\ell -1 < r < n-\ell +1$ and $\ell \leq \lfloor n/2 \rfloor$ then $Q\succeq 0$ over $P_{\leq \ell}$.
+\end{theorem}
+
+The proof will be based on the following three steps corresponding to the sections of this lecture:
+\begin{itemize}
+\item Decompose $P_{\leq \ell}$ as a direct sum of spaces $P(u)$;
+\item $Q$ as a linear operator is invariant on each $P(u)$;
+\item $Q\succeq 0$ on each $P(u)$.
+\end{itemize} 
+
+\section{Decomposition of the space $P_{\leq \ell}$}
+
+Consider the following two linear operators: $C_t: P_t \rightarrow P_{t+1}$ and $D_t:P_{t+1}\rightarrow P_t$. Let $p=\sum_{I: |I|=t}p_I x_I$ some polynomial in $P_t$, where $x_I:=\prod_{i\in I} x_i$.
+
+\begin{equation}
+C_t(p):=\sum_{I : |I|=t}\sum_{i\not \in I} p_I \cdot x_{I \cup \{i\}}.
+\end{equation}
+
+Similarly we define $D_t$ for polynomials $q=\sum_{J: |J|=t+1}q_J x_J$ in $P_{t+1}$:
+\begin{equation}
+D_t(q):=\sum_{J: |J|=t+1}\sum_{j\in J} q_J \cdot x_{J \setminus \{j\}}.
+\end{equation}
+
+Starting with some polynomial $u\in P_t$ we want to lift it to some $u^{(m)}\in P_m$ for each $m\leq \ell$:
+\begin{equation*}
+u^{(m)}:=\begin{cases}
+0 & \text{if } m<t\\
+u & \text {if }m=t\\
+C_{m-1}(u^{(m-1)}) & \text{otherwise }
+\end{cases}
+\end{equation*}
+
+Notice that given $u=\sum_{I}u_Ix_I\in P_t$ then the coefficient of $u^{(y)}$ corresponding to a set $Y$ of size $y$ is
+$$
+[u^{(y)}]_Y=\sum_{I \subseteq Y}u_I.
+$$
+
+For $u\in P_t$ let $P(u):=\mathrm{Span}\Big(\big\{u^{(m)}\big\}_{m \leq \ell}\Big)$.
+We observe that we can represent $P(u)$ using another basis. This is not needed in this section but we put it here just for matter of clarity. It will be needed in the next section.
+
+\begin{proposition} \label{prop:basis}
+Let $u\in P_t$ then 
+\begin{equation*} 
+P(u)=\mathrm{Span}\Big(u,\Big\{\overline{(\sum x_i -r)(\sum x_i)^mu}\Big\}_{m\in [\ell-t-1]}\Big),
+\end{equation*}
+where given a polynomial $q$ with $\overline q$ we denote its multilinearized version.
+\end{proposition}
+\begin{proof}
+It is sufficient to prove that for each $m\in [\ell -t -1]$ we have that $\overline{(\sum_i x_i)^{m-t}u}\in \mathrm{Span}(u^{(t)},\ldots, u^{(m)})$ and the coefficient of $u^{(m)}$ is not $0$. In order to do this we just notice that if $m>t$ then 
+$$
+u^{(m)}=\sum_{I:\ |I|=t} \sum_{\substack{J \subseteq I^c\\ |J|=m-t}} u_I x_{I \cup J}.
+$$
+Hence it is easy to see that the expansion of $\overline{(\sum_i x_i)^{m-t}u}$ can be expressed as a linear combination of $u^{(t)},\ldots, u^{(m)}$. Then also $\overline{(\sum x_i -r)(\sum x_i)^mu}$ has the same property hence we can use those polynomials as a basis of $P(u)$.
+\end{proof}
+
+This section is devoted to prove the following theorem:
+\begin{theorem}[Decomposition of $P_{\leq \ell}$]\label{thm:decomposition}
+\begin{equation}
+P_{\leq \ell}=P_0\oplus \bigoplus_{t=1}^{\ell}\bigoplus_{u \in \mathrm{Basis}(\Ker D_{t-1})}P(u).
+\end{equation}
+\end{theorem}
+
+Clearly we have a decomposition of $P_{\leq \ell}$ as a direct sum $P_{\leq \ell}=\bigoplus_{t=0}^\ell P_t$ but we need a more fine grained decomposition inside each $P_t$. Then we will rearrange the spaces in a way somehow transversal w.r.t. the decomposition above. 
+
+\begin{lemma}\label{lem:identity}
+Let $m <\ell \leq \lfloor n/2\rfloor$ then for each $u\in \Ker D_{t-1}$
+\begin{equation*}
+D_mC_m(u^{(m)})=(n-m-t)(m-t+1)u^{(m)}.\qed
+\end{equation*}
+\end{lemma}
+
+%\begin{proof}
+% Is the following Lemma really needed? 
+%
+%The proof use the following lemma.
+% \begin{quotation}
+% \begin{lemma}
+%Let $u\in \Ker D_t$, say $u=\sum_{I: |I|=t+1}u_I x_I$, and $X\subseteq Y \subseteq [n]$ with $|X|=t$ then
+%\begin{equation*}
+%\sum_{I: X=I \cap Y}u_I=(-1)^{t-|X|}\sum_{I: X \subseteq I\subseteq Y\wedge |I|=t+1} u_I.\qed
+%\end{equation*}
+%\end{lemma}
+%\end{quotation}
+%\end{proof}
+
+
+\begin{proposition}
+Let $A_0:=P_0$ and $A_t:=\Ker D_{t-1}$, for $t> 0$, then
+\begin{equation*}
+P_t=A_t \oplus C_{t-1}(A_{t-1})\oplus C_{t-1}C_{t-2}(A_{t-2})\oplus \cdots \oplus C_{t-1}C_{t-2}\cdots C_0(A_0).
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+% TODO
+By induction on $t$ and using Lemma \ref{lem:identity} we have that  $D_tC_t(P_t)=P_t$. This imply that $\Ker D_t \cap C_t(P_t)=\{0\}$ and % TODO
+then by a dimension argument we have that 
+$$
+\dim P_{t+1}= \dim \Ker D_t + \dim \Im D_t= \dim\Ker D_t + \dim C_t(P_t),
+$$
+where the last equality follows from the fact that $\dim C_t(P_t)=\dim \Im D_t=\dim P_t$.
+Hence $P_{t+1}=\Ker D_t \oplus C_t(P_t)$ and this can be expanded obviously in the form required by the proposition.
+\end{proof}
+
+We are almost done for the desired decomposition of $P_{\leq \ell}$:
+
+\medskip
+\begin{tabular}{l}
+$P_{\leq \ell}$\\
+\ \rotatebox{90}{$=$}\\
+$P_0=A_0$\\
+$\oplus$\\
+$P_1=A_1 \oplus C_0(A_0)$\\
+$\oplus$\\
+$P_2= A_2\oplus C_1(A_1)\oplus C_1C_0(A_0)$\\
+$\oplus$\\
+$\vdots$\\
+$\oplus$\\
+$P_\ell=A_\ell\oplus C_{\ell-1}(A_{\ell -1})\oplus \ldots \oplus C_{\ell-1}C_{\ell -2}\cdots C_1C_0(A_0)$
+\end{tabular}
+
+\medskip
+Hence we can group together by diagonals the objects referring to the same $A_t$ obtaining the desired decomposition:
+\begin{equation*}
+P_{\leq \ell}=\bigoplus_{t=0}^{\ell}\bigoplus_{u \in \mathrm{Basis}(A_t)}P(u).
+\end{equation*}
+
+\section{The linear operator associated to $Q$ is invariant on $P(u)$}
+
+
+\begin{proposition} \label{prop:change-of-basis}
+Let $Q^{(y,t)}$ be the restriction of $Q$ seen as a linear operator from $P_t$ to $P_y$ and $u\in P_t$ and 
+$$
+\mu_{y,t}:=\sum_{j=0}^t (-1)^j{t \choose j}B_{y+j}.
+$$
+then 
+$$
+Q^{(y,t)}(u)=\mu_{y,t}u^{(y)}.
+$$
+and $Q$ maps $P(u)$ in itself.
+\end{proposition}
+
+\begin{proof}
+Before starting the proof we recall that, by definition, $u^{(y)}=0$ if $y<t$. Let $u\in A_t$, $u=\sum_{I:\ |I|=t}u_I x_I$ and $[Q^{(y,t)}(u)]_Y$ be the component of $Q^{(y,t)}(u)$ corresponding to the set $Y$ of size $y$, i.e. the coefficient of the term $x_Y$ of that image.
+\begin{equation}\label{eq:Qu}
+\begin{split}
+[Q^{(y,t)}(u)]_Y
+=
+\sum_{I:\ |I|=t} B(x_Yx_I)u_I
+= 
+\sum_{X\subseteq Y}\sum_{\substack{Y \cap I=X \\
+|I|=t}}B(x_Yx_I)u_I
+=\\
+=
+\sum_{X\subseteq Y}\sum_{\substack{Y \cap I=X \\
+|I|=t}}B_{y+t-|X|}u_I
+=\\
+=
+\sum_{j=0}^tB_{y+j}\sum_{I:\ |I\cap Y|=t-j}u_I.
+\end{split}
+\end{equation}
+By the inclusion-exclusion principle we have then, if $y<t$ $Q^{(y,t)}(u)=0$, and in the other case
+\begin{equation*}
+\begin{split}
+[Q^{(y,t)}(u)]_Y=\ \stackrel{\text{(\ref{eq:Qu})}}{\cdots}\ 
+=
+\sum_{j=0}^tB_{y+j}(-1)^{j}{t \choose j}\sum_{\substack{I:\ I\subseteq Y\\ |I|=t}}u_I
+=\\
+=
+\sum_{j=0}^tB_{y+j}(-1)^{j}{t \choose j}[u^{(y)}]_Y
+=
+\mu_{y,t}[u^{(y)}]_Y.
+\end{split}
+\end{equation*}
+We have now to prove that $Q$ maps $P(u)$ in itself. In order to do this we prove by induction on $m$ that $Q(u^{(m)})\in P(u)$. The base case is what we just finished to prove. Moreover, as proved in Proposition \ref{prop:basis} we have that $\overline{(\sum_i x_i)^{m-t}u}\in \mathrm{Span}(u^{(t)},\ldots, u^{(m)})$, from which follows immediately that 
+$$
+\overline{(\sum_i x_i -r)(\sum_i x_i)^{m-t}u}\in \mathrm{Span}(u^{(t)},\ldots, u^{(m+1)}),
+$$
+with non-zero coefficient of $u^{(m+1)}$. Hence
+$$
+Q(\overline{(\sum_i x_i -r)(\sum_i x_i)^{m-t}u})\in \mathrm{Span}(Q(u^{(t)}),\ldots, Q(u^{(m+1)})),
+$$
+but $Q(\overline{(\sum_i x_i -r)(\sum_i x_i)^{m-t}u})=0$ and by induction hypothesis we have that $Q(u^{(j)})\in P(u)$ for each $j\leq m$, hence we have also that $Q(u^{(m+1)})\in P(u)$.
+\end{proof}
+
+
+\section{$Q$ is positive semidefinite}
+
+\begin{lemma}
+
+\begin{equation}\label{eq:mu-closed-form}
+\mu_{y,t}=\frac{\prod_{j=1}^y (r+1-j)\prod_{j=0}^{t-1} (n-r-j)}{n (n-1)\cdots (n-y-t +1)}.
+\end{equation}
+
+\end{lemma}
+\begin{proof}
+
+Consider the following functional equation for some $f:\NN\times \NN \rightarrow \ZZ$ 
+\begin{equation}\label{eq:mu}
+\begin{cases}
+f(y,0)=B_y\\
+f(y,t+1)=f(y,t)-f(y+1,t)
+\end{cases}
+\end{equation}
+ There is only one possible solution of (\ref{eq:mu}). We show that both sides of equation (\ref{eq:mu-closed-form}) are solutions of (\ref{eq:mu}), hence they are equal.
+ 
+Let $g(y,t)$ the RHS of equation (\ref{eq:mu-closed-form}). Clearly we have that $g(y,0)=B_y$ and 
+\begin{equation*}
+\begin{split}
+g(y+1,t)+g(y,t+1)
+=\\
+=
+g(y,t)\cdot \frac{r-y}{n-y-t}+ g(y,t)\cdot \frac{n-r-t}{n-y-t}=g(y,t).
+\end{split}
+\end{equation*}
+
+
+Regarding $\mu_{y,t}$ clearly we have that $\mu_{y,0}=B_y$. To prove the other part of equation (\ref{eq:mu}) just observe that
+\begin{equation*}
+\begin{split}
+\mu_{y,t+1}=\sum_{j=0}^{t+1} (-1)^j{t+1 \choose j}B_{y+j}
+=\\
+\stackrel{(\star)}{=}
+\sum_{j=0}^{t} (-1)^j{t \choose j}B_{y+j}+\sum_{j=1}^{t+1} (-1)^j{t \choose j-1}B_{y+j}
+=\\
+=
+\mu_{y,t}+\sum_{k=0}^{t} (-1)^{k+1}{t \choose k}B_{y+k+1}
+=\\
+=
+\mu_{y,t}-\mu_{y+1,t}.
+\end{split}
+\end{equation*}
+The equality ($\star$) follows from the Newton identity ${n \choose k}+{n\choose k-1}={n+1 \choose k}$.
+\end{proof}
+
+\begin{lemma} \label{lem:yt-ty}
+Let $y\geq t$ then $\mu_{t,y}={n-2t \choose y-t} \mu_{y,t}$.\qed
+\end{lemma}
+
+\begin{proposition}
+$Q$ has rank $\leq 1$.
+\end{proposition}
+
+\begin{proof}
+We use the matrix associated to the quadratic form $Q$ to define a linear operator $q$. The rank of $Q$ is exactly the dimension of the image of $q$ and this is invariant w.r.t. a change of basis. We use the basis of $P(u)$ used in Proposition \ref{prop:basis}. As we already observed in the last lecture we have that $B(\overline{(\sum_i x_i -r)p})=0$ for any polynomial $p$. Hence the image of $q$ has dimension $\leq 1$.
+\end{proof}
+
+\begin{theorem}[$Q$ is positive-semidefinite]
+Let $t\leq \ell$ and $u\in \Ker D_{t-1}$, if $\ell -1 < r < n-\ell +1$ and $\ell \leq \lfloor n/2 \rfloor$ then $Q\succeq 0$ over $P(u)$. Hence, by Theorem \ref{thm:decomposition}, $Q\succeq 0$ over $P_{\leq \ell}$.
+\end{theorem}
+\begin{proof}
+Let $M$ be the matrix with $(y,t)$-entry $\mu_{y,t}$. By the previous proposition and Proposition \ref{prop:change-of-basis} we have that $M$ has rank $\leq 1$. Hence,
+\begin{equation}\label{eq:mu}
+\mu_{t,t}\mu_{y,y}-\mu_{y,t}\mu_{t,y}=0.
+\end{equation}
+ By Lemma \ref{lem:yt-ty} $\mu_{y,t}\mu_{t,y}\geq 0$ and hence by equation (\ref{eq:mu}) then $\sgn (\mu_{t,t})=\sgn(\mu_{y,y})$. But by Lemma \ref{eq:mu-closed-form} we have that $\mu_{t,t}\geq 0$.  And if we are in the range of parameters considered in the hypothesis then $\mu_{t,t}>0$. Hence $\mathrm{Tr}(M)=\sum_{i=t}^\ell \mu_{i,i}> 0$. But this means, as $\mathrm{rank}(M)=1$ that the only non-zero eigenvalue of $M$ is positive. Hence $Q\succeq 0$ over $P(u).$
+\end{proof}
+
+
+% ------------------------- EPILOGUE ------------------------------
+\bibliography{soscourse}
+\bibliographystyle{alpha}
+
+\end{document} 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
